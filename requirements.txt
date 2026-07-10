@@ -1,0 +1,8 @@
+langgraph==1.2.8
+langsmith==0.9.8
+langchain-google-genai==4.2.7
+requests==2.34.2
+mercantile==1.2.1
+haversine==2.9.0
+pillow==12.3.0
+python-dotenv==1.2.2
