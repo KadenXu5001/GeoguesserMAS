@@ -1,114 +1,105 @@
-# Backlog — GeoGuessr Deep-Agent System
+# Backlog
 
-Derived from [v2pland.md](v2pland.md). Organized by phase; each task is scoped to be a single sitting. Check items off as completed. Open questions from the plan are folded in as decisions to make before the task that depends on them.
+## Current Objective
 
----
+Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash extraction call over four cardinal panorama views, one todolist-driven orchestrator, selective delegation to at most one of two text-only specialists, and at most one targeted crop re-examination. The final system must cost at least 10% less than an identical-input Opus baseline while remaining within five percentage points of its exact country accuracy.
 
-## Phase 0 — Setup & validation (nothing else starts until this is done)
+## Now
 
-- [x] `.env` with `MAPILLARY_ACCESS_TOKEN`, `GEMINI_API_KEY`, `LANGCHAIN_API_KEY`, `LANGCHAIN_PROJECT=geoguessr-deepagent`, `LANGCHAIN_TRACING_V2=true`
-- [x] Add `.env` to `.gitignore` (verify it's not already tracked — `git status` first)
-- [x] `pyproject.toml`/`requirements.txt` with pinned versions: `langgraph`, `langsmith`, `langchain-google-genai`, `requests`, `mercantile`, `haversine`, `pillow`, `python-dotenv`
-- [x] Register Mapillary app, get access token
-- [x] Register/confirm LangSmith project, get API key
-- [x] Look up current Gemini 3.x model IDs (Flash + Pro) and confirm both are available via `langchain-google-genai`
-- [ ] **Token cost model spreadsheet/notebook** (`docs/cost_model.md` or a notebook): image tokens per full-frame heading, image tokens per cropped/upscaled region, expected calls per image (easy vs. hard), text-token estimate for reference tables + JSON + reasoning. Compute and compare the three totals in the plan's table (lean agent / single Pro / single Opus).
-  - [ ] **Gate:** if the lean design isn't clearly cheaper than a single Pro call on easy images, stop and rethink before writing pipeline code.
-- [ ] Small standalone script: send one test image to Gemini 3.x, request a bbox for a described object, inspect the raw response to confirm coordinate convention (normalized 0–1000 vs. pixels; `[x1,y1,x2,y2]` vs `[ymin,xmin,ymax,xmax]`)
-- [ ] Crop-accuracy sanity check: take 3–5 images, get bboxes from the model, crop with ~25% padding, visually confirm the target object survives the crop
-- [ ] Define target-country/region taxonomy for the eval set (needed before the sampler) — write to `data/taxonomy.py` or `taxonomy.json`
+- [x] Configure `.env` with Mapillary, Gemini, and LangSmith credentials.
+- [x] Add `.env` to `.gitignore` and verify it is not tracked.
+- [x] Pin the initial Python dependencies.
+- [x] Register the Mapillary app and LangSmith project.
+- [x] Confirm candidate Gemini model availability through `langchain-google-genai`.
+- [x] Create `docs/cost_model.md` using current model IDs, tokenization rules, and prices.
+- [x] Model complete per-panorama cost for Opus, MAS easy/delegated/hard paths, and the single-agent ablation.
+- [x] Set initial enforceable orchestrator iteration/output-token caps from the cost model.
+- [x] **Modeled gate:** normal, delegated, and hard MAS paths estimate at least 10% below identical-input Opus; revalidate with measured usage.
+- [x] Build a standalone panorama renderer for four 1024×1024, 90° FOV views at headings 0°, 90°, 180°, and 270°.
+- [x] Confirm Gemini bbox convention as normalized `[ymin, xmin, ymax, xmax]` from current official documentation.
+- [ ] Visually validate padded crops on 3–5 development-only panoramas with the production Gemini model (1/3 inspected successfully; remaining calls blocked by temporary 503s).
+- [x] Scan Mapillary coverage and select at least 20 qualifying countries across at least five continents.
+- [x] Record the selected country taxonomy and continent mapping in `data/taxonomy.json`.
 
----
+## Next
 
-## Phase 1 — Data pipeline
+- [ ] Implement the SQLite image/panorama metadata schema.
+- [ ] Implement the Mapillary client with image-level `is_pano=true`, cursor pagination, tiling, retry/backoff, and failure logging.
+- [ ] Download panorama files and fetch expiring image URLs only when needed.
+- [ ] Resolve latitude/longitude to ground-truth country using a geographic boundary lookup or geocoder.
+- [ ] Enforce at least 10 km separation between retained panoramas within each country.
+- [ ] Prevent any Mapillary sequence from crossing dev/eval splits.
+- [ ] Collect 10 development and 5 evaluation panoramas per qualifying country.
+- [ ] Render and store four cardinal views for every retained panorama.
+- [ ] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
+- [ ] Create and freeze `eval_c1.csv` with 5 panoramas per country.
+- [ ] Verify no latitude, longitude, timestamp, filename clue, or other metadata reaches model-facing inputs.
+- [ ] Implement `GeoState` with message, usage, and re-examination reducers.
+- [ ] Implement hard budgets for zero-or-one specialist delegation, one crop call, iterations, and output tokens.
+- [ ] Implement the extraction preprocessor: one Flash call containing all four headings.
+- [ ] Define and validate the extraction schema with arrays of detected objects plus one consolidated signal per category.
+- [ ] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
+- [ ] Add bounded malformed-output repair/retry behavior.
+- [ ] Build versioned reference tables from GeoTips and GeoHints with source URLs and retrieval dates.
+- [ ] Implement compact lookup tools for human and environmental indicators.
+- [ ] Implement the human-clue specialist for language, signs, vehicles, plates, roads, and infrastructure.
+- [ ] Implement the environmental specialist for terrain, climate, vegetation, and architecture.
+- [ ] Implement the orchestrator with a mandatory dynamic todolist and agent-decided zero-or-one specialist delegation.
+- [ ] Make agent tools mutate injected state consistently.
+- [ ] Implement `emit_prediction` to write one worldwide country prediction and terminate successfully.
+- [ ] Implement one-call `reexamine_region` with heading-aware padded cropping and a specific visual question.
+- [ ] Verify in LangSmith that specialists and the orchestrator never receive full image bytes.
+- [ ] Verify in tests/traces that both delegation and re-examination hard caps cannot be exceeded.
+- [ ] Implement direct Flash, Gemini Pro, and Opus baselines using identical four-heading inputs.
+- [ ] Implement the original single deep-agent ablation without specialists.
+- [ ] Implement exact country accuracy, country-centroid haversine loss, complete cost, image-token cost, latency, and call-count metrics.
+- [ ] Tune prompts and policies only on `dev_v1.csv`.
+- [ ] Freeze prompts, models, policies, and reference tables before final evaluation.
+- [ ] Run all frozen systems over `eval_c1.csv` and determine whether the MAS passes both gates.
 
-- [ ] `data/db.py` — SQLite schema: images table (`id`, `local_path`, `lat`, `lng`, `country`, `region`, `captured_at`, `sequence_id`, `downloaded_at`)
-- [ ] `data/mapillary_client.py` — wrapper for Mapillary API: bbox query (image-level `is_pano=true` filter, since sequences mix pano/non-pano), cursor pagination, exponential backoff on 429/5xx
-- [ ] `data/ingest.py` — `ingest_region(country, bbox, target_count)` using `mercantile.tiles(*bbox, zooms=14)` to stay under Mapillary's ~0.01° bbox cap; fetches `thumb_original_url` fresh per download (don't cache the URL, it expires); writes metadata to SQLite; logs every failure to a file
-- [ ] Dry run: 5–10 images for 2–3 regions, verify files land correctly and metadata rows are correct
-- [ ] Pano-density check per target region in the taxonomy — query counts before committing to per-region targets
-- [ ] Decide + document fallback policy for sparse regions (drop the region / accept lower count / relax to single-frame) based on the density check
-- [ ] Run full ingestion (~500 images), stratified by continent/country per the taxonomy
-- [ ] Build `eval_v1.csv` (image id, local path, ground-truth lat/lng, country, region) — freeze it, no further edits
-- [ ] Upload `eval_v1.csv` to LangSmith as a dataset
-- [ ] Verification pass: confirm no lat/lng/timestamp field is ever included in a model-facing payload (grep the codebase for where image metadata is assembled into prompts)
+## Later
 
----
+- [ ] Run the MAS without re-examination as an ablation.
+- [ ] Run a Gemini Pro orchestrator ablation only if the Flash orchestrator misses the accuracy gate.
+- [ ] Add a CLI showing todolist, selected specialist, re-examination count, country, confidence, cost, and LangSmith trace URL.
+- [ ] Document setup, ingestion, evaluation, limitations, and measured results in the README.
+- [ ] Build a streamed web UI only after the cost and accuracy gates pass.
+- [ ] Consider manually annotated visual-signal subsets in a later evaluation version.
 
-## Phase 2 — Core pipeline (LangGraph)
+## Blocked
 
-### 2.1 State & scaffolding
+- [ ] Production-model bbox visual validation — blocked by temporary 503 responses from both Gemini 3 Flash endpoints; panorama download/rendering and crop math are already verified.
+- [ ] Final iteration and token budgets — blocked on measured development-set token usage; initial caps are documented.
+- [ ] Final specialist/re-examination triggers — blocked on development-set experiments.
+- [ ] Pro-orchestrator decision — blocked until the Flash-orchestrator accuracy is measured.
 
-- [ ] `geo_agent/state.py` — `GeoState` TypedDict with reducers (`Annotated[list, add]` for `reexamine_results`, `Annotated[list, add_messages]` for `messages`)
-- [ ] `geo_agent/config.py` — loads `.env`, exposes model IDs/constants in one place (so Phase-0's pricing lookup only needs updating here)
-- [ ] `geo_agent/graph.py` — skeleton graph: extraction node → deep agent node → END, no tools wired yet
+## Decisions
 
-### 2.2 Extraction node (Node 1, not an agent)
+- 2026-07-10: Use a minimal MAS with one orchestrator and two possible specialists; invoke zero or one specialist per panorama.
+- 2026-07-10: Treat extraction and re-examination as perception components, not agents.
+- 2026-07-10: Send four 1024×1024 cardinal views together in one Flash extraction call.
+- 2026-07-10: Allow no more than one targeted crop re-examination.
+- 2026-07-10: Keep all specialist and orchestrator paths text-only.
+- 2026-07-10: Predict one country worldwide rather than selecting from a disclosed closed list.
+- 2026-07-10: Select 20+ coverage-qualified countries across 5+ continents, with 10 dev and 5 eval panoramas per country.
+- 2026-07-10: Keep panoramas at least 10 km apart and prevent sequence leakage across splits.
+- 2026-07-10: Use `dev_v1.csv` for tuning and frozen `eval_c1.csv` for final evaluation.
+- 2026-07-10: Use exact country accuracy as the primary quality metric and country-centroid haversine loss as a secondary metric.
+- 2026-07-10: Require complete inference cost at least 10% below Opus and country accuracy within five percentage points; report image-token cost separately.
+- 2026-07-10: Skip ground-truth visual-signal subset annotation in v1.
+- 2026-07-10: Initial conservative cost model estimates the delegated MAS path at $0.013840 versus $0.045380 for Opus; treat this as provisional until measured.
+- 2026-07-10: Cap v1 at two orchestrator calls, one specialist, and one crop; force finalization at 90% of the current Opus cost budget.
+- 2026-07-10: Coverage scan qualified 20 countries across six continents using 15 panoramic sequences at least 10 km apart per country; freeze them in `data/taxonomy.json`.
+- 2026-07-10: Keep the coverage-driven taxonomy despite its Europe-heavy distribution; reconsider balancing only in a later dataset version.
+- 2026-07-10: First real Mapillary/Gemini bbox sample used the documented convention correctly; all four 25%-padded crops retained their detected targets, though wide model boxes produced wide crops.
 
-- [ ] `geo_agent/nodes/extraction.py` — single Gemini Flash call, structured prompt requesting all signals (driving_side, road_markings, bollard, plate, text, terrain, architecture) each with `value`, `confidence`, `bbox`, `legible`
-- [ ] Pydantic/JSON-schema model for the extraction output; validate the raw LLM response against it, with a repair/retry path on malformed JSON
-- [ ] Apply the bbox padding decision from Phase 0 (pad ~20–30%) as a shared util (`geo_agent/bbox.py`) used by both extraction validation and `reexamine_region`
-- [ ] Run on a handful of eval images, inspect traces in LangSmith, confirm schema holds
+## Open Questions / Dependencies
 
-### 2.3 Reference tables
+- Recheck production model IDs, tokenization behavior, and provider prices immediately before the frozen evaluation.
+- Select a versioned country-centroid dataset for haversine scoring.
+- Define the seeded split procedure after coverage, distance, and sequence filtering.
+- GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
-- [ ] `geo_agent/reference_data/bollards.json` (seed from the plan's excerpt, extend)
-- [ ] `geo_agent/reference_data/plate_formats.json`
-- [ ] `geo_agent/reference_data/road_markings.json`
-- [ ] `geo_agent/reference_data/utility_poles.json`
-- [ ] Loader util that reads these into memory once at startup (not re-read per call)
+## Last Updated
 
-### 2.4 Deep agent node (Node 2, the real agent)
-
-- [ ] `geo_agent/tools/lookup_regional_indicator.py` — text-only lookup against the reference tables
-- [ ] `geo_agent/tools/cross_reference_candidates.py` — narrows a candidate list against a stated constraint
-- [ ] `geo_agent/tools/update_todolist.py` — reads/writes `agent_todolist` in state (use `InjectedState` or node-level state passing per the plan's guidance — pick one convention and apply consistently)
-- [ ] `geo_agent/tools/emit_prediction.py` — writes `final_prediction`; enforce point-estimate-not-centroid in the tool's docstring/schema (require `lat_lng_estimate` at admin-region/city granularity)
-- [ ] `geo_agent/nodes/deep_agent.py` — ReAct loop (Gemini Pro, LangGraph prebuilt `create_react_agent` or hand-rolled loop) wired to the four tools above, seeded with the initial todolist text from the plan
-- [ ] Confirm in LangSmith traces: todolist item count/order actually varies across a handful of test images (this is the thing that makes it a "deep agent" and not a for-loop — verify it, don't assume it)
-- [ ] Confirm no image bytes are sent in this node's default path (only JSON + text reference data)
-
-### 2.5 Re-examination (the one genuinely agentic decision)
-
-- [ ] `geo_agent/tools/reexamine_region.py` — crop image to padded bbox, optional upscale (Pillow), re-send crop + question to Gemini, return observation; append result via the `reexamine_results` reducer
-- [ ] Wire `reexamine_region` into the deep agent's tool list
-- [ ] **Decision to make before/while building:** re-look budget cap per image (start with e.g. 2, tune later) — enforce it in the tool or node, not just via prompting
-- [ ] **Decision to make:** trigger condition — `legible: false` alone, candidate tie alone, or both — implement whichever the ablation (Phase 2.7) will test
-- [ ] Confirm via traces that it fires only on illegible/tied cases across a mixed batch of easy/hard test images, not on every image
-
-### 2.6 Baselines (needed for comparison, build alongside the agent)
-
-- [ ] `eval/baselines.py` — `run_single_call(model, image)` for a bare single-image-in, JSON-out prediction (no agent loop)
-- [ ] Wire up `baseline-flash`, `baseline-pro`, `baseline-opus` as three configs of the same function
-- [ ] Register each as a LangSmith experiment target
-
-### 2.7 Eval harness
-
-- [ ] `eval/metrics.py` — country accuracy, continent accuracy, haversine distance error (point estimate vs. ground truth)
-- [ ] `eval/harness.py` — runs a system (baseline or full agent) over `eval_v1.csv`, logs predictions + metrics to LangSmith
-- [ ] Run `baseline-flash`, `baseline-pro`, `baseline-opus` over the eval set, record results
-- [ ] Run full agent as `deepagent-v1`, confirm it beats Flash and narrows the gap to Pro
-- [ ] Stratify results into the four subsets from the plan (legible text/script, hard prior legible, illegible high-value signal, no strong signal) and build the comparison table
-- [ ] Ablation run: `deepagent-no-relook` (same agent, `reexamine_region` disabled) vs `deepagent-v1`, compare on the illegible-signal subset specifically
-- [ ] Decide, from the ablation, whether to keep `reexamine_region` as currently triggered/budgeted, or adjust the Phase 2.5 decisions and re-run
-
----
-
-## Phase 3 — Polish
-
-- [ ] Clean up reasoning-chain formatting for demo output (strip internal tool-call noise, keep the narrative)
-- [ ] `geo_agent/cli.py` — `python -m geo_agent <image_path>` → prints todolist trace, re-looks used, final point prediction, LangSmith trace URL
-- [ ] README: setup steps, how to run ingestion, how to run eval, how to run a single image through the CLI
-- [ ] (Later, not blocking) web UI with streamed reasoning + live todolist
-
----
-
-## Open decisions to resolve during the build (not before)
-
-These are called out in the plan as things to tune empirically rather than guess up front — don't block on them, resolve via the ablation/sweeps in Phase 2.7:
-
-- [ ] Re-look budget cap (1 vs 3) — tune against illegible-signal subset results
-- [ ] Re-look trigger condition (legibility / tie / both) — decide via ablation
-- [ ] Extraction image resolution — sweep against the Phase 0 cost model and re-look frequency
-- [ ] Crop upscale method (resize vs. none) — check whether it changes model reads or just adds tokens
-- [ ] Heading strategy (single heading vs. 0/90/180/270, static vs. agent-requested) — weigh against cost model
+2026-07-10 — Completed the Phase 0 cost model, tested panorama renderer/bbox utilities, passed the Mapillary coverage gate, and froze a 20-country taxonomy spanning six continents.

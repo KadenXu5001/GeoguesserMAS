@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "frozen_on": "2026-07-10",
+  "source": "data/coverage_scan.json",
+  "qualification": {
+    "development_panoramas": 10,
+    "evaluation_panoramas": 5,
+    "minimum_separation_km": 10,
+    "require_image_level_is_pano": true,
+    "require_coordinate_boundary_validation_at_ingestion": true
+  },
+  "countries": [
+    {"iso2":"FR","country":"France","continent":"Europe"},
+    {"iso2":"DE","country":"Germany","continent":"Europe"},
+    {"iso2":"GB","country":"United Kingdom","continent":"Europe"},
+    {"iso2":"ES","country":"Spain","continent":"Europe"},
+    {"iso2":"IT","country":"Italy","continent":"Europe"},
+    {"iso2":"NL","country":"Netherlands","continent":"Europe"},
+    {"iso2":"PL","country":"Poland","continent":"Europe"},
+    {"iso2":"SE","country":"Sweden","continent":"Europe"},
+    {"iso2":"US","country":"United States","continent":"North America"},
+    {"iso2":"CA","country":"Canada","continent":"North America"},
+    {"iso2":"CR","country":"Costa Rica","continent":"North America"},
+    {"iso2":"BR","country":"Brazil","continent":"South America"},
+    {"iso2":"CL","country":"Chile","continent":"South America"},
+    {"iso2":"CO","country":"Colombia","continent":"South America"},
+    {"iso2":"JP","country":"Japan","continent":"Asia"},
+    {"iso2":"TH","country":"Thailand","continent":"Asia"},
+    {"iso2":"IN","country":"India","continent":"Asia"},
+    {"iso2":"TW","country":"Taiwan","continent":"Asia"},
+    {"iso2":"MA","country":"Morocco","continent":"Africa"},
+    {"iso2":"NZ","country":"New Zealand","continent":"Oceania"}
+  ]
+}
