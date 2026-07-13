@@ -221,3 +221,80 @@ class MongoRepository:
                 "created_at": utc_now(),
             }
         )
+
+    def reject(self, mapillary_image_id: str, reason: str) -> None:
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": mapillary_image_id},
+            {
+                "$set": {
+                    "status": "rejected",
+                    "rejection_reason": reason,
+                    "updated_at": utc_now(),
+                }
+            },
+        )
+
+    def mark_downloaded(
+        self,
+        mapillary_image_id: str,
+        *,
+        path: str,
+        sha256: str,
+        byte_count: int,
+        width: int,
+        height: int,
+    ) -> None:
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": mapillary_image_id},
+            {
+                "$set": {
+                    "status": "downloaded",
+                    "panorama_file": {
+                        "path": path,
+                        "sha256": sha256,
+                        "byte_count": byte_count,
+                        "width": width,
+                        "height": height,
+                    },
+                    "updated_at": utc_now(),
+                }
+            },
+        )
+
+    def mark_rendered(
+        self,
+        mapillary_image_id: str,
+        views: list[Mapping[str, Any]],
+    ) -> None:
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": mapillary_image_id},
+            {
+                "$set": {
+                    "status": "rendered",
+                    "rendered_views": [dict(view) for view in views],
+                    "updated_at": utc_now(),
+                }
+            },
+        )
+
+    def list_panoramas(
+        self,
+        *,
+        country_iso2: str | None = None,
+        status: str | None = None,
+    ) -> list[dict[str, Any]]:
+        query: dict[str, Any] = {}
+        if country_iso2:
+            query["country_iso2"] = country_iso2.upper()
+        if status:
+            query["status"] = status
+        return list(
+            self.database.panoramas.find(query).sort(
+                [("country_iso2", ASCENDING), ("split", ASCENDING), ("mapillary_image_id", ASCENDING)]
+            )
+        )
+
+    def get_panorama(self, mapillary_image_id: str) -> dict[str, Any] | None:
+        return self.database.panoramas.find_one(
+            {"mapillary_image_id": mapillary_image_id}
+        )

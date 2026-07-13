@@ -31,11 +31,11 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 
 ## Next
 
-- [ ] Implement the Mapillary client with image-level `is_pano=true`, cursor pagination, tiling, retry/backoff, and failure logging.
-- [ ] Download panorama files and fetch expiring image URLs only when needed.
-- [ ] Resolve latitude/longitude to ground-truth country using a versioned offline boundary dataset.
-- [ ] Enforce at least 10 km separation between retained panoramas within each country.
-- [ ] Prevent any Mapillary sequence from crossing dev/eval splits.
+- [x] Implement the Mapillary client with image-level `is_pano=true`, cursor pagination, tiling, retry/backoff, and failure logging.
+- [x] Download panorama files and fetch expiring image URLs only when needed.
+- [x] Resolve latitude/longitude to ground-truth country using pinned Natural Earth 5.1.1 offline boundaries.
+- [x] Enforce at least 10 km separation between retained panoramas within each country.
+- [x] Prevent any Mapillary sequence from crossing dev/eval splits.
 - [ ] Collect the strict 45-panorama pilot: 10 development and 5 evaluation panoramas each for France, Thailand, and Brazil.
 - [ ] Render and store four cardinal views for every retained panorama.
 - [ ] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
@@ -109,6 +109,8 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - 2026-07-12: Require strict replacement until every pilot country has exactly 10 valid development and 5 valid evaluation panoramas.
 - 2026-07-12: Validate ground-truth countries with a versioned offline boundary dataset rather than an online geocoder.
 - 2026-07-12: Store metadata in local MongoDB through `MONGODB_URI`; keep panorama and rendered image bytes on disk and store paths/checksums in MongoDB. Preserve the option to move to Atlas later.
+- 2026-07-12: Pin Natural Earth 5.1.1 Admin-0 Countries at 1:10m for offline coordinate validation.
+- 2026-07-12: Keep expiring Mapillary URLs ephemeral; persist only local paths, dimensions, byte counts, and SHA-256 checksums.
 
 ## Open Questions / Dependencies
 
