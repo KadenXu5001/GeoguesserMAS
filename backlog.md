@@ -17,7 +17,7 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - [x] **Modeled gate:** normal, delegated, and hard MAS paths estimate at least 10% below identical-input Opus; revalidate with measured usage.
 - [x] Build a standalone panorama renderer for four 1024×1024, 90° FOV views at headings 0°, 90°, 180°, and 270°.
 - [x] Confirm Gemini bbox convention as normalized `[ymin, xmin, ymax, xmax]` from current official documentation.
-- [ ] Visually validate padded crops on 3–5 development-only panoramas with the production Gemini model (1/3 inspected successfully; remaining calls blocked by temporary 503s).
+- [x] Visually validate padded crops on 3–5 development-only panoramas with the production Gemini model (five development-only samples validated successfully on 2026-07-13; one additional candidate exhausted retries with a recorded 503).
 - [x] Scan Mapillary coverage and select at least 20 qualifying countries across at least five continents.
 - [x] Record the selected country taxonomy and continent mapping in `data/taxonomy.json`.
 - [x] Install and pin `deepagents==0.6.12`; validate `create_deep_agent` against the pinned LangGraph/LangChain-Google dependencies.
@@ -44,14 +44,14 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - [x] Render and store four cardinal views for every retained panorama.
 - [x] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
 - [x] Create and freeze `eval_c1.csv` with 5 panoramas per country.
-- [ ] Verify no latitude, longitude, timestamp, filename clue, or other metadata reaches model-facing inputs.
+- [x] Add an automated recursive model-payload audit that rejects latitude, longitude, coordinates, timestamps, image identifiers, filenames, checksums, country labels, split metadata, and related location clues.
 - [ ] Review pilot ingestion results, then authorize or revise expansion to all 20 qualified countries.
-- [ ] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
+- [x] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
 - [ ] Implement custom Deep Agents middleware for zero-or-one `task` delegation, one crop call, two orchestrator turns, output-token limits, and the 90%-of-Opus cutoff.
-- [ ] Implement the extraction preprocessor: one Flash call containing all four headings.
-- [ ] Define and validate the extraction schema with arrays of detected objects plus one consolidated signal per category.
-- [ ] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
-- [ ] Add bounded malformed-output repair/retry behavior.
+- [x] Implement the extraction preprocessor: one Flash call containing all four headings.
+- [x] Define and validate the extraction schema with arrays of detected objects plus one consolidated signal per category.
+- [x] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
+- [x] Add bounded malformed-output repair/retry behavior.
 - [ ] Build versioned reference tables from GeoTips and GeoHints with source URLs and retrieval dates.
 - [ ] Implement compact lookup tools for human and environmental indicators.
 - [ ] Configure the human-clue custom subagent with a narrow prompt, tools, and structured response.
@@ -122,6 +122,9 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - 2026-07-12: Rejected panorama candidates stay rejected and are skipped by later ingestion runs so strict replacement advances to later Mapillary candidates.
 - 2026-07-13: Use boundary-filtered supplemental coverage scans when strict replacement exhausts the original 15-row pilot evidence pool.
 - 2026-07-13: Freeze the three-country pilot manifests as `data/datasets/dev_v1.csv` and `data/datasets/eval_c1.csv`; keep image bytes on local disk and metadata/review state in MongoDB.
+- 2026-07-13: Enforce model-input metadata isolation with a recursive payload auditor and 15 tests covering safe structured extraction plus forbidden metadata at nested paths.
+- 2026-07-13: Define `extraction-v1` Pydantic output models and additive runtime state for Deep Agents; validate normalized bboxes, multi-object categories, detection statuses, and usage events with focused tests.
+- 2026-07-13: Use Gemini structured JSON output for the four-view extractor with one bounded malformed-response retry; add a runtime budget policy enforcing two orchestrator turns, one specialist, one re-examination, and the 90%-of-Opus cutoff.
 
 ## Open Questions / Dependencies
 
@@ -131,6 +134,14 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
 ## Last Updated
+
+2026-07-13 - Completed five production-model bbox validations on development-only samples. The validator now checkpoints each sample, retries transient 429/5xx errors with exponential backoff and jitter, processes sequentially, records failures, and uses a larger JSON output budget; one extra candidate exhausted retries with a Gemini 503.
+
+2026-07-13 - Added the automated model-payload metadata audit; all 15 focused tests pass.
+
+2026-07-13 - Added and validated the extraction-v1 schema and runtime state; the focused payload/schema suite passes 17 tests.
+
+2026-07-13 - Implemented the four-view extraction runner and initial hard-budget policy; focused extraction and budget tests pass 22 tests.
 
 2026-07-13 - Completed the strict 45-panorama France/Thailand/Brazil pilot, exported `dev_v1.csv` and `eval_c1.csv`, and added boundary-filtered replacement scan support.
 

@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
+import time
 from pathlib import Path
 
 import requests
@@ -42,16 +44,36 @@ def fetch_pano(image_id: str, token: str, output: Path) -> bool:
     return True
 
 
-def detect_objects(client: genai.Client, model: str, image: Image.Image) -> list[dict]:
-    response = client.models.generate_content(
-        model=model,
-        contents=[image, PROMPT],
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            max_output_tokens=1200,
-            thinking_config=types.ThinkingConfig(thinking_budget=0),
-        ),
-    )
+def detect_objects(
+    client: genai.Client,
+    model: str,
+    image: Image.Image,
+    *,
+    max_attempts: int = 4,
+    initial_backoff_seconds: float = 5.0,
+) -> list[dict]:
+    for attempt in range(max_attempts):
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=[image, PROMPT],
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    max_output_tokens=2400,
+                    thinking_config=types.ThinkingConfig(thinking_budget=0),
+                ),
+            )
+            break
+        except Exception as exc:
+            status_code = getattr(exc, "status_code", None)
+            if status_code not in {429, 500, 502, 503, 504} or attempt == max_attempts - 1:
+                raise
+            delay = initial_backoff_seconds * (2**attempt) + random.uniform(0, 2)
+            print(f"transient_gemini_error status={status_code} retry_in={delay:.1f}s", flush=True)
+            time.sleep(delay)
+    else:
+        raise RuntimeError("Gemini request exhausted retry loop")
+
     text = response.text.strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1]
@@ -92,42 +114,61 @@ def run_smoke_test(
     output_dir.mkdir(parents=True, exist_ok=True)
     coverage = json.loads(coverage_path.read_text(encoding="utf-8"))
     client = genai.Client(api_key=gemini_key)
-    results = []
+    manifest_path = output_dir / "manifest.json"
+    existing = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
+    results = existing.get("results", [])
+    completed_ids = {item["image_id"] for item in results}
+    failures = existing.get("failures", [])
 
     for country in coverage["countries"]:
         if not country["qualified"] or not country["evidence"]:
             continue
         image_id = country["evidence"][0]["image_id"]
-        panorama_path = output_dir / f"{country['iso2']}_{image_id}_pano.jpg"
-        if not fetch_pano(image_id, mapillary_token, panorama_path):
+        if image_id in completed_ids:
             continue
-        with Image.open(panorama_path) as panorama:
-            view = render_perspective(panorama, 0, size=1024)
-        view_path = output_dir / f"{country['iso2']}_{image_id}_h000.jpg"
-        view.save(view_path, quality=92)
-        objects = detect_objects(client, model, view)
-        annotated_path = output_dir / f"{country['iso2']}_{image_id}_annotated.jpg"
-        annotate(view, objects).save(annotated_path, quality=92)
-
-        crops = []
-        for index, item in enumerate(objects[:5]):
-            box = item.get("box_2d")
-            if not isinstance(box, list) or len(box) != 4:
+        panorama_path = output_dir / f"{country['iso2']}_{image_id}_pano.jpg"
+        try:
+            if not fetch_pano(image_id, mapillary_token, panorama_path):
                 continue
-            crop = crop_normalized_bbox(view, box, padding_fraction=0.25)
-            crop_path = output_dir / f"{country['iso2']}_{image_id}_crop{index}.jpg"
-            crop.save(crop_path, quality=92)
-            crops.append(str(crop_path))
-        results.append(
-            {
-                "country": country["country"],
-                "image_id": image_id,
-                "view": str(view_path),
-                "annotated": str(annotated_path),
-                "objects": objects,
-                "crops": crops,
-            }
-        )
+            with Image.open(panorama_path) as panorama:
+                view = render_perspective(panorama, 0, size=1024)
+            view_path = output_dir / f"{country['iso2']}_{image_id}_h000.jpg"
+            view.save(view_path, quality=92)
+            objects = detect_objects(client, model, view)
+            annotated_path = output_dir / f"{country['iso2']}_{image_id}_annotated.jpg"
+            annotate(view, objects).save(annotated_path, quality=92)
+
+            crops = []
+            for index, item in enumerate(objects[:5]):
+                box = item.get("box_2d")
+                if not isinstance(box, list) or len(box) != 4:
+                    continue
+                crop = crop_normalized_bbox(view, box, padding_fraction=0.25)
+                crop_path = output_dir / f"{country['iso2']}_{image_id}_crop{index}.jpg"
+                crop.save(crop_path, quality=92)
+                crops.append(str(crop_path))
+            results.append(
+                {
+                    "country": country["country"],
+                    "image_id": image_id,
+                    "view": str(view_path),
+                    "annotated": str(annotated_path),
+                    "objects": objects,
+                    "crops": crops,
+                }
+            )
+            completed_ids.add(image_id)
+        except Exception as exc:
+            failures.append({"country": country["country"], "image_id": image_id, "error": str(exc)})
+            print(f"sample_failed image_id={image_id} error={exc}", flush=True)
+        manifest = {
+            "model": model,
+            "bbox_convention": "[ymin, xmin, ymax, xmax] normalized 0-1000",
+            "padding_fraction": 0.25,
+            "results": results,
+            "failures": failures,
+        }
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         if len(results) >= count:
             break
 
@@ -136,8 +177,9 @@ def run_smoke_test(
         "bbox_convention": "[ymin, xmin, ymax, xmax] normalized 0-1000",
         "padding_fraction": 0.25,
         "results": results,
+        "failures": failures,
     }
-    (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
