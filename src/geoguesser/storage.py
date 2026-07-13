@@ -31,7 +31,14 @@ PANORAMA_VALIDATOR = {
             },
             "split": {"enum": ["development", "evaluation", None]},
             "status": {
-                "enum": ["candidate", "validated", "rejected", "downloaded", "rendered"]
+                "enum": [
+                    "candidate",
+                    "validated",
+                    "rejected",
+                    "downloaded",
+                    "quality_review",
+                    "rendered",
+                ]
             },
         },
     }
@@ -177,7 +184,9 @@ class MongoRepository:
             {
                 "mapillary_image_id": {"$ne": mapillary_image_id},
                 "country_iso2": country_iso2,
-                "status": {"$in": ["validated", "downloaded", "rendered"]},
+                "status": {
+                    "$in": ["validated", "downloaded", "quality_review", "rendered"]
+                },
                 "location": {
                     "$near": {
                         "$geometry": panorama["location"],
@@ -270,8 +279,54 @@ class MongoRepository:
             {"mapillary_image_id": mapillary_image_id},
             {
                 "$set": {
-                    "status": "rendered",
+                    "status": "quality_review",
                     "rendered_views": [dict(view) for view in views],
+                    "updated_at": utc_now(),
+                }
+            },
+        )
+
+    def record_quality(self, mapillary_image_id: str, assessment: Mapping[str, Any]) -> None:
+        automatic_pass = bool(assessment.get("automatic_pass"))
+        panorama = self.get_panorama(mapillary_image_id)
+        update: dict[str, Any] = {
+            "quality": dict(assessment),
+            "updated_at": utc_now(),
+        }
+        if not automatic_pass:
+            update["status"] = "rejected"
+            update["rejection_reason"] = "; ".join(
+                assessment.get("rejection_reasons", ["automatic quality failure"])
+            )
+        elif panorama and panorama.get("rendered_views"):
+            update["status"] = "quality_review"
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": mapillary_image_id}, {"$set": update}
+        )
+
+    def review_quality(
+        self,
+        mapillary_image_id: str,
+        *,
+        approved: bool,
+        notes: str,
+    ) -> None:
+        panorama = self.get_panorama(mapillary_image_id)
+        if panorama is None:
+            raise ValueError("panorama does not exist")
+        if not panorama.get("quality", {}).get("automatic_pass"):
+            raise ValueError("panorama did not pass automatic quality checks")
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": mapillary_image_id},
+            {
+                "$set": {
+                    "quality.manual_review": {
+                        "status": "approved" if approved else "rejected",
+                        "notes": notes,
+                        "reviewed_at": utc_now(),
+                    },
+                    "status": "rendered" if approved else "rejected",
+                    "rejection_reason": None if approved else f"manual quality review: {notes}",
                     "updated_at": utc_now(),
                 }
             },

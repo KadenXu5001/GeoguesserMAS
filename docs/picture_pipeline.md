@@ -1,8 +1,9 @@
 # Picture data pipeline
 
 The pipeline stores panorama and rendered image files on disk and stores their metadata,
-checksums, validation history, and split membership in local MongoDB. Expiring Mapillary
-image URLs are fetched only immediately before a download and are not persisted.
+checksums, validation history, quality-review state, and split membership in local MongoDB.
+Expiring Mapillary image URLs are fetched only immediately before a download and are not
+persisted.
 
 ## Start local services
 
@@ -29,23 +30,37 @@ The default limit is one candidate. Use a country filter to make the test determ
 .\.runtime-win\Scripts\python.exe main.py ingest-pictures --country FR --limit 1
 ```
 
-Accepted originals are written under `data/panoramas/<ISO2>/`. Four 1024×1024 cardinal
-views are written under `data/rendered/<ISO2>/<IMAGE_ID>/`. Re-running the command skips
-images already downloaded or rendered.
+Accepted originals are written under `data/panoramas/<ISO2>/`. Four 1024x1024 cardinal
+views are written under `data/rendered/<ISO2>/<IMAGE_ID>/`. Automatic quality checks run
+after download; passing panoramas are rendered and moved to `quality_review` for manual
+approval. Re-running the command skips images already downloaded, rejected, under review,
+or rendered.
 
-## Inspect and view the results
+## Inspect and review the results
 
 ```powershell
-.\.runtime-win\Scripts\python.exe main.py list-pictures --status rendered
+.\.runtime-win\Scripts\python.exe main.py list-pictures --status quality_review
 .\.runtime-win\Scripts\python.exe main.py contact-sheet <IMAGE_ID>
+.\.runtime-win\Scripts\python.exe main.py strip-preview <IMAGE_ID>
+.\.runtime-win\Scripts\python.exe main.py assess-quality <IMAGE_ID>
 ```
 
 Contact sheets are written under `.artifacts/contact-sheets/` unless `--output` is given.
-They contain headings 0, 90, 180, and 270 degrees in a 2×2 image.
+They contain headings 0, 90, 180, and 270 degrees in a 2x2 image. Strip previews are
+written under `.artifacts/strip-previews/` and show the same headings in order from left to
+right for faster continuity review.
+
+After inspecting the previews, approve or reject the panorama:
+
+```powershell
+.\.runtime-win\Scripts\python.exe main.py review-quality <IMAGE_ID> approve --notes "clear 360 coverage"
+.\.runtime-win\Scripts\python.exe main.py review-quality <IMAGE_ID> reject --notes "severe camera/operator artifact"
+```
 
 ## Continue collection deliberately
 
-Increase `--limit` only after inspecting the first contact sheet. Choose the split explicitly:
+Increase `--limit` only after inspecting the first contact sheet and strip preview. Choose
+the split explicitly:
 
 ```powershell
 .\.runtime-win\Scripts\python.exe main.py ingest-pictures --country TH --split development --limit 10
@@ -53,5 +68,32 @@ Increase `--limit` only after inspecting the first contact sheet. Choose the spl
 ```
 
 MongoDB rejects retained panoramas within 10 km of an existing panorama in the same country
-and rejects any Mapillary sequence that would cross development/evaluation splits. Rejected
-and failed attempts remain in `ingestion_attempts` for auditing.
+and rejects any Mapillary sequence that would cross development/evaluation splits. Automatic
+quality failures and manual rejections remain rejected, so strict replacement runs continue
+to later candidates. Rejected and failed attempts remain in `ingestion_attempts` for auditing.
+
+## Generate replacement coverage pools
+
+When the original 15-row coverage pool for a country is exhausted, generate a larger
+country-specific replacement scan with the same offline boundary filter used by ingestion:
+
+```powershell
+.\.runtime-win\Scripts\python.exe -m geoguesser.coverage --country TH --target 40 --max-tiles 80 --boundary-filter --output data\coverage_scan_TH_replacements.json
+.\.runtime-win\Scripts\python.exe main.py ingest-pictures --country TH --split evaluation --limit 5 --coverage-path data\coverage_scan_TH_replacements.json
+```
+
+## Export the pilot manifests
+
+After every retained panorama is manually approved, export the split manifests:
+
+```powershell
+.\.runtime-win\Scripts\python.exe main.py export-pilot-manifests --output-dir data\datasets
+```
+
+The exporter validates exact pilot counts before writing:
+
+- `data/datasets/dev_v1.csv`: 10 development panoramas per pilot country.
+- `data/datasets/eval_c1.csv`: 5 evaluation panoramas per pilot country.
+
+The manifests include labels, local image paths, image dimensions, and checksums. They do
+not include latitude, longitude, capture timestamp, or Mapillary expiring URLs.

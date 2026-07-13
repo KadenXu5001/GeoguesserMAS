@@ -11,6 +11,7 @@ from geoguesser.boundaries import CountryBoundaries
 from geoguesser.mapillary import MapillaryClient
 from geoguesser.panorama import CARDINAL_HEADINGS, render_cardinal_views
 from geoguesser.pilot import PILOT_COUNTRIES
+from geoguesser.quality import assess_panorama
 from geoguesser.storage import MongoRepository
 
 
@@ -78,7 +79,12 @@ def ingest_picture_candidates(
             break
         image_id = str(evidence["image_id"])
         existing = repository.get_panorama(image_id)
-        if existing and existing.get("status") in {"downloaded", "rendered"}:
+        if existing and existing.get("status") in {
+            "downloaded",
+            "quality_review",
+            "rejected",
+            "rendered",
+        }:
             counts["skipped"] += 1
             continue
         counts["examined"] += 1
@@ -128,6 +134,17 @@ def ingest_picture_candidates(
                 width=downloaded.width,
                 height=downloaded.height,
             )
+            assessment = assess_panorama(downloaded.path)
+            repository.record_quality(image_id, assessment.as_document())
+            if not assessment.automatic_pass:
+                repository.record_attempt(
+                    image_id,
+                    "quality",
+                    "rejected",
+                    "; ".join(assessment.rejection_reasons),
+                )
+                counts["rejected"] += 1
+                continue
             view_paths = render_cardinal_views(
                 downloaded.path,
                 rendered_dir / actual_country / image_id,
@@ -141,7 +158,7 @@ def ingest_picture_candidates(
                 for heading, path in zip(CARDINAL_HEADINGS, view_paths)
             ]
             repository.mark_rendered(image_id, views)
-            repository.record_attempt(image_id, "ingest", "rendered")
+            repository.record_attempt(image_id, "ingest", "pending_quality_review")
             counts["rendered"] += 1
         except ValueError as error:
             repository.reject(image_id, str(error))
@@ -172,4 +189,25 @@ def create_contact_sheet(panorama: Mapping[str, Any], output_path: Path) -> Path
         draw.text((x + 12, y + 10), f"Heading {heading} degrees", fill="black")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(output_path, format="JPEG", quality=90)
+    return output_path
+
+
+def create_horizontal_strip(panorama: Mapping[str, Any], output_path: Path) -> Path:
+    rendered_views = panorama.get("rendered_views") or []
+    if len(rendered_views) != 4:
+        raise ValueError("panorama does not have four rendered views")
+    tiles = []
+    for view in sorted(rendered_views, key=lambda item: item["heading"]):
+        with Image.open(view["path"]) as image:
+            tiles.append((view["heading"], image.convert("RGB").copy()))
+    tile_width, tile_height = tiles[0][1].size
+    label_height = 40
+    strip = Image.new("RGB", (tile_width * 4, tile_height + label_height), "white")
+    draw = ImageDraw.Draw(strip)
+    for index, (heading, image) in enumerate(tiles):
+        x = index * tile_width
+        strip.paste(image, (x, label_height))
+        draw.text((x + 12, 10), f"Heading {heading} degrees", fill="black")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    strip.save(output_path, format="JPEG", quality=90)
     return output_path

@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-13T17:00:40Z",
+  "criteria": {
+    "minimum_countries": 20,
+    "minimum_continents": 5,
+    "panoramas_per_country": 30,
+    "minimum_distance_km": 10.0,
+    "sequence_layer_zoom": 8
+  },
+  "qualified_country_count": 1,
+  "qualified_continents": [
+    "South America"
+  ],
+  "passes": true,
+  "countries": [
+    {
+      "iso2": "BR",
+      "country": "Brazil",
+      "continent": "South America",
+      "bbox": [
+        -74.0,
+        -34.0,
+        -34.0,
+        5.0
+      ],
+      "qualified": true,
+      "separated_pano_sequences": 30,
+      "minimum_distance_km": 10.0,
+      "tiles_scanned": 6,
+      "evidence": [
+        {
+          "image_id": "650321494034528",
+          "sequence_id": "2tVIYea7GimMBpNCTc48nf",
+          "latitude": -22.477347706080845,
+          "longitude": -54.308509826660156,
+          "captured_at": 1740652583000,
+          "quality_score": 0.8684632768361583
+        },
+        {
+          "image_id": "542027852022576",
+          "sequence_id": "VwufJdqCAWvI98BrXFK3gs",
+          "latitude": -22.655522016607403,
+          "longitude": -54.044151306152344,
+          "captured_at": 1727175406518,
+          "quality_score": 0.7823155205450283
+        },
+        {
+          "image_id": "8446734478775068",
+          "sequence_id": "kNVUBzn3JxGL2HIgTEm4A0",
+          "latitude": -22.393253404773535,
+          "longitude": -53.64143371582031,
+          "captured_at": 1727180818518,
+          "quality_score": 0.7962459718026188
+        },
+        {
+          "image_id": "926212969404846",
+          "sequence_id": "JtLBo1Cv0DVmTqcybO9pws",
+          "latitude": -22.38277771817957,
+          "longitude": -53.53569030761719,
+          "captured_at": 1727181926518,
+          "quality_score": 0.7848534149484534
+        },
+        {
+          "image_id": "1051039286514458",
+          "sequence_id": "Mi3sAcC7Zgv4VzeDhaInob",
+          "latitude": -22.344677664933258,
+          "longitude": -53.736534118652344,
+          "captured_at": 1727180818518,
+          "quality_score": 0.7797117816091954
+        },
+        {
+          "image_id": "1304358350733116",
+          "sequence_id": "uzBkrIqH2p4n6UNLhdAbyt",
+          "latitude": -22.793907258498926,
+          "longitude": -54.05342102050781,
+          "captured_at": 1727175406518,
+          "quality_score": 0.7752071876507475
+        },
+        {
+          "image_id": "1263973358357207",
+          "sequence_id": "wpksStiQzWcejV9782lxTC",
+          "latitude": -22.421502079264346,
+          "longitude": -53.90785217285156,
+          "captured_at": 1727175618663,
+          "quality_score": 0.7756366682623267
+        },
+        {
+          "image_id": "1751311518953105",
+          "sequence_id": "sQT534AfE82y6ert9GdwCL",
+          "latitude": -22.401823834144633,
+          "longitude": -54.79259490966797,
+          "captured_at": 1726072663518,
+          "quality_score": 0.758430346286016
+        },
+        {
+          "image_id": "524644310339888",
+          "sequence_id": "mbaKhfL7r09NnGWjOAlMZJ",
+          "latitude": -22.261456368220042,
+          "longitude": -54.804954528808594,
+          "captured_at": 1726072663518,
+          "quality_score": 0.7576648777579008
+        },
+        {
+          "image_id": "8631298416949762",
+          "sequence_id": "JMjs0ZGqte1KNDEAcHR3o9",
+          "latitude": -22.562976200808052,
+          "longitude": -54.82624053955078,
+          "captured_at": 1726074815536,
+          "quality_score": 0.722971807628524
+        },
+        {
+          "image_id": "511155258420368",
+          "sequence_id": "yQEClZT68rYmqk435XSau2",
+          "latitude": -22.312602046196634,
+          "longitude": -53.832664489746094,
+          "captured_at": 1727177314404,
+          "quality_score": 0.7861562073669848
+        },
+        {
+          "image_id": "1106749877722231",
+          "sequence_id": "gXUrlT463OG8AFfY1ZSdJK",
+          "latitude": -23.07688914289277,
+          "longitude": -54.193153381347656,
+          "captured_at": 1727173826055,
+          "quality_score": 0.8151713106295152
+        },
+        {
+          "image_id": "994886235734478",
+          "sequence_id": "RNcWGmp01YidoIqDQr6Uvy",
+          "latitude": -22.815744750136517,
+          "longitude": -54.70916748046875,
+          "captured_at": 1726075646518,
+          "quality_score": 0.20351163385323448
+        },
+        {
+          "image_id": "1968371143639774",
+          "sequence_id": "58XQGRHAObhYkNg7Z3KxqI",
+          "latitude": -21.98252797302258,
+          "longitude": -54.53166961669922,
+          "captured_at": 1726070438518,
+          "quality_score": 0.7706550491510274
+        },
+        {
+          "image_id": "8284133645041724",
+          "sequence_id": "P0K29FjGkbMUoO4vzLu7dh",
+          "latitude": -22.868266976949002,
+          "longitude": -54.605140686035156,
+          "captured_at": 1726075646518,
+          "quality_score": 0.08625537961835164
+        },
+        {
+          "image_id": "530099779765828",
+          "sequence_id": "nWoRpg8LdHQb0D94ta5uFf",
+          "latitude": -22.208702739845513,
+          "longitude": -54.710540771484375,
+          "captured_at": 1726071687518,
+          "quality_score": 0.7612751773049645
+        },
+        {
+          "image_id": "1057269228970739",
+          "sequence_id": "XRNmr6K5ty02w9OaM3cPJF",
+          "latitude": -22.320859841005923,
+          "longitude": -53.4375,
+          "captured_at": 1727181926518,
+          "quality_score": 0.7922809102402023
+        },
+        {
+          "image_id": "574724981552078",
+          "sequence_id": "e3Rm1EIFuTn6jckSCXoWMK",
+          "latitude": -22.547440156930282,
+          "longitude": -54.026641845703125,
+          "captured_at": 1727175406518,
+          "quality_score": 0.7817539951573844
+        },
+        {
+          "image_id": "1071822454445190",
+          "sequence_id": "6raSUi0GHlEAeFc17bBjLN",
+          "latitude": -22.70113810518727,
+          "longitude": -54.786415100097656,
+          "captured_at": 1726075646518,
+          "quality_score": 0.4975124546553808
+        },
+        {
+          "image_id": "371564772617064",
+          "sequence_id": "UcSJg9R3pnBehmW58C4L1t",
+          "latitude": -22.111088065307705,
+          "longitude": -54.585914611816406,
+          "captured_at": 1726071687518,
+          "quality_score": 0.7666462361168245
+        },
+        {
+          "image_id": "4091257150973477",
+          "sequence_id": "bedEaIzQV2rvw8f1FlmOCP",
+          "latitude": -29.701771608904806,
+          "longitude": -53.878326416015625,
+          "captured_at": 1626428131000,
+          "quality_score": 0.82758
+        },
+        {
+          "image_id": "110889141320772",
+          "sequence_id": "bjLsuycq1D9vREn8N2TP3t",
+          "latitude": -29.758416604879724,
+          "longitude": -53.79249572753906,
+          "captured_at": 1626687808000,
+          "quality_score": 0.738254
+        },
+        {
+          "image_id": "375829210897089",
+          "sequence_id": "E546IVkcQMtZ0XiUqdYaOA",
+          "latitude": -29.780171701275528,
+          "longitude": -53.68125915527344,
+          "captured_at": 1635438653000,
+          "quality_score": 0.7959919999999999
+        },
+        {
+          "image_id": "585766919512642",
+          "sequence_id": "yQ7LX8Ed1sFpPNqZgjTIW0",
+          "latitude": -29.684771875612483,
+          "longitude": -53.624267578125,
+          "captured_at": 1635423992000,
+          "quality_score": 0.7394905660377357
+        },
+        {
+          "image_id": "825688314775239",
+          "sequence_id": "MW9tSqQFv42cnmIdYVwfpu",
+          "latitude": -29.894233962948572,
+          "longitude": -53.76262664794922,
+          "captured_at": 1626533310000,
+          "quality_score": 0.7975657142857143
+        },
+        {
+          "image_id": "224668966281584",
+          "sequence_id": "ZnuEqHLvDxCl2Swbm7AWgc",
+          "latitude": -29.649271936840243,
+          "longitude": -53.791465759277344,
+          "captured_at": 1626955996000,
+          "quality_score": 0.700614
+        },
+        {
+          "image_id": "412986037072370",
+          "sequence_id": "X14SrP0kxBVJaFgtQo3YCR",
+          "latitude": -29.718172133294438,
+          "longitude": -54.08088684082031,
+          "captured_at": 1626800204000,
+          "quality_score": 0.760596
+        },
+        {
+          "image_id": "616416299368874",
+          "sequence_id": "tuUyBFiSXH48wsIaGAN9c6",
+          "latitude": -29.76020487319709,
+          "longitude": -53.54736328125,
+          "captured_at": 1635430899000,
+          "quality_score": 0.8399080000000001
+        },
+        {
+          "image_id": "910404699682584",
+          "sequence_id": "g9ePbD7SaNmn5rJzI1svf4",
+          "latitude": -29.8802437790121,
+          "longitude": -53.88896942138672,
+          "captured_at": 1626535056000,
+          "quality_score": 0.7776172344689379
+        },
+        {
+          "image_id": "541441748518501",
+          "sequence_id": "e8gSlx7iVnIsdm9avtCbO4",
+          "latitude": -30.244831915307152,
+          "longitude": -54.832763671875,
+          "captured_at": 1729025211000,
+          "quality_score": 0.7937075812274367
+        }
+      ]
+    }
+  ]
+}

@@ -28,6 +28,7 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - [x] Implement MongoDB collections, validation rules, indexes, and dataset-version records.
 - [x] Add local MongoDB startup configuration and environment settings.
 - [x] Add a pilot dataset definition with 10 development and 5 evaluation slots per country.
+- [x] Run one real France panorama through offline validation, MongoDB, download, four-view rendering, and contact-sheet generation.
 
 ## Next
 
@@ -36,10 +37,13 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - [x] Resolve latitude/longitude to ground-truth country using pinned Natural Earth 5.1.1 offline boundaries.
 - [x] Enforce at least 10 km separation between retained panoramas within each country.
 - [x] Prevent any Mapillary sequence from crossing dev/eval splits.
-- [ ] Collect the strict 45-panorama pilot: 10 development and 5 evaluation panoramas each for France, Thailand, and Brazil.
-- [ ] Render and store four cardinal views for every retained panorama.
-- [ ] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
-- [ ] Create and freeze `eval_c1.csv` with 5 panoramas per country.
+- [x] Collect the strict 45-panorama pilot: 10 development and 5 evaluation panoramas each for France, Thailand, and Brazil.
+- [x] Add panorama quality validation for complete 2:1 equirectangular coverage, horizontal wrap continuity, severe stitching artifacts, blur, occlusion, and excessive camera/operator visibility.
+- [x] Record quantitative and manual quality-review results in MongoDB; strictly replace sources that fail the acceptance threshold.
+- [x] Generate an ordered `0 | 90 | 180 | 270` strip preview for rapid continuity review alongside the 2x2 contact sheet.
+- [x] Render and store four cardinal views for every retained panorama.
+- [x] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
+- [x] Create and freeze `eval_c1.csv` with 5 panoramas per country.
 - [ ] Verify no latitude, longitude, timestamp, filename clue, or other metadata reaches model-facing inputs.
 - [ ] Review pilot ingestion results, then authorize or revise expansion to all 20 qualified countries.
 - [ ] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
@@ -111,16 +115,30 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - 2026-07-12: Store metadata in local MongoDB through `MONGODB_URI`; keep panorama and rendered image bytes on disk and store paths/checksums in MongoDB. Preserve the option to move to Atlas later.
 - 2026-07-12: Pin Natural Earth 5.1.1 Admin-0 Countries at 1:10m for offline coordinate validation.
 - 2026-07-12: Keep expiring Mapillary URLs ephemeral; persist only local paths, dimensions, byte counts, and SHA-256 checksums.
+- 2026-07-12: Treat Mapillary `thumb_original_url` panorama files as already-stitched equirectangular sources; the pipeline must not pretend to reconstruct raw camera feeds.
+- 2026-07-12: Accept ordinary source-camera seams, but reject incomplete horizontal coverage or severe stitching, blur, occlusion, or camera/operator artifacts under the pilot's strict-replacement policy.
+- 2026-07-12: The first France smoke-test panorama has correct 360° wrap and aligned cardinal projections, but visible source stitching and camera/operator artifacts make it a useful quality-policy calibration sample rather than an automatic quality pass.
+- 2026-07-12: Use `panorama-quality-v1` automatic checks for 2:1 aspect, minimum 4096x2048 source size, horizontal wrap continuity, blur, and clipped-pixel fraction; require manual approval before a panorama becomes `rendered`.
+- 2026-07-12: Rejected panorama candidates stay rejected and are skipped by later ingestion runs so strict replacement advances to later Mapillary candidates.
+- 2026-07-13: Use boundary-filtered supplemental coverage scans when strict replacement exhausts the original 15-row pilot evidence pool.
+- 2026-07-13: Freeze the three-country pilot manifests as `data/datasets/dev_v1.csv` and `data/datasets/eval_c1.csv`; keep image bytes on local disk and metadata/review state in MongoDB.
 
 ## Open Questions / Dependencies
 
 - Recheck production model IDs, tokenization behavior, and provider prices immediately before the frozen evaluation.
 - Select a versioned country-centroid dataset for haversine scoring.
 - Define the seeded split procedure after coverage, distance, and sequence filtering.
-- Select and pin the offline country-boundary dataset/version before pilot collection.
 - GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
 ## Last Updated
+
+2026-07-13 - Completed the strict 45-panorama France/Thailand/Brazil pilot, exported `dev_v1.csv` and `eval_c1.csv`, and added boundary-filtered replacement scan support.
+
+2026-07-12 - Implemented automatic panorama quality metrics, MongoDB manual quality review, ordered strip previews, and rejected-candidate skipping for strict replacement.
+
+2026-07-12 - Reviewed the first pilot-quality samples: approved one development panorama each for France, Thailand, and Brazil; rejected one Thailand candidate for excessive foreground occlusion.
+
+2026-07-12 — Added explicit panorama completeness/stitching quality gates and strict replacement requirements after inspecting the first live Mapillary panorama.
 
 2026-07-12 — Replanned Phase 1 around a strict France/Thailand/Brazil pilot, local MongoDB metadata, disk-backed images, and offline boundary validation.
 
