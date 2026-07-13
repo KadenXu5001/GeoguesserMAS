@@ -28,4 +28,6 @@ def test_factory_uses_official_deepagents_with_only_named_subagents(monkeypatch)
         "human-clue-specialist",
         "environmental-specialist",
     ]
+    assert len(captured["create"]["middleware"]) == 1
+    assert captured["create"]["middleware"][0].__class__.__name__ == "BudgetMiddleware"
     assert captured["create"]["response_format"] is agent_factory.CountryPrediction

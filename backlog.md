@@ -53,15 +53,15 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - [x] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
 - [x] Add bounded malformed-output repair/retry behavior.
 - [ ] Build versioned reference tables from GeoTips and GeoHints with source URLs and retrieval dates.
-- [ ] Implement compact lookup tools for human and environmental indicators.
+- [x] Implement compact lookup tools for human and environmental indicators.
 - [ ] Configure the human-clue custom subagent with a narrow prompt, tools, and structured response.
 - [ ] Configure the environmental custom subagent with a narrow prompt, tools, and structured response.
 - [ ] Implement the orchestrator with `create_deep_agent`, built-in `TodoListMiddleware`, and agent-decided zero-or-one `task` delegation.
 - [x] Disable the automatic `general-purpose` subagent with `GeneralPurposeSubagentProfile(enabled=False)`.
 - [x] Keep required filesystem/todo/subagent middleware, hide unused filesystem tools, and exclude summarization middleware in the harness profile.
-- [ ] Make Deep Agents tools use runtime context/state consistently.
-- [ ] Implement `emit_prediction` to write one worldwide country prediction and terminate successfully.
-- [ ] Implement one-call `reexamine_region` with heading-aware padded cropping and a specific visual question.
+- [x] Make Deep Agents tools use per-run runtime context consistently for budget, heading paths, and model clients.
+- [x] Implement `emit_prediction` to write one worldwide country prediction and terminate successfully.
+- [x] Implement one-call `reexamine_region` with heading-aware padded cropping and a specific visual question.
 - [ ] Verify in LangSmith that specialists and the orchestrator never receive full image bytes.
 - [ ] Verify in tests/traces that both delegation and re-examination hard caps cannot be exceeded.
 - [ ] Implement direct Flash, Gemini Pro, and Opus baselines using identical four-heading inputs.
@@ -125,6 +125,10 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 - 2026-07-13: Enforce model-input metadata isolation with a recursive payload auditor and 15 tests covering safe structured extraction plus forbidden metadata at nested paths.
 - 2026-07-13: Define `extraction-v1` Pydantic output models and additive runtime state for Deep Agents; validate normalized bboxes, multi-object categories, detection statuses, and usage events with focused tests.
 - 2026-07-13: Use Gemini structured JSON output for the four-view extractor with one bounded malformed-response retry; add a runtime budget policy enforcing two orchestrator turns, one specialist, one re-examination, and the 90%-of-Opus cutoff.
+- 2026-07-13: Store the runtime budget in per-run context under `geo_budget`; the Deep Agents middleware reads that context so concurrent panorama runs cannot share cap state.
+- 2026-07-13: Add `emit_prediction` as a real tool using injected `ToolRuntime`; it validates the worldwide prediction, updates `final_prediction`, returns a tool message, and routes to `END`.
+- 2026-07-13: Add `reexamine_region` as a single-call tool using only per-run heading paths and Gemini client context; return text-only visual findings with no image path or bytes in the tool result.
+- 2026-07-13: Fetch GeoTips and current GeoHints worldwide route catalog; freeze a provenance-aware `reference-v1` bootstrap snapshot and give each specialist only its own lookup-tool family. Expand the normalized rows before evaluation.
 
 ## Open Questions / Dependencies
 
@@ -142,6 +146,14 @@ Build a production-shaped three-country pilot dataset for France, Thailand, and 
 2026-07-13 - Added and validated the extraction-v1 schema and runtime state; the focused payload/schema suite passes 17 tests.
 
 2026-07-13 - Implemented the four-view extraction runner and initial hard-budget policy; focused extraction and budget tests pass 22 tests.
+
+2026-07-13 - Wired per-run budget middleware into the Deep Agents factory; the full repository suite passes 50 tests.
+
+2026-07-13 - Wired and tested `emit_prediction` with runtime context and graph termination; the full repository suite passes 51 tests.
+
+2026-07-13 - Implemented and tested `reexamine_region` with 25%-padded heading-aware crops; the full repository suite passes 52 tests.
+
+2026-07-13 - Added fetched reference snapshot loading and narrow human/environmental lookup tools; focused reference tests pass.
 
 2026-07-13 - Completed the strict 45-panorama France/Thailand/Brazil pilot, exported `dev_v1.csv` and `eval_c1.csv`, and added boundary-filtered replacement scan support.
 

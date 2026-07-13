@@ -1,0 +1,96 @@
+from __future__ import annotations
+
+import json
+from typing import Any
+
+from langchain.tools import ToolRuntime, tool
+from langgraph.graph import END
+from langgraph.types import Command
+from langchain_core.messages import ToolMessage
+from PIL import Image
+from google.genai import types
+
+from geoguesser.bbox import crop_normalized_bbox
+from geoguesser.prediction import CountryPrediction
+
+
+def _budget_from_runtime(runtime: ToolRuntime) -> Any:
+    context = runtime.context
+    budget = context.get("geo_budget") if isinstance(context, dict) else getattr(context, "geo_budget", None)
+    if budget is None:
+        raise RuntimeError("geo_budget is required in per-run runtime context")
+    return budget
+
+
+@tool
+def emit_prediction(
+    country: str,
+    confidence: int,
+    alternatives: list[str],
+    evidence: list[str],
+    runtime: ToolRuntime,
+) -> Command:
+    """Emit one worldwide country prediction and terminate the supervisor run."""
+    prediction = CountryPrediction(
+        country=country,
+        confidence=confidence,
+        alternatives=alternatives,
+        evidence=evidence,
+    )
+    _budget_from_runtime(runtime)
+    content = prediction.model_dump_json()
+    return Command(
+        goto=END,
+        update={
+            "final_prediction": prediction.model_dump(),
+            "messages": [ToolMessage(content, tool_call_id=runtime.tool_call_id or "")],
+        },
+    )
+
+
+@tool
+def reexamine_region(
+    heading: int,
+    bbox: list[int],
+    question: str,
+    runtime: ToolRuntime,
+) -> Command:
+    """Inspect one padded region and return the answer to one specific visual question."""
+    if heading not in {0, 90, 180, 270}:
+        raise ValueError("heading must be one of 0, 90, 180, or 270")
+    if len(bbox) != 4:
+        raise ValueError("bbox must contain [ymin, xmin, ymax, xmax]")
+    if not question.strip():
+        raise ValueError("question must not be empty")
+
+    budget = _budget_from_runtime(runtime)
+    paths = runtime.context.get("heading_paths", {})
+    path = paths.get(heading) or paths.get(str(heading))
+    client = runtime.context.get("gemini_client")
+    model = runtime.context.get("reexamine_model", "gemini-3-flash-preview")
+    if path is None or client is None:
+        raise RuntimeError("heading_paths and gemini_client are required in runtime context")
+
+    with Image.open(path) as view:
+        crop = crop_normalized_bbox(view, bbox, padding_fraction=0.25)
+        response = client.models.generate_content(
+            model=model,
+            contents=[crop, question.strip()],
+            config=types.GenerateContentConfig(
+                response_mime_type="text/plain",
+                max_output_tokens=350,
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
+            ),
+        )
+    result = {"heading": heading, "question": question.strip(), "answer": response.text.strip()}
+    content = json.dumps(result, ensure_ascii=False)
+    return Command(
+        update={
+            "reexamine_results": [result],
+            "messages": [ToolMessage(content, tool_call_id=runtime.tool_call_id or "")],
+        }
+    )
+
+
+def geoguesser_tools() -> list[Any]:
+    return [emit_prediction, reexamine_region]

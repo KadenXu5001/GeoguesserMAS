@@ -1,0 +1,28 @@
+{
+  "version": "reference-v1",
+  "retrieved_at": "2026-07-13",
+  "scope": "worldwide",
+  "sources": [
+    {"name": "GeoTips", "url": "https://geotips.net/", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints driving side", "url": "https://geohints.com/meta/drivingSide", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints license plates", "url": "https://geohints.com/meta/licensePlates", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints bollards", "url": "https://geohints.com/meta/bollards", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints utility poles", "url": "https://geohints.com/meta/utilityPoles", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints architecture", "url": "https://geohints.com/meta/architecture", "retrieved_at": "2026-07-13"},
+    {"name": "GeoHints sceneries", "url": "https://geohints.com/meta/sceneries", "retrieved_at": "2026-07-13"}
+  ],
+  "rows": [
+    {"category": "driving_side", "country": "Australia", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Brazil", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Canada", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "France", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Germany", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "India", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Japan", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Nigeria", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "South Africa", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "Thailand", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "United Kingdom", "indicator": "left", "source_url": "https://geohints.com/meta/drivingSide"},
+    {"category": "driving_side", "country": "United States", "indicator": "right", "source_url": "https://geohints.com/meta/drivingSide"}
+  ]
+}

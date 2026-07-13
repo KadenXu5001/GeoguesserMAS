@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-
 from deepagents import (
     GeneralPurposeSubagentProfile,
     HarnessProfile,
@@ -9,22 +7,13 @@ from deepagents import (
     register_harness_profile,
 )
 
+from geoguesser.budget_middleware import BudgetMiddleware
+from geoguesser.geo_tools import geoguesser_tools
+from geoguesser.prediction import CountryPrediction, SpecialistResult
+from geoguesser.reference_tools import environmental_reference_tools, human_reference_tools
+
 
 FLASH_MODEL = "google_genai:gemini-3-flash-preview"
-
-
-class SpecialistResult(BaseModel):
-    candidates: list[str] = Field(max_length=5)
-    evidence: list[str]
-    contradictions: list[str]
-    confidence: int = Field(ge=0, le=100)
-
-
-class CountryPrediction(BaseModel):
-    country: str
-    confidence: int = Field(ge=0, le=100)
-    alternatives: list[str] = Field(max_length=3)
-    evidence: list[str]
 
 
 HUMAN_CLUE_SUBAGENT = {
@@ -38,7 +27,7 @@ HUMAN_CLUE_SUBAGENT = {
         "structured extraction and supplied reference tools. Return concise ranked "
         "country candidates with evidence, contradictions, and calibrated confidence."
     ),
-    "tools": [],
+    "tools": human_reference_tools(),
     "model": FLASH_MODEL,
     "response_format": SpecialistResult,
 }
@@ -55,7 +44,7 @@ ENVIRONMENTAL_SUBAGENT = {
         "the structured extraction and supplied reference tools. Return concise ranked "
         "country candidates with evidence, contradictions, and calibrated confidence."
     ),
-    "tools": [],
+    "tools": environmental_reference_tools(),
     "model": FLASH_MODEL,
     "response_format": SpecialistResult,
 }
@@ -99,7 +88,8 @@ def create_geoguesser_agent(model: str = FLASH_MODEL):
     register_cost_controlled_profile(model)
     return create_deep_agent(
         model=model,
-        tools=[],
+        tools=geoguesser_tools(),
+        middleware=[BudgetMiddleware()],
         system_prompt=ORCHESTRATOR_PROMPT,
         subagents=[HUMAN_CLUE_SUBAGENT, ENVIRONMENTAL_SUBAGENT],
         response_format=CountryPrediction,
