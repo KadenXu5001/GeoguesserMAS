@@ -4,6 +4,7 @@
 venv/
 .venv/
 .runtime-venv/
+.runtime-win/
 __pycache__/
 .pytest_cache/
 .mypy_cache/
@@ -11,6 +12,8 @@ __pycache__/
 .coverage
 htmlcov/
 .artifacts/
+data/panoramas/
+data/rendered/
 dist/
 build/
 *.egg-info/

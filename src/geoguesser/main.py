@@ -12,6 +12,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("cost-model", help="print the current modeled path costs")
+    subparsers.add_parser(
+        "init-mongodb", help="initialize local MongoDB collections, validators, and indexes"
+    )
 
     render = subparsers.add_parser(
         "render-panorama",
@@ -28,6 +31,17 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "cost-model":
         print_cost_model()
+        return 0
+    if args.command == "init-mongodb":
+        from geoguesser.storage import MongoRepository, connect_database
+
+        client, database = connect_database()
+        try:
+            client.admin.command("ping")
+            MongoRepository(database).initialize()
+        finally:
+            client.close()
+        print(f"initialized MongoDB database: {database.name}")
         return 0
     if args.command == "render-panorama":
         outputs = render_cardinal_views(

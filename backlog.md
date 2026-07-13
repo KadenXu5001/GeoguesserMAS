@@ -2,7 +2,7 @@
 
 ## Current Objective
 
-Build and evaluate the smallest defensible GeoGuessr MAS using LangChain's Deep Agents framework: one non-agent Flash extraction call over four cardinal panorama views, one `create_deep_agent` orchestrator with built-in todo middleware, selective `task` delegation to at most one of two custom text-only subagents, and at most one targeted crop re-examination. The final system must cost at least 10% less than an identical-input Opus baseline while remaining within five percentage points of its exact country accuracy.
+Build a production-shaped three-country pilot dataset for France, Thailand, and Brazil before scaling to the full GeoGuessr MAS evaluation. The pilot uses local MongoDB for metadata, disk-backed image files, strict replacement until each country has 10 development and 5 evaluation panoramas, offline boundary-based country validation, 10 km separation, and sequence-isolated splits.
 
 ## Now
 
@@ -22,20 +22,26 @@ Build and evaluate the smallest defensible GeoGuessr MAS using LangChain's Deep 
 - [x] Record the selected country taxonomy and continent mapping in `data/taxonomy.json`.
 - [x] Install and pin `deepagents==0.6.12`; validate `create_deep_agent` against the pinned LangGraph/LangChain-Google dependencies.
 - [x] Create a minimal Deep Agents construction smoke test using Gemini without invoking a paid model call.
+- [x] Select France, Thailand, and Brazil as the representative three-country pilot.
+- [x] Choose local MongoDB metadata storage with disk-backed image files and an Atlas-compatible `MONGODB_URI`.
+- [x] Choose a versioned offline country-boundary dataset for ground-truth validation.
+- [x] Implement MongoDB collections, validation rules, indexes, and dataset-version records.
+- [x] Add local MongoDB startup configuration and environment settings.
+- [x] Add a pilot dataset definition with 10 development and 5 evaluation slots per country.
 
 ## Next
 
-- [ ] Implement the SQLite image/panorama metadata schema.
 - [ ] Implement the Mapillary client with image-level `is_pano=true`, cursor pagination, tiling, retry/backoff, and failure logging.
 - [ ] Download panorama files and fetch expiring image URLs only when needed.
-- [ ] Resolve latitude/longitude to ground-truth country using a geographic boundary lookup or geocoder.
+- [ ] Resolve latitude/longitude to ground-truth country using a versioned offline boundary dataset.
 - [ ] Enforce at least 10 km separation between retained panoramas within each country.
 - [ ] Prevent any Mapillary sequence from crossing dev/eval splits.
-- [ ] Collect 10 development and 5 evaluation panoramas per qualifying country.
+- [ ] Collect the strict 45-panorama pilot: 10 development and 5 evaluation panoramas each for France, Thailand, and Brazil.
 - [ ] Render and store four cardinal views for every retained panorama.
 - [ ] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
 - [ ] Create and freeze `eval_c1.csv` with 5 panoramas per country.
 - [ ] Verify no latitude, longitude, timestamp, filename clue, or other metadata reaches model-facing inputs.
+- [ ] Review pilot ingestion results, then authorize or revise expansion to all 20 qualified countries.
 - [ ] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
 - [ ] Implement custom Deep Agents middleware for zero-or-one `task` delegation, one crop call, two orchestrator turns, output-token limits, and the 90%-of-Opus cutoff.
 - [ ] Implement the extraction preprocessor: one Flash call containing all four headings.
@@ -99,14 +105,21 @@ Build and evaluate the smallest defensible GeoGuessr MAS using LangChain's Deep 
 - 2026-07-10: Use LangChain's `deepagents` Python framework and `create_deep_agent` for the orchestrator; retain LangGraph only as the underlying runtime.
 - 2026-07-10: Use built-in todo and subagent middleware, disable the automatic general-purpose subagent, and enforce one total `task` delegation with custom middleware.
 - 2026-07-10: Keep required filesystem scaffolding, hide its unused file tools, and exclude optional summarization middleware to minimize prompt/tool overhead.
+- 2026-07-12: Build a representative pilot before full collection, using France, Thailand, and Brazil.
+- 2026-07-12: Require strict replacement until every pilot country has exactly 10 valid development and 5 valid evaluation panoramas.
+- 2026-07-12: Validate ground-truth countries with a versioned offline boundary dataset rather than an online geocoder.
+- 2026-07-12: Store metadata in local MongoDB through `MONGODB_URI`; keep panorama and rendered image bytes on disk and store paths/checksums in MongoDB. Preserve the option to move to Atlas later.
 
 ## Open Questions / Dependencies
 
 - Recheck production model IDs, tokenization behavior, and provider prices immediately before the frozen evaluation.
 - Select a versioned country-centroid dataset for haversine scoring.
 - Define the seeded split procedure after coverage, distance, and sequence filtering.
+- Select and pin the offline country-boundary dataset/version before pilot collection.
 - GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
 ## Last Updated
+
+2026-07-12 — Replanned Phase 1 around a strict France/Thailand/Brazil pilot, local MongoDB metadata, disk-backed images, and offline boundary validation.
 
 2026-07-10 — Completed Phase 0 economics/data checks, adopted LangChain Deep Agents 0.6.12, and validated a cost-constrained `create_deep_agent` supervisor factory with only the two named subagents.

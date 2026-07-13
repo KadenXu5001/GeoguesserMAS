@@ -192,6 +192,10 @@ Select at least 20 countries across at least five continents using a coverage-dr
 
 This produces a minimum of 300 panoramas and 1,200 rendered heading images. Keep every panorama and all four of its headings within one split. No Mapillary sequence may cross splits.
 
+Before collecting the full dataset, build a production-shaped pilot for France, Thailand, and Brazil. Apply the final rules without relaxation: collect exactly 10 development and 5 evaluation panoramas per pilot country, replace every rejected or failed candidate, maintain 10 km separation, and prevent sequence leakage across splits. Review this 45-panorama pilot before expanding collection to the full frozen taxonomy.
+
+Store ingestion and dataset metadata in local MongoDB, configured with `MONGODB_URI` so the same repository layer can later target MongoDB Atlas. Keep panorama files and rendered headings on disk; MongoDB stores paths, checksums, source metadata, validation history, split membership, and dataset-version records. Resolve coordinate ground truth with a pinned offline country-boundary dataset rather than a network geocoder.
+
 Create independently stratified, reproducible files:
 
 - `dev_v1.csv`: 10 panoramas per country for prompt and policy tuning;
@@ -237,11 +241,13 @@ Use the same country-output schema and prompt requirements across direct multimo
 
 ### Phase 1 — Build the dataset
 
-- Implement Mapillary pagination, tiling, backoff, downloads, and SQLite metadata.
-- Geocode coordinates to country labels.
+- Implement local MongoDB collections, indexes, validation, and dataset-version records; keep image bytes on disk.
+- Implement Mapillary pagination, tiling, backoff, downloads, and MongoDB-backed failure history.
+- Resolve coordinates to country labels with a pinned offline boundary dataset.
 - Enforce 10 km separation and sequence isolation.
 - Render four cardinal views per panorama.
-- Create `dev_v1.csv` and frozen `eval_c1.csv` with the required per-country counts.
+- First create the strict France/Thailand/Brazil pilot with 10 development and 5 evaluation panoramas per country; replace invalid samples until all 45 slots are filled.
+- Review the pilot before expanding to all 20 countries and creating final `dev_v1.csv` and frozen `eval_c1.csv` manifests.
 - Verify metadata cannot leak into model payloads.
 
 ### Phase 2 — Build the minimal MAS

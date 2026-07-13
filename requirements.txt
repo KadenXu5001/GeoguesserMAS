@@ -9,3 +9,4 @@ pillow==12.3.0
 numpy==2.3.1
 mapbox-vector-tile==2.2.0
 python-dotenv==1.2.2
+pymongo==4.16.0
