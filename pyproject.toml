@@ -5,11 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "geoguesser"
 version = "0.1.0"
-description = "Multi-agent geolocation system using LangGraph and Gemini."
+description = "Multi-agent geolocation system using LangChain Deep Agents and Gemini."
 readme = "v2pland.md"
 requires-python = ">=3.11"
 dependencies = [
     "langgraph==1.2.8",
+    "deepagents==0.6.12",
     "langsmith==0.9.8",
     "langchain-google-genai==4.2.7",
     "requests==2.34.2",

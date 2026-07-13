@@ -1,4 +1,5 @@
 langgraph==1.2.8
+deepagents==0.6.12
 langsmith==0.9.8
 langchain-google-genai==4.2.7
 requests==2.34.2

@@ -2,7 +2,7 @@
 
 ## Objective
 
-Build a defensible LangGraph multi-agent system (MAS) that predicts the country of a Mapillary panorama while remaining cheaper than a single Opus baseline on the same visual input.
+Build a defensible multi-agent system (MAS) with LangChain's **Deep Agents framework** that predicts the country of a Mapillary panorama while remaining cheaper than a single Opus baseline on the same visual input. Deep Agents uses the LangGraph runtime underneath, but the orchestrator must be created with `deepagents.create_deep_agent`, not a custom ReAct graph.
 
 The success gate is measured over the frozen evaluation set:
 
@@ -18,13 +18,15 @@ This is not a training project. No model is fine-tuned.
 The system is deliberately small:
 
 1. **One extraction preprocessor (not an agent).** One Gemini Flash multimodal call receives four 1024×1024 perspective images rendered from a Mapillary panorama at headings 0°, 90°, 180°, and 270°, each with a 90° field of view. It extracts all visible signals once.
-2. **One orchestrator agent.** A text-only ReAct agent reads the extraction, maintains a mandatory dynamic todolist, decides whether it can answer directly, and may delegate to at most one specialist.
-3. **Two possible specialist agents.** A human-clue specialist covers language, signs, vehicles, plates, roads, and infrastructure. An environmental specialist covers terrain, climate, vegetation, and architecture. Both are text-only and use Gemini Flash plus curated reference tools.
+2. **One Deep Agents orchestrator.** A text-only agent built with `create_deep_agent` reads the extraction, uses the framework's built-in `TodoListMiddleware`, decides whether it can answer directly, and may delegate through the framework's `task` tool to at most one specialist.
+3. **Two custom Deep Agents subagents.** A human-clue subagent covers language, signs, vehicles, plates, roads, and infrastructure. An environmental subagent covers terrain, climate, vegetation, and architecture. Both are text-only Gemini Flash subagents with narrow prompts, tools, and structured responses.
 4. **Conditional targeted re-perception.** The orchestrator may request at most one padded crop re-examination when a high-value clue is illegible or decisive candidates remain tied.
 
 Only the extraction preprocessor normally receives images. Specialists never receive image bytes. The optional re-examination call receives only one targeted crop.
 
-This is defensibly multi-agent because the orchestrator selectively delegates an unresolved subproblem to an autonomous specialist with its own prompt, role, and tools, then integrates the returned conclusion. The extractor and deterministic tools are not counted as agents.
+This is defensibly multi-agent because the Deep Agents supervisor selectively delegates an unresolved subproblem through `task` to an isolated custom subagent with its own prompt, role, tools, and structured response, then integrates the returned conclusion. The extractor and deterministic tools are not counted as agents.
+
+Deep Agents normally supplies an automatic `general-purpose` subagent. Disable it with a harness profile using `GeneralPurposeSubagentProfile(enabled=False)` so only the two explicitly designed specialists are available and the framework cannot silently expand call count. Keep required `FilesystemMiddleware` scaffolding, but hide its `ls`, `read_file`, `write_file`, `edit_file`, `glob`, and `grep` tools. Exclude optional `SummarizationMiddleware`. Keep `TodoListMiddleware` and `SubAgentMiddleware` enabled.
 
 ## Cost-control contract
 
@@ -56,7 +58,7 @@ Before pipeline implementation, build `docs/cost_model.md` with current model ID
 
 Use complete dollar cost per panorama as the primary cost figure. Also report image tokens, text input/output tokens, call count, and latency. If modeled normal-path MAS cost is not at least 10% below Opus, simplify before building.
 
-## LangGraph architecture
+## Deep Agents architecture
 
 ```text
 Mapillary panorama
@@ -68,7 +70,7 @@ Render four 1024x1024 cardinal headings
 Extraction preprocessor (one Flash vision call; not an agent)
         |
         v
-Orchestrator agent (text-only, mandatory dynamic todolist)
+Deep Agents orchestrator (text-only, built-in todolist middleware)
         |
         +---- answer directly -------------------------------+
         |                                                    |
@@ -84,7 +86,7 @@ Orchestrator agent (text-only, mandatory dynamic todolist)
                                                    country prediction
 ```
 
-The orchestrator chooses agentically whether delegation or re-examination is warranted and records the reason in the trace. It must never call both specialists in v1.
+The orchestrator chooses agentically whether delegation or re-examination is warranted and records the reason in the trace. It must never call both specialists in v1. Custom middleware must enforce one total `task` call and one total `reexamine_region` call; prompt instructions alone are insufficient.
 
 ## Shared state
 
@@ -107,7 +109,7 @@ class GeoState(TypedDict):
     usage: Annotated[list, add]
 ```
 
-Agent tools mutate injected state using `InjectedState`. The orchestrator must update its todolist during every run. `emit_prediction` writes the final country prediction and terminates the graph successfully. Enforce delegation, crop, iteration, and token budgets in nodes/tools.
+Deep Agents' `TodoListMiddleware` owns planning state, and the orchestrator must use it during every run. Runtime context/state carries extraction data, usage, selected specialist, and crop results to tools and subagents. `emit_prediction` writes the final country prediction and terminates successfully. Custom middleware enforces delegation, crop, iteration, and token budgets around framework model/tool calls.
 
 ## Extraction preprocessor
 
@@ -136,22 +138,22 @@ The extraction schema covers at least:
 
 ### Orchestrator
 
-The orchestrator owns the dynamic todolist and final answer. It:
+The `create_deep_agent` orchestrator owns the framework todolist and final answer. It:
 
 1. reads the consolidated extraction;
 2. applies hard geographic constraints;
 3. decides whether it can answer directly;
-4. invokes zero or one specialist if a particular clue family needs deeper reasoning;
+4. invokes zero or one custom specialist through the built-in `task` tool if a clue family needs deeper reasoning;
 5. optionally requests one crop re-examination if a decisive clue is illegible or candidates are tied;
 6. emits one country, confidence, alternatives, and concise evidence.
 
 The model may predict any country worldwide; it is not shown a closed candidate list.
 
-### Human-clue specialist
+### Human-clue subagent
 
 Reasons over extracted language, signs, vehicles, plates, roads, bollards, utility poles, and infrastructure. It may query the curated GeoTips/GeoHints-derived reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
 
-### Environmental specialist
+### Environmental subagent
 
 Reasons over extracted terrain, vegetation, climate, architecture, and settlement patterns. It may query curated environmental and architectural reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
 
@@ -244,11 +246,13 @@ Use the same country-output schema and prompt requirements across direct multimo
 
 ### Phase 2 — Build the minimal MAS
 
-- Implement state, usage accounting, and graph budgets.
+- Add and pin `deepagents`; validate `create_deep_agent` with the Gemini integration.
+- Implement runtime context, usage accounting, and cost middleware around the Deep Agents graph.
 - Implement and validate the multi-object extraction schema.
 - Build and freeze curated reference tables.
-- Implement the two text-only specialists.
-- Implement the orchestrator, mandatory todolist, selective zero-or-one delegation, and terminating prediction tool.
+- Configure the two text-only custom subagents with narrow tools and structured response schemas.
+- Create the orchestrator with `create_deep_agent`, built-in todo middleware, the two custom subagents, and no automatic general-purpose subagent.
+- Add custom middleware enforcing at most one `task` delegation, one crop, two orchestrator turns, and the runtime cost cutoff.
 - Add the one-call crop re-examination tool.
 - Verify via traces that no specialist receives images and both hard budgets hold.
 
@@ -268,7 +272,10 @@ Use the same country-output schema and prompt requirements across direct multimo
 
 ## Resolved decisions
 
-- Minimal MAS: one orchestrator plus two possible text-only specialists.
+- Minimal MAS: one Deep Agents orchestrator plus two possible custom text-only subagents.
+- Use the `deepagents` Python package and `create_deep_agent`; do not substitute a hand-built ReAct loop.
+- Disable Deep Agents' automatic general-purpose subagent.
+- Hide unused filesystem tools and disable summarization while retaining the required filesystem, todo, and subagent middleware scaffolding.
 - Zero or one specialist is invoked per panorama; never both in v1.
 - One non-agent extraction call sees four cardinal headings together.
 - One optional targeted crop call is allowed.
@@ -294,6 +301,6 @@ These do not block planning and must be settled from the cost model or developme
 
 Target claim, filled only with measured results:
 
-> Built a cost-gated LangGraph multi-agent geolocation system with one multimodal perception pass, a todolist-driven orchestrator, selective delegation to one of two text-only specialists, and one conditional crop re-examination. On N held-out Mapillary panoramas across C countries, it achieved X% country accuracy at Y% lower complete inference cost than an identical-input Opus baseline.
+> Built a cost-gated geolocation MAS with LangChain's Deep Agents framework: one multimodal perception pass, a built-in-todolist supervisor, selective `task` delegation to one of two isolated text-only subagents, and one conditional crop re-examination. On N held-out Mapillary panoramas across C countries, it achieved X% country accuracy at Y% lower complete inference cost than an identical-input Opus baseline.
 
 The honest engineering story is that multi-agent fan-out was rejected. The system uses the smallest architecture that is genuinely multi-agent while preventing specialists from duplicating expensive image processing.

@@ -2,7 +2,7 @@
 
 ## Current Objective
 
-Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash extraction call over four cardinal panorama views, one todolist-driven orchestrator, selective delegation to at most one of two text-only specialists, and at most one targeted crop re-examination. The final system must cost at least 10% less than an identical-input Opus baseline while remaining within five percentage points of its exact country accuracy.
+Build and evaluate the smallest defensible GeoGuessr MAS using LangChain's Deep Agents framework: one non-agent Flash extraction call over four cardinal panorama views, one `create_deep_agent` orchestrator with built-in todo middleware, selective `task` delegation to at most one of two custom text-only subagents, and at most one targeted crop re-examination. The final system must cost at least 10% less than an identical-input Opus baseline while remaining within five percentage points of its exact country accuracy.
 
 ## Now
 
@@ -20,6 +20,8 @@ Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash ex
 - [ ] Visually validate padded crops on 3–5 development-only panoramas with the production Gemini model (1/3 inspected successfully; remaining calls blocked by temporary 503s).
 - [x] Scan Mapillary coverage and select at least 20 qualifying countries across at least five continents.
 - [x] Record the selected country taxonomy and continent mapping in `data/taxonomy.json`.
+- [x] Install and pin `deepagents==0.6.12`; validate `create_deep_agent` against the pinned LangGraph/LangChain-Google dependencies.
+- [x] Create a minimal Deep Agents construction smoke test using Gemini without invoking a paid model call.
 
 ## Next
 
@@ -34,18 +36,20 @@ Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash ex
 - [ ] Create independently stratified `dev_v1.csv` with 10 panoramas per country.
 - [ ] Create and freeze `eval_c1.csv` with 5 panoramas per country.
 - [ ] Verify no latitude, longitude, timestamp, filename clue, or other metadata reaches model-facing inputs.
-- [ ] Implement `GeoState` with message, usage, and re-examination reducers.
-- [ ] Implement hard budgets for zero-or-one specialist delegation, one crop call, iterations, and output tokens.
+- [ ] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
+- [ ] Implement custom Deep Agents middleware for zero-or-one `task` delegation, one crop call, two orchestrator turns, output-token limits, and the 90%-of-Opus cutoff.
 - [ ] Implement the extraction preprocessor: one Flash call containing all four headings.
 - [ ] Define and validate the extraction schema with arrays of detected objects plus one consolidated signal per category.
 - [ ] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
 - [ ] Add bounded malformed-output repair/retry behavior.
 - [ ] Build versioned reference tables from GeoTips and GeoHints with source URLs and retrieval dates.
 - [ ] Implement compact lookup tools for human and environmental indicators.
-- [ ] Implement the human-clue specialist for language, signs, vehicles, plates, roads, and infrastructure.
-- [ ] Implement the environmental specialist for terrain, climate, vegetation, and architecture.
-- [ ] Implement the orchestrator with a mandatory dynamic todolist and agent-decided zero-or-one specialist delegation.
-- [ ] Make agent tools mutate injected state consistently.
+- [ ] Configure the human-clue custom subagent with a narrow prompt, tools, and structured response.
+- [ ] Configure the environmental custom subagent with a narrow prompt, tools, and structured response.
+- [ ] Implement the orchestrator with `create_deep_agent`, built-in `TodoListMiddleware`, and agent-decided zero-or-one `task` delegation.
+- [x] Disable the automatic `general-purpose` subagent with `GeneralPurposeSubagentProfile(enabled=False)`.
+- [x] Keep required filesystem/todo/subagent middleware, hide unused filesystem tools, and exclude summarization middleware in the harness profile.
+- [ ] Make Deep Agents tools use runtime context/state consistently.
 - [ ] Implement `emit_prediction` to write one worldwide country prediction and terminate successfully.
 - [ ] Implement one-call `reexamine_region` with heading-aware padded cropping and a specific visual question.
 - [ ] Verify in LangSmith that specialists and the orchestrator never receive full image bytes.
@@ -92,6 +96,9 @@ Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash ex
 - 2026-07-10: Coverage scan qualified 20 countries across six continents using 15 panoramic sequences at least 10 km apart per country; freeze them in `data/taxonomy.json`.
 - 2026-07-10: Keep the coverage-driven taxonomy despite its Europe-heavy distribution; reconsider balancing only in a later dataset version.
 - 2026-07-10: First real Mapillary/Gemini bbox sample used the documented convention correctly; all four 25%-padded crops retained their detected targets, though wide model boxes produced wide crops.
+- 2026-07-10: Use LangChain's `deepagents` Python framework and `create_deep_agent` for the orchestrator; retain LangGraph only as the underlying runtime.
+- 2026-07-10: Use built-in todo and subagent middleware, disable the automatic general-purpose subagent, and enforce one total `task` delegation with custom middleware.
+- 2026-07-10: Keep required filesystem scaffolding, hide its unused file tools, and exclude optional summarization middleware to minimize prompt/tool overhead.
 
 ## Open Questions / Dependencies
 
@@ -102,4 +109,4 @@ Build and evaluate the smallest defensible GeoGuessr MAS: one non-agent Flash ex
 
 ## Last Updated
 
-2026-07-10 — Completed the Phase 0 cost model, tested panorama renderer/bbox utilities, passed the Mapillary coverage gate, and froze a 20-country taxonomy spanning six continents.
+2026-07-10 — Completed Phase 0 economics/data checks, adopted LangChain Deep Agents 0.6.12, and validated a cost-constrained `create_deep_agent` supervisor factory with only the two named subagents.
