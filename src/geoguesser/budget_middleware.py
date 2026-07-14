@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from collections.abc import Callable, Mapping
 from time import perf_counter
 from typing import Any
@@ -9,7 +8,7 @@ from langchain.agents.middleware.types import AgentMiddleware, ModelRequest, Too
 from langchain_core.messages import ToolMessage
 
 from geoguesser.runtime_budget import RuntimeBudget
-from geoguesser.specialist_cache import SpecialistCache
+from geoguesser.specialist_result import normalize_specialist_result
 
 
 CONTEXT_KEY = "geo_budget"
@@ -65,11 +64,9 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         *,
         max_output_tokens: int = 400,
         component: str = "orchestrator",
-        specialist_cache: SpecialistCache | None = None,
     ) -> None:
         self.max_output_tokens = max_output_tokens
         self.component = component
-        self.specialist_cache = specialist_cache or SpecialistCache()
 
     def wrap_model_call(self, request: ModelRequest[Any], handler: Callable[..., Any]) -> Any:
         budget = _budget(request.runtime)
@@ -117,30 +114,20 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 or args.get("name")
                 or "unknown-specialist"
             ) if isinstance(args, Mapping) else "unknown-specialist"
-            cached, cache_error = self.specialist_cache.get(str(specialist))
-            if cache_error:
-                budget.capacity_warning = cache_error
-                return ToolMessage(
-                    content=f"WARNING: {cache_error}; stop all specialist calls and finalize.",
-                    tool_call_id=request.tool_call.get("id", ""),
-                )
-            if cached is not None:
-                budget.consume_specialist_task(str(specialist))
-                return ToolMessage(
-                    content=cached if isinstance(cached, str) else json.dumps(cached, ensure_ascii=False),
-                    tool_call_id=request.tool_call.get("id", ""),
-                )
+            progress = getattr(request.runtime, "context", {}).get("progress")
+            if callable(progress):
+                progress(f"delegating to {specialist}")
             if budget.specialist_tasks >= budget.max_specialist_tasks:
                 return ToolMessage(
                     content="Specialist delegation cap reached; continue with existing specialist results.",
                     tool_call_id=request.tool_call.get("id", ""),
                 )
             budget.consume_specialist_task(str(specialist))
-            self.specialist_cache.mark_attempted(str(specialist))
             result = handler(request)
-            content = getattr(result, "content", result)
-            self.specialist_cache.put(str(specialist), content)
-            return result
+            normalized, _ = normalize_specialist_result(str(specialist), result)
+            if callable(progress):
+                progress(f"{specialist} returned standardized JSON result")
+            return normalized
         elif name == "reexamine_region":
             if budget.reexaminations >= budget.max_reexaminations:
                 return ToolMessage(

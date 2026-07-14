@@ -3,6 +3,9 @@ from __future__ import annotations
 from langchain.tools import ToolRuntime, tool
 
 from geoguesser.runtime_state import GeoContext, GeoState
+from geoguesser.tool_response_cache import ToolResponseCache
+
+import json
 
 
 def _repository(runtime: ToolRuntime[GeoContext, GeoState]):
@@ -33,14 +36,37 @@ def _claim_category(runtime: ToolRuntime[GeoContext, GeoState], family: str, cat
 def _lookup(
     *, category: str, allowed: set[str], family: str, runtime: ToolRuntime[GeoContext, GeoState], country: str | None
 ) -> list[dict]:
+    progress = runtime.context.get("progress")
     if category not in allowed:
         return [{"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)}]
     duplicate = _claim_category(runtime, family, category)
     if duplicate:
         return [{"error": duplicate}]
-    return _repository(runtime).lookup_references(
-        version=_version(runtime), category=category, country=country
+    version = _version(runtime)
+    cache = runtime.context.get("tool_response_cache")
+    key = json.dumps(
+        {"version": version, "family": family, "category": category, "country": country},
+        sort_keys=True,
+        ensure_ascii=False,
     )
+    if isinstance(cache, ToolResponseCache):
+        cached, cache_error = cache.get(key)
+        if cache_error:
+            if callable(progress):
+                progress(f"{family} lookup {category}: cache capacity reached")
+            return [{"warning": cache_error, "category": category}]
+        if cached is not None:
+            if callable(progress):
+                progress(f"{family} lookup {category}: cache hit")
+            return cached
+    if callable(progress):
+        progress(f"{family} lookup {category}: querying reference database")
+    response = _repository(runtime).lookup_references(
+        version=version, category=category, country=country
+    )
+    if isinstance(cache, ToolResponseCache):
+        cache.put(key, response)
+    return response
 
 
 @tool

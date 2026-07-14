@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from google import genai
 from langsmith import traceable
 
 
@@ -16,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from geoguesser.baselines import GEMINI_PRO_MODEL, run_gemini_pro_baseline  # noqa: E402
+from geoguesser.gemini_client import create_gemini_client  # noqa: E402
 
 
 def _path(value: str) -> Path:
@@ -62,7 +62,7 @@ def main() -> int:
     if not rows:
         raise SystemExit("dataset contains no rows")
 
-    client = genai.Client()
+    client = create_gemini_client()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:
         for index, row in enumerate(rows, start=1):

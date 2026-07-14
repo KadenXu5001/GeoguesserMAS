@@ -30,7 +30,7 @@ def test_factory_uses_official_deepagents_with_only_named_subagents(monkeypatch)
     ]
     assert len(captured["create"]["middleware"]) == 1
     assert captured["create"]["middleware"][0].__class__.__name__ == "BudgetMiddleware"
-    assert "response_format" not in captured["create"]
+    assert captured["create"]["response_format"].__class__.__name__ == "ToolStrategy"
     assert captured["create"]["state_schema"] is agent_factory.GeoState
 
 

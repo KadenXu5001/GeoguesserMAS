@@ -25,9 +25,11 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   lookup calls never spawn another subagent or perform live web browsing during inference.
 - The supervisor may not repeat a specialist task or invoke any specialist that has already
   completed its task.
-- Specialist results are persisted in the local Deep Agents cache. A cached specialist response
-  may be read at most three times in total; after that, the run must stop rather than call the
-  specialist API again.
+- Specialists are never replaced by cached responses. Every delegated specialist runs and can
+  inspect its task, choose its permitted tools, and return a result to the supervisor.
+- Only deterministic reference-tool responses may be persisted in the local Deep Agents cache.
+  A cached tool response may be read at most three times in total; after that, the tool must
+  return a capacity warning and the MAS must not make another lookup API call.
 
 ## Re-examination policy
 
@@ -47,6 +49,16 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   code enforcement.
 - A run has a hard capacity ceiling of three minutes or $0.50, whichever is reached first. It
   must return an immediate warning and suggestion and make no further API calls.
+
+## Observability
+
+- LangSmith tracing and upload are mandatory for production MAS runs. LangSmith receives the
+  run structure, tool calls, tool results, model outputs, timing, and usage; raw base64 image
+  inputs must be hidden from the trace to keep uploads bounded. The local MAS still receives and
+  processes the full images.
+- Trace delivery is synchronous and must be flushed before the process exits. A trace-upload
+  failure is an observability failure and must be printed clearly in the terminal; it must not be
+  confused with a model or MAS prediction failure.
 
 ## Change discipline
 

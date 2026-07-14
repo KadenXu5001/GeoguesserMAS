@@ -1,0 +1,22 @@
+{
+  "{\"category\": \"road_markings\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 1
+  },
+  "{\"category\": \"rural_utility_poles\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 1
+  },
+  "{\"category\": \"vehicles\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 0
+  },
+  "{\"category\": \"soil_geology\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 0
+  },
+  "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 0
+  }
+}

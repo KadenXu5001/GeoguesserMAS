@@ -34,7 +34,7 @@ The MAS is allowed to exist only if it can preserve the cost advantage over Opus
 
 - exactly one full-scene extraction call containing the four headings;
 - at least one and at most two specialist invocations per panorama, with each configured specialist used at most once;
-- specialist responses persisted in the local Deep Agents filesystem cache, with no more than three total cache reads;
+- reference-tool responses persisted in the local Deep Agents filesystem cache, with no more than three total cache reads; specialist calls are never replaced by cache hits;
 - immediate warning/suggestion termination with no further API calls after three minutes or $0.50;
 - specialists and orchestrator receive text only;
 - at most one crop re-examination per panorama;
@@ -285,7 +285,7 @@ Use the same country-output schema and prompt requirements across direct multimo
 - Disable Deep Agents' automatic general-purpose subagent.
 - Hide unused filesystem tools and disable summarization while retaining the required filesystem, todo, and subagent middleware scaffolding.
 - At least one specialist is invoked per panorama; both configured specialists may be used once when their clue families are independently useful.
-- Each specialist has one lifetime API execution; later use reads its local cached response no more than three times.
+- Specialist calls are never cached or replaced. Only deterministic reference-tool responses may be cached and read no more than three times.
 - One non-agent extraction call sees four cardinal headings together.
 - One optional targeted crop call is allowed.
 - Predictions are worldwide and country-level.

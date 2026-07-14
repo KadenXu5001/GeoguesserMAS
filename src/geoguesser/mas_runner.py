@@ -4,7 +4,7 @@ import base64
 import json
 import mimetypes
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from geoguesser.agent_factory import create_geoguesser_agent
 from geoguesser.agent_runtime import build_runtime_context
@@ -112,7 +112,9 @@ def run_mas_row(
     reference_version: str,
     agent: Any | None = None,
     root: Path = Path("."),
+    progress: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
+    report = progress or (lambda message: None)
     views = {
         0: root / row["view_h000_path"],
         90: root / row["view_h090_path"],
@@ -121,6 +123,7 @@ def run_mas_row(
     }
     budget = RuntimeBudget(opus_cost_usd=OPUS_BASELINE)
     try:
+        report("extracting four cardinal views")
         budget.check_capacity()
         extraction = extract_cardinal_views(
             gemini_client,
@@ -130,6 +133,7 @@ def run_mas_row(
             ),
             before_attempt=budget.check_capacity,
         )
+        report("extraction complete; building multimodal supervisor input")
         budget.check_capacity()
         context = build_runtime_context(
             budget=budget,
@@ -137,9 +141,12 @@ def run_mas_row(
             reference_version=reference_version,
             heading_paths=views,
             gemini_client=gemini_client,
+            progress=report,
         )
         compiled_agent = agent or create_geoguesser_agent()
+        report("supervisor running; selecting specialist and tools")
         result = compiled_agent.invoke(build_agent_input(extraction, views), context=context)
+        report("supervisor graph completed; validating prediction")
     except BudgetExceeded as exc:
         return _capacity_result(row, str(exc))
     prediction = result.get("final_prediction") or result.get("structured_response")

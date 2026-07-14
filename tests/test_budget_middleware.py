@@ -15,12 +15,17 @@ def tool_request(name: str, budget: RuntimeBudget, specialist: str | None = None
     return SimpleNamespace(tool_call={"name": name, "args": args}, runtime=runtime(budget))
 
 
-def test_model_and_tool_caps_use_per_run_context() -> None:
+SPECIALIST_JSON = '{"candidates":["France"],"evidence":["road"],"contradictions":[],"confidence":80}'
+
+
+def test_model_and_tool_caps_use_per_run_context(tmp_path) -> None:
     budget = RuntimeBudget(opus_cost_usd=1.0)
     middleware = BudgetMiddleware()
     request = SimpleNamespace(runtime=runtime(budget))
     middleware.wrap_model_call(request, lambda value: "model-ok")
-    middleware.wrap_tool_call(tool_request("task", budget, "human-clue-specialist"), lambda value: "task-ok")
+    middleware.wrap_tool_call(
+        tool_request("task", budget, "human-clue-specialist"), lambda value: SPECIALIST_JSON
+    )
     middleware.wrap_tool_call(tool_request("reexamine_region", budget), lambda value: "crop-ok")
 
     assert budget.orchestrator_turns == 1
@@ -29,12 +34,14 @@ def test_model_and_tool_caps_use_per_run_context() -> None:
 
 
 def test_third_task_returns_feedback_from_middleware(tmp_path) -> None:
-    from geoguesser.specialist_cache import SpecialistCache
-
     budget = RuntimeBudget(opus_cost_usd=1.0)
-    middleware = BudgetMiddleware(specialist_cache=SpecialistCache(tmp_path / "specialist-cache.json"))
-    middleware.wrap_tool_call(tool_request("task", budget, "human-clue-specialist"), lambda value: "ok")
-    middleware.wrap_tool_call(tool_request("task", budget, "environmental-specialist"), lambda value: "ok")
+    middleware = BudgetMiddleware()
+    middleware.wrap_tool_call(
+        tool_request("task", budget, "human-clue-specialist"), lambda value: SPECIALIST_JSON
+    )
+    middleware.wrap_tool_call(
+        tool_request("task", budget, "environmental-specialist"), lambda value: SPECIALIST_JSON
+    )
     result = middleware.wrap_tool_call(
         tool_request("task", budget, "third-specialist"), lambda value: "unreachable"
     )

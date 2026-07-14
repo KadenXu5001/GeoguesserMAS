@@ -6,10 +6,11 @@ from deepagents import (
     create_deep_agent,
     register_harness_profile,
 )
+from langchain.agents.structured_output import ToolStrategy
 
 from geoguesser.budget_middleware import BudgetMiddleware
 from geoguesser.geo_tools import geoguesser_tools
-from geoguesser.prediction import SpecialistResult
+from geoguesser.prediction import CountryPrediction, SpecialistResult
 from geoguesser.reference_tools import rural_reference_tools, urban_reference_tools
 from geoguesser.runtime_state import GeoState
 
@@ -27,9 +28,10 @@ URBAN_SUBAGENT = {
         "You are the urban specialist inside a bounded MAS. Follow this exact procedure: "
         "inspect the supervisor description, make at most one broad lookup for each relevant urban "
         "with country omitted, never repeat a category or enumerate country/category pairs, "
-        "then immediately return SpecialistResult with ranked candidates, evidence, contradictions, "
+        "then immediately return exactly one specialist-result-v1 JSON document validated as "
+        "SpecialistResult with ranked candidates, evidence, contradictions, "
         "and confidence. Do not call a lookup after you have enough evidence and do not produce "
-        "a prose answer outside SpecialistResult."
+        "a prose answer outside the JSON document."
     ),
     "tools": urban_reference_tools(),
     "model": FLASH_MODEL,
@@ -47,10 +49,11 @@ RURAL_SUBAGENT = {
         "You are the rural specialist inside a bounded MAS. Follow this exact procedure: "
         "inspect the supervisor description, make at most one broad lookup for each relevant rural "
         "category with country omitted, never repeat a category or enumerate country/category "
-        "pairs, then immediately return SpecialistResult with ranked candidates, evidence, "
-        "contradictions, and confidence. Only use rural and universal categories; never query urban "
+        "pairs, then immediately return exactly one specialist-result-v1 JSON document validated as "
+        "SpecialistResult with ranked candidates, evidence, contradictions, and confidence. "
+        "Only use rural and universal categories; never query urban "
         "categories. Do not call a lookup after you have "
-        "enough evidence and do not produce a prose answer outside SpecialistResult."
+        "enough evidence and do not produce a prose answer outside the JSON document."
     ),
     "tools": rural_reference_tools(),
     "model": FLASH_MODEL,
@@ -79,8 +82,10 @@ The run has four phases and must move forward; never restart a phase:
    or less). Pass both signals and their scores to the tool. Do not re-examine for a merely
    illegible clue, general curiosity, or a single leading hypothesis. Never retry it or call it
    with different wording for the same conflict.
-4. Synthesize the available evidence and call `emit_prediction` exactly once. This terminates the
-   run; do not call any tool after it.
+4. Synthesize the available evidence and finalize immediately. Prefer calling `emit_prediction`
+   exactly once; if the framework's structured-output finalizer is active, return exactly one
+   `CountryPrediction` through that finalizer. Never return a plain-text answer and never call any
+   tool after finalization.
 
 Tool-loop rules are absolute: each tool call must make new progress; never repeat any tool call,
 never retry a failed or rejected call, never call a tool merely to verify its previous result, and
@@ -127,6 +132,7 @@ def create_geoguesser_agent(model: str = FLASH_MODEL):
         middleware=[BudgetMiddleware()],
         system_prompt=ORCHESTRATOR_PROMPT,
         subagents=[URBAN_SUBAGENT, RURAL_SUBAGENT],
+        response_format=ToolStrategy(CountryPrediction),
         state_schema=GeoState,
         name="geoguesser-supervisor",
     )

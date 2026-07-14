@@ -1,0 +1,26 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Cambodia",
+      "Philippines"
+    ],
+    "evidence": [
+      "Driving side: Right (RHT) is consistent with Brazil, Cambodia, and the Philippines.",
+      "Vehicle: The 'white hood with prominent roof rails' (black strips) is a definitive signature of the Generation 4 Google Street View car used extensively in Brazil.",
+      "Road markings: Double yellow center lines and white solid shoulder lines are standard Brazilian highway markings (contrasting with many SE Asian countries that use white center lines or single yellow).",
+      "Soil/Terrain: Extremely flat agricultural land with distinctly red/orange soil (Terra Rossa) is characteristic of the Brazilian Cerrado, particularly in states like Mato Grosso and Mato Grosso do Sul.",
+      "Climate: The hazy/smoky sky is common in Brazil's agricultural heartland during the 'queimadas' (burning season) typically occurring from July to October.",
+      "Vegetation: Sparse trees and distant palms are consistent with the Cerrado biome in central Brazil.",
+      "Infrastructure: Lattice transmission towers are common along major Brazilian rural highways (e.g., BR-163, BR-364)."
+    ],
+    "contradictions": [
+      "Southeast Asian candidates like Thailand and Malaysia are excluded due to Left-hand traffic (LHT).",
+      "While Cambodia has red soil and RHT, its road markings and specific car camera signatures (e.g., blue/black roof stickers or different rack configurations) typically differ from the Brazilian Gen 4 car."
+    ],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-39fecf6b02fc4f0abcd8be49551104c2.json"
+}

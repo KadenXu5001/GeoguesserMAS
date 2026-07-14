@@ -5,6 +5,7 @@ from typing import Any
 
 from geoguesser.runtime_budget import RuntimeBudget
 from geoguesser.runtime_state import GeoContext
+from geoguesser.tool_response_cache import ToolResponseCache
 
 
 def build_runtime_context(
@@ -16,6 +17,8 @@ def build_runtime_context(
     gemini_client: Any,
     reexamine_model: str = "gemini-3-flash-preview",
     require_specialist: bool = True,
+    tool_response_cache: ToolResponseCache | None = None,
+    progress: Any | None = None,
 ) -> GeoContext:
     if set(heading_paths) != {0, 90, 180, 270}:
         raise ValueError("runtime context requires four cardinal heading paths")
@@ -30,4 +33,6 @@ def build_runtime_context(
         "reexamine_model": reexamine_model,
         "require_specialist": require_specialist,
         "reference_lookup_categories": set(),
+        "tool_response_cache": tool_response_cache or ToolResponseCache(),
+        "progress": progress or (lambda message: None),
     }
