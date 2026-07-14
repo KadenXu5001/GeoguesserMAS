@@ -55,6 +55,21 @@ DATASET_VALIDATOR = {
     }
 }
 
+REFERENCE_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["version", "category", "indicator", "source_url", "retrieved_at"],
+        "properties": {
+            "version": {"bsonType": "string", "minLength": 1},
+            "category": {"bsonType": "string", "minLength": 1},
+            "country": {"bsonType": ["string", "null"]},
+            "indicator": {"bsonType": "string", "minLength": 1},
+            "source_url": {"bsonType": "string", "minLength": 1},
+            "retrieved_at": {"bsonType": "string", "minLength": 1},
+        },
+    }
+}
+
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -88,6 +103,7 @@ class MongoRepository:
         self._ensure_collection("panoramas", PANORAMA_VALIDATOR)
         self._ensure_collection("dataset_versions", DATASET_VALIDATOR)
         self._ensure_collection("ingestion_attempts", None)
+        self._ensure_collection("reference_rows", REFERENCE_VALIDATOR)
 
         self.database.panoramas.create_index(
             [("mapillary_image_id", ASCENDING)], unique=True, name="uq_mapillary_image"
@@ -109,6 +125,15 @@ class MongoRepository:
         self.database.ingestion_attempts.create_index(
             [("mapillary_image_id", ASCENDING), ("created_at", ASCENDING)],
             name="image_attempt_history",
+        )
+        self.database.reference_rows.create_index(
+            [("version", ASCENDING), ("category", ASCENDING), ("country", ASCENDING)],
+            name="reference_category_country",
+        )
+        self.database.reference_rows.create_index(
+            [("version", ASCENDING), ("category", ASCENDING), ("indicator", ASCENDING), ("source_url", ASCENDING)],
+            unique=True,
+            name="uq_reference_row",
         )
 
         pilot = pilot_dataset_document()
@@ -353,3 +378,47 @@ class MongoRepository:
         return self.database.panoramas.find_one(
             {"mapillary_image_id": mapillary_image_id}
         )
+
+    def seed_reference_snapshot(self, snapshot: Mapping[str, Any]) -> int:
+        version = str(snapshot.get("version", ""))
+        retrieved_at = str(snapshot.get("retrieved_at", ""))
+        rows = snapshot.get("rows", [])
+        if not version or not retrieved_at or not isinstance(rows, list):
+            raise ValueError("reference snapshot must include version, retrieved_at, and rows")
+        seeded = 0
+        for row in rows:
+            document = {
+                "version": version,
+                "category": str(row["category"]),
+                "country": row.get("country"),
+                "indicator": str(row["indicator"]),
+                "source_url": str(row["source_url"]),
+                "retrieved_at": retrieved_at,
+            }
+            for optional in ("family", "description", "source_name", "confidence"):
+                if optional in row:
+                    document[optional] = row[optional]
+            self.database.reference_rows.update_one(
+                {
+                    "version": version,
+                    "category": document["category"],
+                    "indicator": document["indicator"],
+                    "source_url": document["source_url"],
+                },
+                {"$set": document},
+                upsert=True,
+            )
+            seeded += 1
+        return seeded
+
+    def lookup_references(
+        self,
+        *,
+        version: str,
+        category: str,
+        country: str | None = None,
+    ) -> list[dict[str, Any]]:
+        query: dict[str, Any] = {"version": version, "category": category}
+        if country is not None:
+            query["country"] = {"$regex": f"^{country}$", "$options": "i"}
+        return list(self.database.reference_rows.find(query, {"_id": 0}))

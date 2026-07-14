@@ -25,9 +25,19 @@ def test_factory_uses_official_deepagents_with_only_named_subagents(monkeypatch)
         {"ls", "read_file", "write_file", "edit_file", "glob", "grep"}
     )
     assert [item["name"] for item in captured["create"]["subagents"]] == [
-        "human-clue-specialist",
-        "environmental-specialist",
+        "urban-specialist",
+        "rural-specialist",
     ]
     assert len(captured["create"]["middleware"]) == 1
     assert captured["create"]["middleware"][0].__class__.__name__ == "BudgetMiddleware"
-    assert captured["create"]["response_format"] is agent_factory.CountryPrediction
+    assert "response_format" not in captured["create"]
+    assert captured["create"]["state_schema"] is agent_factory.GeoState
+
+
+def test_single_agent_ablation_has_no_subagents(monkeypatch) -> None:
+    captured = {}
+    monkeypatch.setattr(agent_factory, "register_harness_profile", lambda *args: None)
+    monkeypatch.setattr(agent_factory, "create_deep_agent", lambda **kwargs: captured.update(kwargs) or "ablation")
+
+    assert agent_factory.create_single_agent_ablation() == "ablation"
+    assert "subagents" not in captured

@@ -35,6 +35,7 @@ These are budgets, not measured results. Each path must log actual prompt, outpu
 | Flash orchestrator decision | 2,400 | 0 | 400 |
 | Flash specialist | 2,000 | 0 | 500 |
 | Flash orchestrator finalization | 3,200 | 0 | 400 |
+| Flash orchestrator review/re-examination decision | 2,400 | 0 | 400 |
 | Flash crop re-examination | 300 | 1,120 | 350 |
 | Opus direct baseline | 600 | 4 × 1,369 | 600 |
 
@@ -49,7 +50,7 @@ Computed by `python -m geoguesser.cost_model`:
 | Opus direct baseline | $0.045380 | — |
 | MAS easy (extract → orchestrator answer) | $0.008540 | 81.18% |
 | MAS delegated (extract → orchestrator → one specialist → final) | $0.013840 | 69.50% |
-| MAS hard (delegated + one crop) | $0.015600 | 65.62% |
+| MAS hard (delegated + one crop) | $0.018000 | 60.33% |
 | Single deep-agent budget | $0.013340 | 70.60% |
 
 Under these conservative budgets, all MAS paths clear the requirement of at least 10% savings. The gate is provisional until measured token usage exists.
@@ -57,9 +58,10 @@ Under these conservative budgets, all MAS paths clear the requirement of at leas
 ## Enforceable v1 budgets
 
 - Full-scene extraction calls: exactly 1.
-- Specialist calls: at most 1.
+- Specialist calls: at least 1 and at most 2; each configured specialist may be called once.
+- Global capacity: stop with a warning and no further API calls at 180 seconds or $0.50.
 - Crop re-examination calls: at most 1.
-- Orchestrator model calls: at most 2 (decision and finalization).
+- Orchestrator model calls: at most 3 (delegation decision, review/re-examination decision, and finalization).
 - Flash extraction output: at most 1,200 billed output/thinking tokens.
 - Flash specialist output: at most 500 billed output/thinking tokens.
 - Each orchestrator turn: at most 400 billed output/thinking tokens.

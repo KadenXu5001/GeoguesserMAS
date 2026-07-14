@@ -55,6 +55,10 @@ def test_reexamine_region_uses_context_path_and_updates_text_only(tmp_path) -> N
         heading=90,
         bbox=[250, 250, 750, 750],
         question="Can any text on this sign be read?",
+        signal_a="France",
+        score_a=70,
+        signal_b="Belgium",
+        score_b=65,
         runtime=runtime,
     )
 

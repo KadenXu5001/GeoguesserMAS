@@ -27,6 +27,18 @@ class Response:
         self.parsed = None
 
 
+class InvalidSchemaModels:
+    def __init__(self, response):
+        self.response = response
+        self.calls = []
+
+    def generate_content(self, **kwargs):
+        self.calls.append(kwargs)
+        if len(self.calls) == 1:
+            raise RuntimeError("400 INVALID_ARGUMENT schema rejected")
+        return self.response
+
+
 class Models:
     def __init__(self, responses):
         self.responses = iter(responses)
@@ -60,6 +72,12 @@ def test_sends_all_four_views_in_one_call_and_parses_schema(tmp_path: Path) -> N
     assert isinstance(result, ExtractionOutput)
     assert len(client.models.calls) == 1
     assert len(client.models.calls[0]["contents"]) == 5
+    schema = client.models.calls[0]["config"].response_schema
+    assert "$defs" not in str(schema)
+    assert "$ref" not in str(schema)
+    heading_schema = schema["properties"]["driving_side_and_markings"]["properties"]["objects"]["items"]["properties"]["heading"]
+    assert heading_schema["type"] == "integer"
+    assert "enum" not in heading_schema
 
 
 def test_retries_once_after_malformed_response(tmp_path: Path) -> None:
@@ -70,7 +88,46 @@ def test_retries_once_after_malformed_response(tmp_path: Path) -> None:
     assert len(client.models.calls) == 2
 
 
+def test_falls_back_when_provider_rejects_structured_schema(tmp_path: Path) -> None:
+    client = type("Client", (), {})()
+    client.models = InvalidSchemaModels(Response(__import__("json").dumps(payload())))
+    result = extract_cardinal_views(client, views(tmp_path))
+    assert result.schema_version == "extraction-v1"
+    assert client.models.calls[0]["config"].response_schema is not None
+    assert client.models.calls[1]["config"].response_schema is None
+
+
+def test_normalizes_known_provider_aliases_before_validation(tmp_path: Path) -> None:
+    value = payload()
+    value["schema_version"] = "1.0.0"
+    value["driving_side_and_markings"]["objects"] = [
+        {
+            "heading": 0,
+            "observation": "road",
+            "confidence": 80,
+            "legibility": "legible",
+        }
+    ]
+    client = Client([Response(__import__("json").dumps(value))])
+    result = extract_cardinal_views(client, views(tmp_path))
+    assert result.schema_version == "extraction-v1"
+    assert result.driving_side_and_markings.objects[0].legibility == "clear"
+
+
+def test_reports_usage_for_each_extraction_attempt(tmp_path: Path) -> None:
+    first = Response("not json")
+    first.usage_metadata = {"prompt_token_count": 10}
+    second = Response(__import__("json").dumps(payload()))
+    second.usage_metadata = {"prompt_token_count": 11, "candidates_token_count": 3}
+    events = []
+    extract_cardinal_views(
+        Client([first, second]),
+        views(tmp_path),
+        usage_callback=lambda response, latency: events.append(response),
+    )
+    assert len(events) == 2
+
+
 def test_requires_four_cardinal_views(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="exactly four"):
         extract_cardinal_views(Client([]), {0: tmp_path / "missing.jpg"})
-

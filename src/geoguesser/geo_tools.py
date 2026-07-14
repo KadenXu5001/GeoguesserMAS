@@ -12,9 +12,13 @@ from google.genai import types
 
 from geoguesser.bbox import crop_normalized_bbox
 from geoguesser.prediction import CountryPrediction
+from geoguesser.runtime_state import GeoContext, GeoState
 
 
-def _budget_from_runtime(runtime: ToolRuntime) -> Any:
+REEXAMINATION_MAX_SCORE_GAP = 10
+
+
+def _budget_from_runtime(runtime: ToolRuntime[GeoContext, GeoState]) -> Any:
     context = runtime.context
     budget = context.get("geo_budget") if isinstance(context, dict) else getattr(context, "geo_budget", None)
     if budget is None:
@@ -28,7 +32,7 @@ def emit_prediction(
     confidence: int,
     alternatives: list[str],
     evidence: list[str],
-    runtime: ToolRuntime,
+    runtime: ToolRuntime[GeoContext, GeoState],
 ) -> Command:
     """Emit one worldwide country prediction and terminate the supervisor run."""
     prediction = CountryPrediction(
@@ -37,7 +41,9 @@ def emit_prediction(
         alternatives=alternatives,
         evidence=evidence,
     )
-    _budget_from_runtime(runtime)
+    budget = _budget_from_runtime(runtime)
+    if runtime.context.get("require_specialist", False) and budget.specialist_tasks < 1:
+        raise RuntimeError("MAS requires at least one specialist delegation before prediction")
     content = prediction.model_dump_json()
     return Command(
         goto=END,
@@ -53,15 +59,29 @@ def reexamine_region(
     heading: int,
     bbox: list[int],
     question: str,
-    runtime: ToolRuntime,
+    signal_a: str,
+    score_a: int,
+    signal_b: str,
+    score_b: int,
+    runtime: ToolRuntime[GeoContext, GeoState],
 ) -> Command:
-    """Inspect one padded region and return the answer to one specific visual question."""
+    """Inspect one padded region only when two distinct close signals compete."""
     if heading not in {0, 90, 180, 270}:
         raise ValueError("heading must be one of 0, 90, 180, or 270")
     if len(bbox) != 4:
         raise ValueError("bbox must contain [ymin, xmin, ymax, xmax]")
     if not question.strip():
         raise ValueError("question must not be empty")
+    if (
+        not signal_a.strip()
+        or not signal_b.strip()
+        or signal_a.strip().lower() == signal_b.strip().lower()
+    ):
+        raise ValueError("re-examination requires two distinct competing signals")
+    if not 0 <= score_a <= 100 or not 0 <= score_b <= 100:
+        raise ValueError("signal scores must be between 0 and 100")
+    if abs(score_a - score_b) > REEXAMINATION_MAX_SCORE_GAP:
+        raise ValueError("re-examination requires competing signals within 10 confidence points")
 
     budget = _budget_from_runtime(runtime)
     paths = runtime.context.get("heading_paths", {})
@@ -82,7 +102,15 @@ def reexamine_region(
                 thinking_config=types.ThinkingConfig(thinking_budget=0),
             ),
         )
-    result = {"heading": heading, "question": question.strip(), "answer": response.text.strip()}
+    result = {
+        "heading": heading,
+        "question": question.strip(),
+        "signal_a": signal_a.strip(),
+        "score_a": score_a,
+        "signal_b": signal_b.strip(),
+        "score_b": score_b,
+        "answer": response.text.strip(),
+    }
     content = json.dumps(result, ensure_ascii=False)
     return Command(
         update={

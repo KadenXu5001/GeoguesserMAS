@@ -27,7 +27,7 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
 
     MongoRepository(database).initialize()
 
-    assert database.create_collection.call_count == 3
+    assert database.create_collection.call_count == 4
     database.panoramas.create_index.assert_any_call(
         [("mapillary_image_id", 1)], unique=True, name="uq_mapillary_image"
     )
@@ -37,6 +37,30 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
     update = database.dataset_versions.update_one.call_args
     assert update.args[0] == {"version": "pilot_v1"}
     assert update.kwargs["upsert"] is True
+
+
+def test_seed_and_lookup_reference_rows() -> None:
+    database = MagicMock()
+    repository = MongoRepository(database)
+    snapshot = {
+        "version": "reference-v1",
+        "retrieved_at": "2026-07-13",
+        "rows": [
+            {
+                "category": "bollards",
+                "country": "France",
+                "indicator": "white with red reflector",
+                "source_url": "https://geohints.com/meta/bollards",
+            }
+        ],
+    }
+
+    assert repository.seed_reference_snapshot(snapshot) == 1
+    database.reference_rows.update_one.assert_called_once()
+    database.reference_rows.find.return_value = [{"category": "bollards"}]
+    assert repository.lookup_references(version="reference-v1", category="bollards") == [
+        {"category": "bollards"}
+    ]
 
 
 def test_assign_validated_rejects_cross_split_sequence() -> None:

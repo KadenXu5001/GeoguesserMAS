@@ -18,3 +18,5 @@ data/boundaries/
 dist/
 build/
 *.egg-info/
+.sandbox-venv/
+.sandbox-native/

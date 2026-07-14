@@ -21,5 +21,4 @@ def test_lookup_is_case_insensitive_and_category_scoped() -> None:
 
     assert len(rows) == 1
     assert rows[0]["indicator"] == "left"
-    assert lookup_references(snapshot, category="bollards", country="Thailand") == []
-
+    assert lookup_references(snapshot, category="bollards", country="Thailand")

@@ -2,41 +2,109 @@ from __future__ import annotations
 
 from langchain.tools import ToolRuntime, tool
 
-from geoguesser.reference_data import lookup_references
+from geoguesser.runtime_state import GeoContext, GeoState
 
 
-def _snapshot(runtime: ToolRuntime) -> dict:
-    snapshot = runtime.context.get("reference_snapshot")
-    if not isinstance(snapshot, dict):
-        raise RuntimeError("reference_snapshot is required in per-run runtime context")
-    return snapshot
+def _repository(runtime: ToolRuntime[GeoContext, GeoState]):
+    repository = runtime.context.get("reference_repository")
+    if repository is None:
+        raise RuntimeError("reference_repository is required in per-run runtime context")
+    return repository
+
+
+def _version(runtime: ToolRuntime[GeoContext, GeoState]) -> str:
+    version = runtime.context.get("reference_version")
+    if not isinstance(version, str) or not version:
+        raise RuntimeError("reference_version is required in per-run runtime context")
+    return version
+
+
+def _claim_category(runtime: ToolRuntime[GeoContext, GeoState], family: str, category: str) -> str | None:
+    """Allow one broad lookup per category for each tool family."""
+    context = runtime.context
+    seen = context.setdefault("reference_lookup_categories", set())
+    key = f"{family}:{category}"
+    if key in seen:
+        return f"category already looked up: {category}; stop calling this tool and return your SpecialistResult"
+    seen.add(key)
+    return None
+
+
+def _lookup(
+    *, category: str, allowed: set[str], family: str, runtime: ToolRuntime[GeoContext, GeoState], country: str | None
+) -> list[dict]:
+    if category not in allowed:
+        return [{"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)}]
+    duplicate = _claim_category(runtime, family, category)
+    if duplicate:
+        return [{"error": duplicate}]
+    return _repository(runtime).lookup_references(
+        version=_version(runtime), category=category, country=country
+    )
 
 
 @tool
-def lookup_human_clues(category: str, country: str | None, runtime: ToolRuntime) -> list[dict]:
-    """Look up compact human-made country indicators from the frozen reference snapshot."""
-    allowed = {"driving_side", "license_plates", "bollards", "utility_poles", "signs"}
-    if category not in allowed:
-        raise ValueError(f"unsupported human-clue category: {category}")
-    return lookup_references(_snapshot(runtime), category=category, country=country)
+def lookup_universal_clues(
+    category: str,
+    runtime: ToolRuntime[GeoContext, GeoState],
+    country: str | None = None,
+) -> list[dict]:
+    """Look up a universal clue category shared by urban and rural specialists."""
+    return _lookup(
+        category=category,
+        allowed={"driving_side", "license_plates", "road_markings", "language_script", "country_domains", "bollards", "chevrons_guardrails", "vehicles"},
+        family="universal",
+        runtime=runtime,
+        country=country,
+    )
 
 
 @tool
-def lookup_environmental_clues(category: str, country: str | None, runtime: ToolRuntime) -> list[dict]:
-    """Look up compact environmental and architecture indicators from the frozen snapshot."""
-    allowed = {"architecture", "scenery", "vegetation", "climate"}
-    if category not in allowed:
-        raise ValueError(f"unsupported environmental category: {category}")
-    return lookup_references(_snapshot(runtime), category=category, country=country)
+def lookup_urban_clues(
+    category: str,
+    runtime: ToolRuntime[GeoContext, GeoState],
+    country: str | None = None,
+) -> list[dict]:
+    """Look up one complete urban-built-environment category."""
+    return _lookup(
+        category=category,
+        allowed={"urban_architecture", "urban_utility_poles", "urban_signage", "street_names_addresses", "businesses_domains", "sidewalks_curbs", "public_transit"},
+        family="urban",
+        runtime=runtime,
+        country=country,
+    )
 
 
-def human_reference_tools() -> list:
-    return [lookup_human_clues]
+@tool
+def lookup_rural_clues(
+    category: str,
+    runtime: ToolRuntime[GeoContext, GeoState],
+    country: str | None = None,
+) -> list[dict]:
+    """Look up one complete rural landscape and low-density-settlement category."""
+    return _lookup(
+        category=category,
+        allowed={"soil_geology", "vegetation_biomes", "terrain_scenery", "climate", "agriculture_land_use", "rural_architecture", "rural_utility_poles", "rural_roadside_features"},
+        family="rural",
+        runtime=runtime,
+        country=country,
+    )
 
 
-def environmental_reference_tools() -> list:
-    return [lookup_environmental_clues]
+def urban_reference_tools() -> list:
+    return [lookup_universal_clues, lookup_urban_clues]
+
+
+def rural_reference_tools() -> list:
+    return [lookup_universal_clues, lookup_rural_clues]
 
 
 def reference_tools() -> list:
-    return [lookup_human_clues, lookup_environmental_clues]
+    return [lookup_universal_clues, lookup_urban_clues, lookup_rural_clues]
+
+
+# Compatibility aliases for older callers; production agents use the explicit urban/rural names.
+lookup_human_clues = lookup_urban_clues
+lookup_environmental_clues = lookup_rural_clues
+human_reference_tools = urban_reference_tools
+environmental_reference_tools = rural_reference_tools

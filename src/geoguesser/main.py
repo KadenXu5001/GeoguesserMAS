@@ -16,6 +16,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "init-mongodb", help="initialize local MongoDB collections, validators, and indexes"
     )
+    seed = subparsers.add_parser(
+        "seed-references", help="seed the frozen local reference snapshot into MongoDB"
+    )
+    seed.add_argument(
+        "--snapshot", type=Path, default=Path("data/reference_tables/reference_v1.json")
+    )
     subparsers.add_parser(
         "download-boundaries", help="download the pinned Natural Earth country boundaries"
     )
@@ -92,6 +98,24 @@ def main(argv: list[str] | None = None) -> int:
         finally:
             client.close()
         print(f"initialized MongoDB database: {database.name}")
+        return 0
+    if args.command == "seed-references":
+        from dotenv import load_dotenv
+
+        from geoguesser.reference_data import load_reference_snapshot
+        from geoguesser.storage import MongoRepository, connect_database
+
+        load_dotenv()
+        client, database = connect_database()
+        try:
+            client.admin.command("ping")
+            repository = MongoRepository(database)
+            repository.initialize()
+            snapshot = load_reference_snapshot(args.snapshot)
+            seeded = repository.seed_reference_snapshot(snapshot)
+        finally:
+            client.close()
+        print(json.dumps({"version": snapshot["version"], "seeded": seeded}, indent=2))
         return 0
     if args.command == "download-boundaries":
         from geoguesser.boundaries import download_natural_earth

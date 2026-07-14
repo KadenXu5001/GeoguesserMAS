@@ -18,11 +18,11 @@ This is not a training project. No model is fine-tuned.
 The system is deliberately small:
 
 1. **One extraction preprocessor (not an agent).** One Gemini Flash multimodal call receives four 1024×1024 perspective images rendered from a Mapillary panorama at headings 0°, 90°, 180°, and 270°, each with a 90° field of view. It extracts all visible signals once.
-2. **One Deep Agents orchestrator.** A text-only agent built with `create_deep_agent` reads the extraction, uses the framework's built-in `TodoListMiddleware`, decides whether it can answer directly, and may delegate through the framework's `task` tool to at most one specialist.
-3. **Two custom Deep Agents subagents.** A human-clue subagent covers language, signs, vehicles, plates, roads, and infrastructure. An environmental subagent covers terrain, climate, vegetation, and architecture. Both are text-only Gemini Flash subagents with narrow prompts, tools, and structured responses.
+2. **One Deep Agents orchestrator.** A multimodal agent built with `create_deep_agent` reads the extraction and images, uses the framework's built-in `TodoListMiddleware`, and delegates through the framework's `task` tool to at least one and at most the two configured specialists.
+3. **Two custom Deep Agents subagents.** An urban subagent covers architecture, poles, signage, addresses, businesses, sidewalks, and transit. A rural subagent covers soil, geology, vegetation, terrain, climate, agriculture, rural architecture, and roadside infrastructure. Both also receive universal lookup tools and return structured responses.
 4. **Conditional targeted re-perception.** The orchestrator may request at most one padded crop re-examination when a high-value clue is illegible or decisive candidates remain tied.
 
-Only the extraction preprocessor normally receives images. Specialists never receive image bytes. The optional re-examination call receives only one targeted crop.
+The extraction preprocessor and supervisor receive the four images. Specialists receive the supervisor's compact description and evidence, not image bytes. The optional re-examination call receives only one targeted crop.
 
 This is defensibly multi-agent because the Deep Agents supervisor selectively delegates an unresolved subproblem through `task` to an isolated custom subagent with its own prompt, role, tools, and structured response, then integrates the returned conclusion. The extractor and deterministic tools are not counted as agents.
 
@@ -33,12 +33,14 @@ Deep Agents normally supplies an automatic `general-purpose` subagent. Disable i
 The MAS is allowed to exist only if it can preserve the cost advantage over Opus. Enforce these constraints in code rather than relying on prompts:
 
 - exactly one full-scene extraction call containing the four headings;
-- zero or one specialist invocation per panorama;
+- at least one and at most two specialist invocations per panorama, with each configured specialist used at most once;
+- specialist responses persisted in the local Deep Agents filesystem cache, with no more than three total cache reads;
+- immediate warning/suggestion termination with no further API calls after three minutes or $0.50;
 - specialists and orchestrator receive text only;
 - at most one crop re-examination per panorama;
 - hard agent-iteration and output-token limits;
 - compact structured extraction and specialist responses;
-- reference tables loaded behind lookup tools, not copied wholesale into every prompt;
+- universal, urban, and rural reference tables loaded behind ordinary lookup tools, not copied wholesale into prompts or delegated to more subagents;
 - identical four-heading inputs for the Opus baseline;
 - complete cost includes extraction, every orchestrator turn, specialist calls, re-examination, and all input/output tokens.
 
@@ -53,7 +55,7 @@ Before pipeline implementation, build `docs/cost_model.md` with current model ID
 | Opus baseline | Four headings in one call | None |
 | MAS easy path | Four headings in one Flash extraction | Short orchestrator path; no specialist |
 | MAS delegated path | Four headings in one Flash extraction | Orchestrator + one Flash specialist + final orchestration |
-| MAS hard path | Full extraction + one crop | Orchestrator + at most one specialist + final orchestration |
+| MAS hard path | Full extraction + one crop | Orchestrator + one or two specialists + final orchestration |
 | Single-agent ablation | Four headings in one Flash extraction | One deep agent; no specialists |
 
 Use complete dollar cost per panorama as the primary cost figure. Also report image tokens, text input/output tokens, call count, and latency. If modeled normal-path MAS cost is not at least 10% below Opus, simplify before building.
@@ -70,11 +72,11 @@ Render four 1024x1024 cardinal headings
 Extraction preprocessor (one Flash vision call; not an agent)
         |
         v
-Deep Agents orchestrator (text-only, built-in todolist middleware)
+Deep Agents orchestrator (multimodal, built-in todolist middleware)
         |
         +---- answer directly -------------------------------+
         |                                                    |
-        +---- delegate to at most one specialist             |
+        +---- delegate to one or both specialists             |
         |       |                                            |
         |       +-- Human-clue agent (text-only)              |
         |       +-- Environmental agent (text-only)           |
@@ -86,7 +88,7 @@ Deep Agents orchestrator (text-only, built-in todolist middleware)
                                                    country prediction
 ```
 
-The orchestrator chooses agentically whether delegation or re-examination is warranted and records the reason in the trace. It must never call both specialists in v1. Custom middleware must enforce one total `task` call and one total `reexamine_region` call; prompt instructions alone are insufficient.
+The orchestrator must delegate to at least one specialist, may call both when their clue families are independently useful, and records the choices in the trace. It must never call the same specialist twice. Custom middleware must enforce the two-specialist maximum and one total `reexamine_region` call; prompt instructions alone are insufficient.
 
 ## Shared state
 
@@ -101,8 +103,8 @@ class GeoState(TypedDict):
     heading_paths: list[str]
     extraction_output: dict
     agent_todolist: dict
-    specialist_used: str | None
-    specialist_result: dict | None
+    specialists_used: list[str]
+    specialist_results: list[dict]
     reexamine_results: Annotated[list, add]
     final_prediction: dict
     messages: Annotated[list, add_messages]
@@ -143,19 +145,19 @@ The `create_deep_agent` orchestrator owns the framework todolist and final answe
 1. reads the consolidated extraction;
 2. applies hard geographic constraints;
 3. decides whether it can answer directly;
-4. invokes zero or one custom specialist through the built-in `task` tool if a clue family needs deeper reasoning;
+4. invokes at least one and at most two custom specialists through the built-in `task` tool for deeper reasoning, with each specialist used at most once;
 5. optionally requests one crop re-examination if a decisive clue is illegible or candidates are tied;
 6. emits one country, confidence, alternatives, and concise evidence.
 
 The model may predict any country worldwide; it is not shown a closed candidate list.
 
-### Human-clue subagent
+### Urban subagent
 
-Reasons over extracted language, signs, vehicles, plates, roads, bollards, utility poles, and infrastructure. It may query the curated GeoTips/GeoHints-derived reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
+Reasons over extracted urban architecture, utility poles, signage, addresses, businesses, sidewalks, and transit, with access to universal clues. It may query curated GeoTips/GeoHints-derived reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
 
-### Environmental subagent
+### Rural subagent
 
-Reasons over extracted terrain, vegetation, climate, architecture, and settlement patterns. It may query curated environmental and architectural reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
+Reasons over extracted soil, geology, vegetation, terrain, climate, agriculture, rural architecture, and roadside infrastructure, with access to universal clues. It may query curated rural reference tables. It returns ranked country candidates, evidence, contradictions, and confidence.
 
 ### Re-examination
 
@@ -278,11 +280,12 @@ Use the same country-output schema and prompt requirements across direct multimo
 
 ## Resolved decisions
 
-- Minimal MAS: one Deep Agents orchestrator plus two possible custom text-only subagents.
+- Minimal MAS: one multimodal Deep Agents orchestrator plus two possible custom text-only subagents.
 - Use the `deepagents` Python package and `create_deep_agent`; do not substitute a hand-built ReAct loop.
 - Disable Deep Agents' automatic general-purpose subagent.
 - Hide unused filesystem tools and disable summarization while retaining the required filesystem, todo, and subagent middleware scaffolding.
-- Zero or one specialist is invoked per panorama; never both in v1.
+- At least one specialist is invoked per panorama; both configured specialists may be used once when their clue families are independently useful.
+- Each specialist has one lifetime API execution; later use reads its local cached response no more than three times.
 - One non-agent extraction call sees four cardinal headings together.
 - One optional targeted crop call is allowed.
 - Predictions are worldwide and country-level.
@@ -298,7 +301,7 @@ These do not block planning and must be settled from the cost model or developme
 
 - exact model IDs and provider prices;
 - orchestrator iteration and output-token caps;
-- precise trigger for the one specialist and one re-examination;
+- precise trigger for selecting one or both specialists and one re-examination;
 - country list after the Mapillary coverage scan;
 - country centroid dataset used for secondary scoring;
 - whether the optional Pro-orchestrator ablation is necessary.

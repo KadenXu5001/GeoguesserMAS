@@ -9,53 +9,88 @@ from deepagents import (
 
 from geoguesser.budget_middleware import BudgetMiddleware
 from geoguesser.geo_tools import geoguesser_tools
-from geoguesser.prediction import CountryPrediction, SpecialistResult
-from geoguesser.reference_tools import environmental_reference_tools, human_reference_tools
+from geoguesser.prediction import SpecialistResult
+from geoguesser.reference_tools import rural_reference_tools, urban_reference_tools
+from geoguesser.runtime_state import GeoState
 
 
 FLASH_MODEL = "google_genai:gemini-3-flash-preview"
 
 
-HUMAN_CLUE_SUBAGENT = {
-    "name": "human-clue-specialist",
+URBAN_SUBAGENT = {
+    "name": "urban-specialist",
     "description": (
-        "Analyze language, signs, vehicles, plates, roads, bollards, utility poles, "
-        "and other human-made infrastructure when those clues are decisive."
+        "Analyze urban architecture, utility poles, signage, addresses, businesses, sidewalks, "
+        "transit, and other built-environment clues."
     ),
     "system_prompt": (
-        "You are a country-geolocation specialist for human-made clues. Use only the "
-        "structured extraction and supplied reference tools. Return concise ranked "
-        "country candidates with evidence, contradictions, and calibrated confidence."
+        "You are the urban specialist inside a bounded MAS. Follow this exact procedure: "
+        "inspect the supervisor description, make at most one broad lookup for each relevant urban "
+        "with country omitted, never repeat a category or enumerate country/category pairs, "
+        "then immediately return SpecialistResult with ranked candidates, evidence, contradictions, "
+        "and confidence. Do not call a lookup after you have enough evidence and do not produce "
+        "a prose answer outside SpecialistResult."
     ),
-    "tools": human_reference_tools(),
+    "tools": urban_reference_tools(),
     "model": FLASH_MODEL,
     "response_format": SpecialistResult,
 }
 
 
-ENVIRONMENTAL_SUBAGENT = {
-    "name": "environmental-specialist",
+RURAL_SUBAGENT = {
+    "name": "rural-specialist",
     "description": (
-        "Analyze terrain, climate, vegetation, architecture, and settlement patterns "
-        "when environmental clues are decisive."
+        "Analyze soil, geology, vegetation, terrain, climate, agriculture, rural architecture, "
+        "and low-density roadside infrastructure."
     ),
     "system_prompt": (
-        "You are a country-geolocation specialist for environmental clues. Use only "
-        "the structured extraction and supplied reference tools. Return concise ranked "
-        "country candidates with evidence, contradictions, and calibrated confidence."
+        "You are the rural specialist inside a bounded MAS. Follow this exact procedure: "
+        "inspect the supervisor description, make at most one broad lookup for each relevant rural "
+        "category with country omitted, never repeat a category or enumerate country/category "
+        "pairs, then immediately return SpecialistResult with ranked candidates, evidence, "
+        "contradictions, and confidence. Only use rural and universal categories; never query urban "
+        "categories. Do not call a lookup after you have "
+        "enough evidence and do not produce a prose answer outside SpecialistResult."
     ),
-    "tools": environmental_reference_tools(),
+    "tools": rural_reference_tools(),
     "model": FLASH_MODEL,
     "response_format": SpecialistResult,
 }
 
 
-ORCHESTRATOR_PROMPT = """You are the GeoGuessr supervisor.
-Use the built-in todo tool on every run. Reason only from the structured extraction and
-tool results; never request hidden location metadata. You may answer directly or delegate
-exactly one task to either human-clue-specialist or environmental-specialist. Never call
-both specialists. Use at most one targeted re-examination. Emit exactly one worldwide
-country prediction with concise evidence and calibrated confidence."""
+ORCHESTRATOR_PROMPT = """You are the GeoGuessr supervisor in a strictly bounded, one-pass workflow.
+
+You are multimodal. You receive the four cardinal street-scene images and a structured visual
+description produced by the extraction preprocessor. Treat the description as a compact first
+pass, then scan the images yourself to verify, correct, or add visible evidence. Use the images
+and description together; do not assume the description is complete or correct.
+
+The run has four phases and must move forward; never restart a phase:
+1. Call the built-in todo tool exactly once at the beginning to record the finite plan. Do not
+   call it again, rewrite the same todo, or use it as a status-check loop.
+2. Scan the images, read the extraction description, classify the scene as urban, rural, or mixed,
+   and delegate to the matching specialist through `task`. The urban specialist handles built
+   environments; the rural specialist handles natural and low-density environments. Both have
+   universal clue tools. Delegate to both only for a genuinely mixed scene with independent
+   unresolved clue families, and never delegate to the same specialist twice. Include a concise
+   description of the unresolved clue family and the relevant extracted/image evidence in every task.
+3. After the specialist result(s), call `reexamine_region` at most once, and only when two distinct
+   country signals remain genuinely competitive and close in confidence (a score gap of 10 points
+   or less). Pass both signals and their scores to the tool. Do not re-examine for a merely
+   illegible clue, general curiosity, or a single leading hypothesis. Never retry it or call it
+   with different wording for the same conflict.
+4. Synthesize the available evidence and call `emit_prediction` exactly once. This terminates the
+   run; do not call any tool after it.
+
+Tool-loop rules are absolute: each tool call must make new progress; never repeat any tool call,
+never retry a failed or rejected call, never call a tool merely to verify its previous result, and
+never emit a plain-text answer instead of the final tool call. Do not request hidden location
+metadata. A specialist may use its own bounded lookup tools, but the supervisor must not perform
+lookup-style repetition or ask for additional specialist work after receiving SpecialistResult.
+
+The final call must contain exactly one worldwide country, confidence, alternatives, and concise
+evidence. If evidence is incomplete or conflicting but no two close signals justify re-examination,
+make the best supported prediction and still call `emit_prediction` immediately."""
 
 
 def register_cost_controlled_profile(model: str = FLASH_MODEL) -> None:
@@ -91,7 +126,20 @@ def create_geoguesser_agent(model: str = FLASH_MODEL):
         tools=geoguesser_tools(),
         middleware=[BudgetMiddleware()],
         system_prompt=ORCHESTRATOR_PROMPT,
-        subagents=[HUMAN_CLUE_SUBAGENT, ENVIRONMENTAL_SUBAGENT],
-        response_format=CountryPrediction,
+        subagents=[URBAN_SUBAGENT, RURAL_SUBAGENT],
+        state_schema=GeoState,
         name="geoguesser-supervisor",
+    )
+
+
+def create_single_agent_ablation(model: str = FLASH_MODEL):
+    """Create the original single deep-agent ablation without specialists."""
+    register_cost_controlled_profile(model)
+    return create_deep_agent(
+        model=model,
+        tools=geoguesser_tools(),
+        middleware=[BudgetMiddleware()],
+        system_prompt=ORCHESTRATOR_PROMPT,
+        state_schema=GeoState,
+        name="geoguesser-single-agent-ablation",
     )
