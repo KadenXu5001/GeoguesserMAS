@@ -22,6 +22,11 @@ def _budget(runtime: Any) -> RuntimeBudget:
     return value
 
 
+def _context(runtime: Any) -> Mapping[str, Any] | None:
+    value = getattr(runtime, "context", None)
+    return value if isinstance(value, Mapping) else None
+
+
 def _continues_after_todo(request: Any) -> bool:
     """TodoMiddleware requires a model continuation after ``write_todos``.
 
@@ -106,6 +111,21 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         name = request.tool_call.get("name")
         budget = _budget(request.runtime)
         budget.check_capacity()
+        context = _context(request.runtime)
+        phase = context.get("orchestration_phase") if context is not None else None
+        if phase is not None and name == "write_todos" and phase != "todo":
+            raise BudgetExceeded("write_todos is only allowed in the initial planning phase")
+        if phase is not None and name == "task" and phase != "specialist":
+            raise BudgetExceeded("specialist delegation is only allowed after the todo phase")
+        if phase is not None and name == "reexamine_region" and phase != "specialist":
+            raise BudgetExceeded("re-examination is only allowed after specialist evidence")
+        if phase is not None and name == "emit_prediction" and phase != "specialist":
+            raise BudgetExceeded("prediction is only allowed after specialist evidence")
+        if name == "write_todos":
+            result = handler(request)
+            if context is not None:
+                context["orchestration_phase"] = "specialist"
+            return result
         if name == "task":
             args = request.tool_call.get("args") or {}
             specialist = (
@@ -135,4 +155,8 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                     tool_call_id=request.tool_call.get("id", ""),
                 )
             budget.consume_reexamination()
+            if context is not None:
+                context["orchestration_phase"] = "specialist"
+        elif name == "emit_prediction" and context is not None:
+            context["orchestration_phase"] = "done"
         return handler(request)

@@ -14,10 +14,11 @@ load_dotenv(ROOT / ".env")
 # Enable LangSmith while debugging the MAS. The upload is synchronous so the
 # process does not exit with a live background uploader waiting on a large
 # multimodal multipart request.
-os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# Use the explicit redacting LangChainTracer below instead of the automatic tracer.
+os.environ["LANGSMITH_TRACING"] = "false"
+os.environ["LANGCHAIN_TRACING_V2"] = "false"
 os.environ["LANGCHAIN_CALLBACKS_BACKGROUND"] = "false"
-os.environ["LANGSMITH_HIDE_INPUTS"] = "true"
+os.environ["LANGSMITH_HIDE_INPUTS"] = "false"
 os.environ["LANGSMITH_HIDE_OUTPUTS"] = "false"
 sys.path.insert(0, str(ROOT / "src"))
 
@@ -25,6 +26,7 @@ from geoguesser.mas_runner import run_mas_row  # noqa: E402
 from geoguesser.reference_data import load_reference_snapshot  # noqa: E402
 from geoguesser.storage import MongoRepository, connect_database  # noqa: E402
 from geoguesser.gemini_client import create_gemini_client  # noqa: E402
+from geoguesser.langsmith_tracing import create_langsmith_tracer  # noqa: E402
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -68,6 +70,7 @@ def main() -> int:
                 "python main.py seed-references first"
             )
         gemini_client = create_gemini_client()
+        langsmith_tracer = create_langsmith_tracer()
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open("w", encoding="utf-8") as handle:
             for index, row in enumerate(rows, start=1):
@@ -82,6 +85,7 @@ def main() -> int:
                         progress=lambda message, current=index: print(
                             f"[MAS {current}/{len(rows)}] {message}", flush=True
                         ),
+                        trace_callbacks=[langsmith_tracer],
                     )
                     result["status"] = "ok"
                 except Exception as exc:

@@ -1,0 +1,27 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Mexico",
+      "Paraguay",
+      "Bolivia",
+      "Argentina"
+    ],
+    "evidence": [
+      "Right-hand driving with double solid yellow center lines and white solid edge lines is consistent with the Americas, particularly Brazil and Mexico.",
+      "The hazy/smoky sky is a strong indicator of seasonal biomass burning (queimadas), which is highly prevalent in the Brazilian Cerrado (e.g., Mato Grosso, Goiás) during the dry season (August–October).",
+      "The presence of palm trees alongside bare deciduous trees is characteristic of the Cerrado biome's seasonal vegetation.",
+      "White-painted roadside fences are common features of large agricultural estates (fazendas) in rural Brazil.",
+      "The white pickup truck (ego-vehicle) is a standard vehicle for agricultural transport in Brazil's interior regions.",
+      "Lattice power pylons are common in Brazil's high-voltage transmission networks that cross vast rural agricultural zones."
+    ],
+    "contradictions": [
+      "Similar road markings and hazy conditions can be found in Mexico, but the combination of palm trees and the specific style of rural fencing and landscape is more indicative of South America.",
+      "Southeast Asian countries like Thailand or Indonesia also experience biomass burning and have palm trees, but they drive on the left."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-0d0fc1a42bee44968e03105aab779e23.json"
+}

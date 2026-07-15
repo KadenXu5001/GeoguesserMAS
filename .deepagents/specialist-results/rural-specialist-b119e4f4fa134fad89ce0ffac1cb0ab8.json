@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Argentina (Corrientes or Misiones Provinces)",
+      "Brazil (Paraná or Mato Grosso do Sul States)",
+      "Paraguay (Itapúa or Alto Paraná Departments)"
+    ],
+    "evidence": [
+      "The presence of a white pickup truck as the camera car is a primary characteristic of Gen 4 Google Street View coverage in Argentina (typically a Toyota Hilux).",
+      "Red/brown soil (Tierra Colorada/Terra Roxa) is highly indicative of the basaltic plateau covering Northeast Argentina (Misiones, Northern Corrientes), Southern Brazil (Paraná), and Eastern Paraguay.",
+      "Double yellow center lines with white edge lines and right-hand traffic are standard for national highways in Argentina (Rutas Nacionales) and Brazil.",
+      "The mix of deciduous trees and scattered palms (e.g., Butia or Caranday palms) is characteristic of the humid transition zones in Corrientes, Argentina and Southern Brazil.",
+      "Lattice electricity pylons are common for high-voltage transmission lines across rural landscapes in South America.",
+      "White decorative gates and fences are common markers for 'Estancias' in Argentina and 'Fazendas' in Brazil."
+    ],
+    "contradictions": [
+      "While the soil is red, much of Misiones (Argentina) is hilly; the 'flat agricultural land' description better fits Northern Corrientes (Argentina), Eastern Paraguay, or Northern Paraná (Brazil).",
+      "Brazil typically uses white or silver hatchbacks (e.g., Chevrolet Onix) as camera cars, making the white pickup truck observation more likely for Argentina or Paraguay."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-b119e4f4fa134fad89ce0ffac1cb0ab8.json"
+}

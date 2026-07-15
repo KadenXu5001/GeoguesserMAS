@@ -41,5 +41,7 @@ class GeoContext(TypedDict):
     reexamine_model: str
     require_specialist: bool
     reference_lookup_categories: set[str]
+    scan_allowed_categories: set[str]
     tool_response_cache: ToolResponseCache
     progress: Callable[[str], None]
+    orchestration_phase: str

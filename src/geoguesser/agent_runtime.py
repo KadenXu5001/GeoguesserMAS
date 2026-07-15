@@ -8,6 +8,38 @@ from geoguesser.runtime_state import GeoContext
 from geoguesser.tool_response_cache import ToolResponseCache
 
 
+_SCAN_CATEGORY_FAMILIES = {
+    "driving_side_and_markings": {
+        "driving_side", "road_markings", "chevrons_guardrails"
+    },
+    "vehicles_and_plates": {"vehicles", "license_plates"},
+    "signs_and_language": {"language_script", "country_domains", "urban_signage"},
+    "infrastructure": {
+        "bollards", "urban_utility_poles", "rural_utility_poles", "rural_roadside_features"
+    },
+    "terrain_vegetation_and_climate": {
+        "soil_geology", "vegetation_biomes", "terrain_scenery", "climate", "agriculture_land_use"
+    },
+    "architecture_and_settlement": {
+        "urban_architecture", "street_names_addresses", "businesses_domains",
+        "sidewalks_curbs", "public_transit", "rural_architecture"
+    },
+}
+
+
+def _scan_allowed_categories(extraction: Any) -> set[str]:
+    if not isinstance(extraction, dict):
+        return set()
+    allowed: set[str] = set()
+    for family, categories in _SCAN_CATEGORY_FAMILIES.items():
+        category_data = extraction.get(family)
+        if isinstance(category_data, dict) and category_data.get("status") in {
+            "present", "present_but_illegible"
+        }:
+            allowed.update(categories)
+    return allowed
+
+
 def build_runtime_context(
     *,
     budget: RuntimeBudget,
@@ -15,6 +47,7 @@ def build_runtime_context(
     reference_version: str,
     heading_paths: dict[int, Path],
     gemini_client: Any,
+    extraction: dict[str, Any] | None = None,
     reexamine_model: str = "gemini-3-flash-preview",
     require_specialist: bool = True,
     tool_response_cache: ToolResponseCache | None = None,
@@ -33,6 +66,8 @@ def build_runtime_context(
         "reexamine_model": reexamine_model,
         "require_specialist": require_specialist,
         "reference_lookup_categories": set(),
+        "scan_allowed_categories": _scan_allowed_categories(extraction),
         "tool_response_cache": tool_response_cache or ToolResponseCache(),
         "progress": progress or (lambda message: None),
+        "orchestration_phase": "todo",
     }

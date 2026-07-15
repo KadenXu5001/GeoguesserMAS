@@ -88,7 +88,7 @@ Deep Agents orchestrator (multimodal, built-in todolist middleware)
                                                    country prediction
 ```
 
-The orchestrator must delegate to at least one specialist, may call both when their clue families are independently useful, and records the choices in the trace. It must never call the same specialist twice. Custom middleware must enforce the two-specialist maximum and one total `reexamine_region` call; prompt instructions alone are insufficient.
+The orchestrator must delegate to at least one specialist, may call both when their clue families are independently useful, and records the choices in the trace. Each task names the extraction signal, visible observation, and unresolved question that justify the delegation. Specialists must justify every reference lookup from that evidence. It must never call the same specialist twice. Custom middleware must enforce the two-specialist maximum and one total `reexamine_region` call; prompt instructions alone are insufficient.
 
 ## Shared state
 

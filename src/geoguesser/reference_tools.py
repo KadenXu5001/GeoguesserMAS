@@ -34,11 +34,20 @@ def _claim_category(runtime: ToolRuntime[GeoContext, GeoState], family: str, cat
 
 
 def _lookup(
-    *, category: str, allowed: set[str], family: str, runtime: ToolRuntime[GeoContext, GeoState], country: str | None
+    *, category: str, allowed: set[str], family: str, runtime: ToolRuntime[GeoContext, GeoState], country: str | None,
+    justification: str,
 ) -> list[dict]:
+    if not justification.strip() or len(justification.strip()) < 12:
+        return [{"error": "lookup requires a specific evidence-based justification of at least 12 characters"}]
     progress = runtime.context.get("progress")
     if category not in allowed:
         return [{"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)}]
+    scan_allowed = runtime.context.get("scan_allowed_categories", set())
+    if scan_allowed and category not in scan_allowed:
+        return [{
+            "error": f"category {category} is not supported by the initial extraction scan",
+            "scan_allowed_categories": sorted(scan_allowed),
+        }]
     duplicate = _claim_category(runtime, family, category)
     if duplicate:
         return [{"error": duplicate}]
@@ -72,6 +81,7 @@ def _lookup(
 @tool
 def lookup_universal_clues(
     category: str,
+    justification: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -82,12 +92,14 @@ def lookup_universal_clues(
         family="universal",
         runtime=runtime,
         country=country,
+        justification=justification,
     )
 
 
 @tool
 def lookup_urban_clues(
     category: str,
+    justification: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -98,12 +110,14 @@ def lookup_urban_clues(
         family="urban",
         runtime=runtime,
         country=country,
+        justification=justification,
     )
 
 
 @tool
 def lookup_rural_clues(
     category: str,
+    justification: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -114,6 +128,7 @@ def lookup_rural_clues(
         family="rural",
         runtime=runtime,
         country=country,
+        justification=justification,
     )
 
 

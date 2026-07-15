@@ -1,0 +1,26 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Paraguay",
+      "Argentina",
+      "United States"
+    ],
+    "evidence": [
+      "Red/brown soil (Terra Rossa) is highly characteristic of the Paraná Basin, covering southern/central Brazil, eastern Paraguay, and Misiones (Argentina).",
+      "Double yellow center lines with white edge lines are the standard road marking configuration for Brazil and other Mercosur countries.",
+      "The presence of palms mixed with deciduous trees in a flat agricultural setting is typical of the Cerrado and Atlantic Forest transition zones in Mato Grosso do Sul, Paraná, and São Paulo (Brazil).",
+      "Lattice electricity pylons are common for high-voltage transmission across rural South America.",
+      "A white pickup truck camera car is a known vehicle used for Google Street View coverage in specific rural regions of Brazil (often Gen 3/4).",
+      "Decorative white fences or gates are common for 'Fazendas' (large farms) in rural Brazil."
+    ],
+    "contradictions": [
+      "While Misiones (Argentina) has red soil, it is generally more hilly and tropical than the described flat agricultural land.",
+      "The United States has red soil in the Southeast (Georgia) and Oklahoma, but the combination with palms and a white pickup truck camera car is less diagnostic than in Brazil."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-3a72b314fe8c492180ca394358896762.json"
+}

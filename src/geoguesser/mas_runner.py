@@ -113,6 +113,7 @@ def run_mas_row(
     agent: Any | None = None,
     root: Path = Path("."),
     progress: Callable[[str], None] | None = None,
+    trace_callbacks: list[Any] | None = None,
 ) -> dict[str, Any]:
     report = progress or (lambda message: None)
     views = {
@@ -141,11 +142,15 @@ def run_mas_row(
             reference_version=reference_version,
             heading_paths=views,
             gemini_client=gemini_client,
+            extraction=extraction.model_dump(),
             progress=report,
         )
         compiled_agent = agent or create_geoguesser_agent()
         report("supervisor running; selecting specialist and tools")
-        result = compiled_agent.invoke(build_agent_input(extraction, views), context=context)
+        invoke_config = {"callbacks": trace_callbacks} if trace_callbacks else None
+        result = compiled_agent.invoke(
+            build_agent_input(extraction, views), context=context, config=invoke_config
+        )
         report("supervisor graph completed; validating prediction")
     except BudgetExceeded as exc:
         return _capacity_result(row, str(exc))

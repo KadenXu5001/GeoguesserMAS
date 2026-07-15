@@ -62,8 +62,8 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 - [x] Make Deep Agents tools use per-run runtime context consistently for budget, heading paths, and model clients.
 - [x] Implement `emit_prediction` to write one worldwide country prediction and terminate successfully.
 - [x] Implement one-call `reexamine_region` with heading-aware padded cropping and a specific visual question.
-- [ ] Verify in LangSmith that specialists and the orchestrator never receive full image bytes.
-- [ ] Run one live MAS panorama and inspect its LangSmith trace for image-free specialist/orchestrator inputs.
+- [X] Verify in LangSmith that specialists and the orchestrator never receive full image bytes.
+- [x] Run one live MAS panorama and inspect its LangSmith trace for image-free specialist/orchestrator inputs.
 - [x] Verify in tests that both delegation and re-examination hard caps cannot be exceeded.
 - [x] Implement direct Gemini Flash and Gemini Pro baselines using identical four-heading inputs.
 - [x] Add an end-to-end MAS runner connecting manifest rows, Flash extraction, Deep Agents orchestration, and JSONL results.

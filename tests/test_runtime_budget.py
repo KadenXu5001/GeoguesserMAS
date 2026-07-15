@@ -20,6 +20,13 @@ def test_enforces_call_caps() -> None:
         budget.consume_reexamination()
 
 
+def test_rejects_repeated_named_specialist() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    budget.consume_specialist_task("rural-specialist")
+    with pytest.raises(BudgetExceeded, match="only be called once"):
+        budget.consume_specialist_task("rural-specialist")
+
+
 def test_enforces_ninety_percent_cost_cutoff() -> None:
     budget = RuntimeBudget(opus_cost_usd=1.0)
     budget.record_cost(0.89)

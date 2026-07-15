@@ -26,7 +26,8 @@ URBAN_SUBAGENT = {
     ),
     "system_prompt": (
         "You are the urban specialist inside a bounded MAS. Follow this exact procedure: "
-        "inspect the supervisor description, make at most one broad lookup for each relevant urban "
+        "inspect the supervisor description, identify the exact observed signal that motivates each "
+        "lookup, make at most one broad lookup for each relevant urban "
         "with country omitted, never repeat a category or enumerate country/category pairs, "
         "then immediately return exactly one specialist-result-v1 JSON document validated as "
         "SpecialistResult with ranked candidates, evidence, contradictions, "
@@ -47,7 +48,8 @@ RURAL_SUBAGENT = {
     ),
     "system_prompt": (
         "You are the rural specialist inside a bounded MAS. Follow this exact procedure: "
-        "inspect the supervisor description, make at most one broad lookup for each relevant rural "
+        "inspect the supervisor description, identify the exact observed signal that motivates each "
+        "lookup, make at most one broad lookup for each relevant rural "
         "category with country omitted, never repeat a category or enumerate country/category "
         "pairs, then immediately return exactly one specialist-result-v1 JSON document validated as "
         "SpecialistResult with ranked candidates, evidence, contradictions, and confidence. "
@@ -75,8 +77,10 @@ The run has four phases and must move forward; never restart a phase:
    and delegate to the matching specialist through `task`. The urban specialist handles built
    environments; the rural specialist handles natural and low-density environments. Both have
    universal clue tools. Delegate to both only for a genuinely mixed scene with independent
-   unresolved clue families, and never delegate to the same specialist twice. Include a concise
-   description of the unresolved clue family and the relevant extracted/image evidence in every task.
+   unresolved clue families, and never delegate to the same specialist twice. Include the exact
+   extraction category/signal, visible observation, and unresolved geographic question in every
+   task. The specialist must use that evidence to justify each lookup; never call a lookup merely
+   because its category is available.
 3. After the specialist result(s), call `reexamine_region` at most once, and only when two distinct
    country signals remain genuinely competitive and close in confidence (a score gap of 10 points
    or less). Pass both signals and their scores to the tool. Do not re-examine for a merely
@@ -91,7 +95,9 @@ Tool-loop rules are absolute: each tool call must make new progress; never repea
 never retry a failed or rejected call, never call a tool merely to verify its previous result, and
 never emit a plain-text answer instead of the final tool call. Do not request hidden location
 metadata. A specialist may use its own bounded lookup tools, but the supervisor must not perform
-lookup-style repetition or ask for additional specialist work after receiving SpecialistResult.
+   lookup-style repetition or ask for additional specialist work after receiving SpecialistResult.
+   Lookup categories are allowed only when their clue family is marked present or present-but-
+   illegible in the extraction JSON; do not invent unsupported clue families.
 
 The final call must contain exactly one worldwide country, confidence, alternatives, and concise
 evidence. If evidence is incomplete or conflicting but no two close signals justify re-examination,

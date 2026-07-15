@@ -1,21 +1,37 @@
 {
   "{\"category\": \"road_markings\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 1
+    "reads": 3
   },
   "{\"category\": \"rural_utility_poles\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 1
+    "reads": 3
   },
   "{\"category\": \"vehicles\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 0
+    "reads": 1
   },
   "{\"category\": \"soil_geology\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 0
+    "reads": 1
   },
   "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 2
+  },
+  "{\"category\": \"vegetation_biomes\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 1
+  },
+  "{\"category\": \"terrain_scenery\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 0
+  },
+  "{\"category\": \"climate\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [],
+    "reads": 0
+  },
+  "{\"category\": \"rural_roadside_features\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
     "reads": 0
   }

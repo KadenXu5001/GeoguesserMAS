@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Paraguay",
+      "Argentina"
+    ],
+    "evidence": [
+      "The presence of deep red/brown soil ('Terra Roxa') is a definitive characteristic of the basaltic plateaus in southern/central-western Brazil (Paraná, Mato Grosso do Sul, São Paulo) and eastern Paraguay (Alto Paraná, Itapúa).",
+      "Flat agricultural landscapes dominated by large-scale farming are typical of the soy-growing regions in Paraná and Mato Grosso do Sul.",
+      "A white pickup truck used as a camera car is a highly specific clue for rural Google Street View coverage in Brazil, where Toyota Hilux and Chevrolet S10 models are frequently utilized.",
+      "Road markings consisting of double yellow center lines and white edge lines with right-hand traffic are standard for major rural roads in Brazil and Paraguay.",
+      "The vegetation mix of deciduous trees and scattered palms (such as the Jerivá or Buriti) is consistent with the transitional biomes of the Atlantic Forest and Cerrado in South America.",
+      "Decorative white fences and gates are common features at the entrances of large Brazilian 'Fazendas' (farms)."
+    ],
+    "contradictions": [
+      "While Misiones, Argentina, features red soil, its terrain is significantly more undulating and hilly than the flat agricultural landscape described.",
+      "The flat agricultural heartland of Argentina (the Humid Pampas) typically features dark, loamy soil (mollisols) rather than red soil."
+    ],
+    "confidence": 90
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-7c5d05f1b67f46759ca2b9b106d1428f.json"
+}

@@ -92,7 +92,7 @@ class RuntimeBudget:
 
     def consume_specialist_task(self, specialist: str | None = None) -> bool:
         if specialist is not None and specialist in self.specialists_used:
-            return False
+            raise BudgetExceeded(f"specialist {specialist!r} may only be called once per run")
         if self.specialist_tasks >= self.max_specialist_tasks:
             raise BudgetExceeded("specialist delegation limit reached")
         self.specialist_tasks += 1

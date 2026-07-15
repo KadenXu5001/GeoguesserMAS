@@ -27,6 +27,15 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   completed its task.
 - Specialists are never replaced by cached responses. Every delegated specialist runs and can
   inspect its task, choose its permitted tools, and return a result to the supervisor.
+- A supervisor task must identify the relevant extraction category/signal, the visible observation,
+  and the unresolved geographic question. Specialists may not choose lookup categories from a
+  generic checklist.
+- Every reference lookup must include a concise, non-empty justification tied to the specialist's
+  observed evidence. A lookup without that justification is rejected by the tool contract.
+- The production execution path is a runtime-enforced sequence: `write_todos`, then one or more
+  specialist `task` calls, then optional `reexamine_region`, then exactly one `emit_prediction`.
+  The model may choose the specialist and permitted lookup categories from the initial extraction,
+  but it may not skip, reorder, repeat, or replace these phases with plain text.
 - Only deterministic reference-tool responses may be persisted in the local Deep Agents cache.
   A cached tool response may be read at most three times in total; after that, the tool must
   return a capacity warning and the MAS must not make another lookup API call.
@@ -53,16 +62,22 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 ## Observability
 
 - LangSmith tracing and upload are mandatory for production MAS runs. LangSmith receives the
-  run structure, tool calls, tool results, model outputs, timing, and usage; raw base64 image
-  inputs must be hidden from the trace to keep uploads bounded. The local MAS still receives and
-  processes the full images.
+  run structure, system prompts, tool calls, tool results, model outputs, timing, and usage; only
+  raw base64 image inputs are redacted from the trace to keep uploads bounded. The local MAS still
+  receives and processes the full images.
 - Trace delivery is synchronous and must be flushed before the process exits. A trace-upload
   failure is an observability failure and must be printed clearly in the terminal; it must not be
   confused with a model or MAS prediction failure.
 
 ## Change discipline
 
-Before changing MAS code, prompts, tools, state, or budgets, compare the proposed change against
-this constitution. Update the constitution first when a deliberate architectural decision changes
-the contract, then update code and tests to match. Do not introduce behavior outside this
-constitution without recording and approving the corresponding constitutional change.
+Before changing MAS code, prompts, tools, state, budgets, tracing, or architecture, perform a
+constitutional preflight: read this document completely, identify the affected clauses, and
+determine whether the requested behavior conforms. User requests are proposals and do not override
+this constitution. If a request conflicts with it, stop, identify the exact conflict, and request
+explicit approval for an amendment before editing code.
+
+When a deliberate architectural decision changes the contract, update this constitution first,
+then update the code, prompts, tools, state, tests, and documentation to match. Do not introduce
+behavior outside this constitution without recording and approving the corresponding constitutional
+change. Every completed change must include focused validation and a clean `git diff --check`.

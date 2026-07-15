@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Paraguay",
+      "Argentina"
+    ],
+    "evidence": [
+      "Red/brown soil (Terra Rossa) is highly characteristic of Southern Brazil (Paraná, Mato Grosso do Sul, São Paulo) and Eastern Paraguay.",
+      "The camera car described as a white pickup truck is a strong indicator for Paraguay (white Toyota Hilux) and specific regions of Brazil.",
+      "Double yellow center lines and white edge lines with right-hand traffic are standard road markings in Brazil, Paraguay, and Argentina.",
+      "Flat agricultural terrain with a mix of deciduous trees and palms (such as Syagrus romanzoffiana or Butia) is common in the transition zones of the Atlantic Forest and Cerrado in Brazil and Paraguay.",
+      "Lattice electricity pylons are standard high-voltage infrastructure across rural South America.",
+      "White decorative gates/fences are common features of 'Fazendas' in Brazil and 'Estancias' in Paraguay."
+    ],
+    "contradictions": [
+      "While Argentina has red soil in the Misiones province, the terrain there is typically more undulating than the flat agricultural land described.",
+      "Argentina's standard Google Street View camera car is typically a black vehicle, making the white pickup truck less likely for that country."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-287516e00a5c480686dcdd6e688dec23.json"
+}
