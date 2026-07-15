@@ -35,13 +35,31 @@ def _claim_category(runtime: ToolRuntime[GeoContext, GeoState], family: str, cat
 
 def _lookup(
     *, category: str, allowed: set[str], family: str, runtime: ToolRuntime[GeoContext, GeoState], country: str | None,
-    justification: str,
+    justification: str, object_observation: str,
 ) -> list[dict]:
+    specialist = runtime.context.get("active_specialist") or "unknown-specialist"
+    tool_counts = runtime.context.setdefault("specialist_tool_calls", {})
+    count = int(tool_counts.get(specialist, 0))
+    if count >= 3:
+        return [{"warning": f"{specialist} lookup cap reached (3 tools); stop and return SpecialistResult"}]
+    tool_counts[specialist] = count + 1
     if not justification.strip() or len(justification.strip()) < 12:
         return [{"error": "lookup requires a specific evidence-based justification of at least 12 characters"}]
     progress = runtime.context.get("progress")
     if category not in allowed:
         return [{"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)}]
+    observations = runtime.context.get("scan_objects", {}).get(category, set())
+    if object_observation not in observations:
+        return [{
+            "error": "lookup must cite an exact object observation from the supervisor extraction",
+            "category": category,
+            "allowed_objects": sorted(observations),
+        }]
+    if object_observation.casefold() not in justification.casefold():
+        return [{
+            "error": "lookup justification must explicitly explain why the exact object observation is worth this lookup",
+            "object_observation": object_observation,
+        }]
     scan_allowed = runtime.context.get("scan_allowed_categories", set())
     if scan_allowed and category not in scan_allowed:
         return [{
@@ -82,6 +100,7 @@ def _lookup(
 def lookup_universal_clues(
     category: str,
     justification: str,
+    object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -93,6 +112,7 @@ def lookup_universal_clues(
         runtime=runtime,
         country=country,
         justification=justification,
+        object_observation=object_observation,
     )
 
 
@@ -100,6 +120,7 @@ def lookup_universal_clues(
 def lookup_urban_clues(
     category: str,
     justification: str,
+    object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -111,6 +132,7 @@ def lookup_urban_clues(
         runtime=runtime,
         country=country,
         justification=justification,
+        object_observation=object_observation,
     )
 
 
@@ -118,6 +140,7 @@ def lookup_urban_clues(
 def lookup_rural_clues(
     category: str,
     justification: str,
+    object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
@@ -129,6 +152,7 @@ def lookup_rural_clues(
         runtime=runtime,
         country=country,
         justification=justification,
+        object_observation=object_observation,
     )
 
 

@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Senegal",
+      "Ghana",
+      "Cambodia",
+      "Mexico",
+      "Nigeria"
+    ],
+    "evidence": [
+      "The 'yellow strap' or ribbon on the left side of the roof rack is a well-known Google Street View meta-clue specifically associated with the car used in Senegal.",
+      "The description of the terrain as extremely flat, dry agricultural land with sparse grass and palm trees perfectly matches the Sahelian landscape of northern and central Senegal.",
+      "The hazy, overcast, or smoky sky is highly characteristic of the Harmattan season in West Africa, where Saharan dust creates such conditions in countries like Senegal.",
+      "Senegal is a right-hand driving country (traffic moves on the right), which matches the observation.",
+      "Lattice electricity pylons are a common feature of the rural power grid infrastructure in Senegal and neighboring West African nations."
+    ],
+    "contradictions": [
+      "Double yellow center lines are atypical for Senegal, which usually employs white road markings; however, they may be found on specific infrastructure like toll roads or newly developed highways."
+    ],
+    "confidence": 92
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-5aa58b90f65f42df835cac06cefae9f4.json"
+}

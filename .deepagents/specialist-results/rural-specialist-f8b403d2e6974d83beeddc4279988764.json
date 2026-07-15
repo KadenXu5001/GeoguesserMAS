@@ -1,0 +1,23 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Paraguay"
+    ],
+    "evidence": [
+      "The combination of deep red/orange soil (Terra Rossa) and extremely flat terrain is highly characteristic of the Brazilian Midwest (Mato Grosso, Mato Grosso do Sul, and Goiás).",
+      "Double yellow center lines paired with white outer shoulder lines are standard on Brazilian federal (BR) and state highways to indicate no-passing zones.",
+      "The vegetation description (dry grass, deciduous trees, and palm trees) matches the Cerrado biome, which covers much of central Brazil.",
+      "A smoky or hazy sky is a classic indicator of the 'queimadas' (agricultural burning season) common in Brazil's agricultural frontier during the dry months (July-September).",
+      "Triangular lattice high-voltage pylons are prominent features of the Brazilian National Interconnected System (SIN), particularly the long-distance lines crossing the interior.",
+      "Driving on the right side of the road is consistent with Brazil and most of South America."
+    ],
+    "contradictions": [
+      "Similar red soil and flat landscapes can be found in Eastern Paraguay, but the extensive infrastructure (large pylons) and the intensity of agricultural haze are more indicative of Brazil's larger interior states."
+    ],
+    "confidence": 92
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-f8b403d2e6974d83beeddc4279988764.json"
+}

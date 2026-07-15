@@ -1,9 +1,7 @@
 from types import SimpleNamespace
 
-import pytest
-
 from geoguesser.budget_middleware import BudgetMiddleware
-from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
+from geoguesser.runtime_budget import RuntimeBudget
 
 
 def runtime(budget: RuntimeBudget) -> SimpleNamespace:
@@ -88,6 +86,51 @@ def test_gemini_request_uses_google_output_token_setting() -> None:
 
     middleware.wrap_model_call(request, handler)
     assert captured["request"].model_settings == {"max_output_tokens": 400}
+
+
+def test_active_orchestrator_requires_a_tool_call() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = SimpleNamespace(
+        runtime=runtime(budget),
+        model_settings={},
+        model=SimpleNamespace(model="google_genai:gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+    captured = {}
+
+    def handler(value):
+        captured["request"] = value
+        return SimpleNamespace(result=SimpleNamespace(usage_metadata={}))
+
+    middleware.wrap_model_call(request, handler)
+    assert captured["request"].tool_choice == "any"
+
+
+def test_supervisor_can_update_todos_during_active_run() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "specialist"
+    called = []
+
+    result = middleware.wrap_tool_call(
+        request, lambda value: called.append(value) or "todos-updated"
+    )
+
+    assert result == "todos-updated"
+    assert called == [request]
+
+
+def test_initial_todo_plan_advances_to_specialist_phase() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "todo"
+
+    middleware.wrap_tool_call(request, lambda value: "todos-created")
+
+    assert request.runtime.context["orchestration_phase"] == "specialist"
 
 
 def test_todo_continuation_does_not_consume_decision_turn() -> None:

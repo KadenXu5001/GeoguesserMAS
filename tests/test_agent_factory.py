@@ -12,8 +12,13 @@ def test_factory_uses_official_deepagents_with_only_named_subagents(monkeypatch)
         captured["create"] = kwargs
         return "compiled-agent"
 
+    def fake_create_specialist(**kwargs):
+        captured.setdefault("specialists", []).append(kwargs)
+        return "compiled-specialist"
+
     monkeypatch.setattr(agent_factory, "register_harness_profile", fake_register)
     monkeypatch.setattr(agent_factory, "create_deep_agent", fake_create)
+    monkeypatch.setattr(agent_factory, "create_agent", fake_create_specialist)
 
     result = agent_factory.create_geoguesser_agent()
 
@@ -28,9 +33,10 @@ def test_factory_uses_official_deepagents_with_only_named_subagents(monkeypatch)
         "urban-specialist",
         "rural-specialist",
     ]
+    assert all("middleware" not in item for item in captured["specialists"])
     assert len(captured["create"]["middleware"]) == 1
     assert captured["create"]["middleware"][0].__class__.__name__ == "BudgetMiddleware"
-    assert captured["create"]["response_format"].__class__.__name__ == "ToolStrategy"
+    assert "response_format" not in captured["create"]
     assert captured["create"]["state_schema"] is agent_factory.GeoState
 
 

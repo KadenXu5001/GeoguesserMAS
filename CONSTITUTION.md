@@ -32,10 +32,14 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   generic checklist.
 - Every reference lookup must include a concise, non-empty justification tied to the specialist's
   observed evidence. A lookup without that justification is rejected by the tool contract.
-- The production execution path is a runtime-enforced sequence: `write_todos`, then one or more
-  specialist `task` calls, then optional `reexamine_region`, then exactly one `emit_prediction`.
-  The model may choose the specialist and permitted lookup categories from the initial extraction,
-  but it may not skip, reorder, repeat, or replace these phases with plain text.
+- The production execution path is a runtime-enforced sequence: an initial `write_todos` plan,
+  then one or more specialist `task` calls, then optional `reexamine_region`, then exactly one
+  `emit_prediction`. The supervisor may call `write_todos` again while the run is active to update
+  existing todo statuses from pending/in-progress to completed, but todo updates may not introduce
+  a new planning phase, invoke a specialist, or occur after finalization. Specialists never receive
+  or call `write_todos`. The model may choose the specialist and permitted lookup categories from
+  the initial extraction, but it may not skip, reorder, or replace the required phases with plain
+  text.
 - Only deterministic reference-tool responses may be persisted in the local Deep Agents cache.
   A cached tool response may be read at most three times in total; after that, the tool must
   return a capacity warning and the MAS must not make another lookup API call.
@@ -52,7 +56,9 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 
 - The supervisor makes one finite todo plan, progresses forward, and calls `emit_prediction` exactly
   once. `emit_prediction` terminates the run.
-- No tool may be repeated, retried, or called merely to verify a previous result.
+- No tool may be repeated, retried, or called merely to verify a previous result, except that the
+  supervisor may repeat `write_todos` only for legitimate status updates to the existing finite
+  plan.
 - Runtime middleware remains the source of hard enforcement for specialist, re-examination,
   orchestrator-turn, token, and cost limits. Prompts may explain these limits but cannot replace
   code enforcement.

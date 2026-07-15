@@ -1,0 +1,22 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Colombia"
+    ],
+    "evidence": [
+      "Double yellow solid center lines with white outer edge lines are standard road markings in both Brazil and Colombia.",
+      "Reddish/orange soil is a prominent feature of the Brazilian Cerrado region (Central-West) and parts of the Colombian Llanos.",
+      "The savanna-like landscape with flat grassy fields and scattered deciduous trees matches the Cerrado biome in Brazil (e.g., Mato Grosso or Goiás).",
+      "A group of palm trees in a savanna context is characteristic of the 'veredas' in Brazil or the flooded savannas of Colombia.",
+      "White perimeter walls with decorative pillars are common architectural elements for rural estate (fazenda) entrances in Brazil."
+    ],
+    "contradictions": [
+      "The presence of double yellow lines and reddish soil makes Colombia a strong alternative, as the Llanos Orientales shares many landscape similarities with the Brazilian Cerrado."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-f7f384aab60c4e2cb74366dd7b091818.json"
+}

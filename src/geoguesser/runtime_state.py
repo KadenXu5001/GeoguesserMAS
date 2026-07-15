@@ -26,8 +26,8 @@ class GeoState(TypedDict, total=False):
     specialist_results: list[dict[str, Any]]
     reexamine_results: Annotated[list[dict[str, Any]], add]
     final_prediction: dict[str, Any]
-    # Deep Agents writes the validated response_format result here when the
-    # supervisor finalizes through structured output instead of emit_prediction.
+    # Retained for framework compatibility; production finalization is performed by
+    # the constitutionally required emit_prediction tool.
     structured_response: dict[str, Any]
     usage: Annotated[list[UsageEvent], add]
 
@@ -42,6 +42,9 @@ class GeoContext(TypedDict):
     require_specialist: bool
     reference_lookup_categories: set[str]
     scan_allowed_categories: set[str]
+    scan_objects: dict[str, set[str]]
+    active_specialist: str | None
+    specialist_tool_calls: dict[str, int]
     tool_response_cache: ToolResponseCache
     progress: Callable[[str], None]
     orchestration_phase: str

@@ -13,19 +13,19 @@
   },
   "{\"category\": \"soil_geology\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 1
+    "reads": 2
   },
   "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 2
+    "reads": 3
   },
   "{\"category\": \"vegetation_biomes\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 1
+    "reads": 2
   },
   "{\"category\": \"terrain_scenery\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 0
+    "reads": 1
   },
   "{\"category\": \"climate\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
@@ -33,6 +33,6 @@
   },
   "{\"category\": \"rural_roadside_features\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 0
+    "reads": 1
   }
 }

@@ -1,0 +1,23 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Bolivia",
+      "Paraguay"
+    ],
+    "evidence": [
+      "Double yellow center lines and white edge lines are standard road markings in Brazil.",
+      "Flat, arid plains with red soil and sparse tropical palms are characteristic of the Brazilian Cerrado and the transition to the Amazon/Caatinga (e.g., Mato Grosso, Tocantins, Maranhão).",
+      "The camera vehicle (white hood, black roof rails, black antenna) matches the Gen 4 Google Street View car frequently found in Brazil.",
+      "Hazy or smoky skies are common in the Brazilian interior during the dry season due to agricultural burning (queimadas)."
+    ],
+    "contradictions": [
+      "Double yellow lines are also used in North American countries like Mexico, but the specific landscape and vehicle meta strongly favor South America.",
+      "Red soil and palms can be found in Eastern Bolivia (Santa Cruz), though infrastructure and camera meta are more distinctive for Brazil."
+    ],
+    "confidence": 92
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-42163d3a67de4d7eb36da8dec16584fc.json"
+}

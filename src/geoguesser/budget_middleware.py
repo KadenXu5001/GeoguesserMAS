@@ -7,7 +7,7 @@ from typing import Any
 from langchain.agents.middleware.types import AgentMiddleware, ModelRequest, ToolCallRequest
 from langchain_core.messages import ToolMessage
 
-from geoguesser.runtime_budget import RuntimeBudget
+from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
 from geoguesser.specialist_result import normalize_specialist_result
 
 
@@ -94,7 +94,15 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         if provider_limit_key != "max_tokens":
             settings.pop("max_tokens", None)
         started = perf_counter()
-        bounded_request = request.override(model_settings=settings) if hasattr(request, "override") else request
+        # The production contract is tool-driven: while the orchestration is active, the
+        # supervisor must choose a tool rather than terminate with an ordinary text message.
+        # ``emit_prediction`` is the only valid terminal path; wrap_tool_call enforces the
+        # phase-specific ordering when the model makes its choice.
+        overrides = {"model_settings": settings}
+        if context := _context(request.runtime):
+            if context.get("orchestration_phase") != "done":
+                overrides["tool_choice"] = "any"
+        bounded_request = request.override(**overrides) if hasattr(request, "override") else request
         response = handler(bounded_request)
         usage = getattr(getattr(response, "result", None), "usage_metadata", None)
         if isinstance(usage, Mapping):
@@ -113,8 +121,8 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         budget.check_capacity()
         context = _context(request.runtime)
         phase = context.get("orchestration_phase") if context is not None else None
-        if phase is not None and name == "write_todos" and phase != "todo":
-            raise BudgetExceeded("write_todos is only allowed in the initial planning phase")
+        if phase is not None and name == "write_todos" and phase not in {"todo", "specialist"}:
+            raise BudgetExceeded("write_todos is only allowed while the MAS run is active")
         if phase is not None and name == "task" and phase != "specialist":
             raise BudgetExceeded("specialist delegation is only allowed after the todo phase")
         if phase is not None and name == "reexamine_region" and phase != "specialist":
@@ -123,7 +131,7 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             raise BudgetExceeded("prediction is only allowed after specialist evidence")
         if name == "write_todos":
             result = handler(request)
-            if context is not None:
+            if context is not None and context.get("orchestration_phase") == "todo":
                 context["orchestration_phase"] = "specialist"
             return result
         if name == "task":
@@ -143,7 +151,14 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                     tool_call_id=request.tool_call.get("id", ""),
                 )
             budget.consume_specialist_task(str(specialist))
-            result = handler(request)
+            previous_specialist = context.get("active_specialist") if context is not None else None
+            if context is not None:
+                context["active_specialist"] = str(specialist)
+            try:
+                result = handler(request)
+            finally:
+                if context is not None:
+                    context["active_specialist"] = previous_specialist
             normalized, _ = normalize_specialist_result(str(specialist), result)
             if callable(progress):
                 progress(f"{specialist} returned standardized JSON result")
