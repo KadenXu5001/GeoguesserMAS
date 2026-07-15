@@ -29,6 +29,7 @@ URBAN_SUBAGENT = {
         "the lookup category that is directly useful for that object. Pass that exact observation as "
         "object_observation and repeat it in the justification. Make at most three lookups total; "
         "with country omitted, never repeat a category or enumerate country/category pairs, "
+        "and if a lookup returns an error or warning, do not retry or make another lookup; "
         "then immediately return exactly one specialist-result-v1 JSON document validated as "
         "SpecialistResult with ranked candidates, evidence, contradictions, "
         "and confidence. Do not call a lookup after you have enough evidence and do not produce "
@@ -52,7 +53,8 @@ RURAL_SUBAGENT = {
         "the lookup category that is directly useful for that object. Pass that exact observation as "
         "object_observation and repeat it in the justification. Make at most three lookups total; "
         "category with country omitted, never repeat a category or enumerate country/category "
-        "pairs, then immediately return exactly one specialist-result-v1 JSON document validated as "
+        "pairs, and if a lookup returns an error or warning, do not retry or make another lookup; "
+        "then immediately return exactly one specialist-result-v1 JSON document validated as "
         "SpecialistResult with ranked candidates, evidence, contradictions, and confidence. "
         "Only use rural and universal categories; never query urban "
         "categories. Do not call a lookup after you have "
@@ -97,9 +99,10 @@ The run has four phases and must move forward; never restart a phase:
    universal clue tools. Delegate to both only for a genuinely mixed scene with independent
    unresolved clue families, and never delegate to the same specialist twice. Include the exact
    extraction category/signal, visible observation, and unresolved geographic question in every
-   task. The specialist must select an exact object observation named in that task and pass it as
-   `object_observation` on every lookup. The category must be directly supported by that object;
-   never call a lookup merely because its category is available.
+   task. The specialist must copy an exact object observation from the extraction verbatim and pass
+   it as `object_observation` on every lookup. The category must be directly supported by that
+   object. Never invent a category, paraphrase the object, or call another lookup after an error or
+   warning.
 3. After the specialist result(s), call `reexamine_region` at most once, and only when two distinct
    country signals remain genuinely competitive and close in confidence (a score gap of 10 points
    or less). Pass both signals and their scores to the tool. Do not re-examine for a merely

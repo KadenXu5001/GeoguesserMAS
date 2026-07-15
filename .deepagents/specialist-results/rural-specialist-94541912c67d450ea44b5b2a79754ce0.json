@@ -1,0 +1,24 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Colombia",
+      "Mexico",
+      "Paraguay"
+    ],
+    "evidence": [
+      "Double solid yellow center lines are standard road markings in the Americas, including Brazil and Colombia.",
+      "Reddish-brown soil is highly characteristic of the Brazilian Highlands and the Cerrado region (Terra Rossa).",
+      "Flat, dry agricultural fields and a hazy sky are typical of the Brazilian interior during the 'queimadas' (burning season) in states like Mato Grosso or Goiás.",
+      "Metal lattice transmission towers are common for long-distance electricity transport across the vast flat plains of Brazil.",
+      "Presence of sparse palms in a flat, agricultural context further supports the Brazilian Cerrado or Llanos-like environments."
+    ],
+    "contradictions": [
+      "Double yellow lines are also used in Mexico and Colombia, but the combination with pervasive red soil and flat agricultural plains is most synonymous with central Brazil."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-94541912c67d450ea44b5b2a79754ce0.json"
+}

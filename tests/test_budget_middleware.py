@@ -46,6 +46,22 @@ def test_third_task_returns_feedback_from_middleware(tmp_path) -> None:
     assert "cap reached" in result.content
 
 
+def test_duplicate_specialist_task_returns_feedback_without_calling_handler() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    middleware.wrap_tool_call(
+        tool_request("task", budget, "rural-specialist"), lambda value: SPECIALIST_JSON
+    )
+    called = []
+    result = middleware.wrap_tool_call(
+        tool_request("task", budget, "rural-specialist"),
+        lambda value: called.append(value) or "unreachable",
+    )
+
+    assert "may only be called once" in result.content
+    assert called == []
+
+
 def test_model_request_receives_output_token_cap_and_usage_is_recorded() -> None:
     from types import SimpleNamespace
 
@@ -131,6 +147,22 @@ def test_initial_todo_plan_advances_to_specialist_phase() -> None:
     middleware.wrap_tool_call(request, lambda value: "todos-created")
 
     assert request.runtime.context["orchestration_phase"] == "specialist"
+
+
+def test_plain_supervisor_response_is_continued_instead_of_terminating() -> None:
+    middleware = BudgetMiddleware()
+    runtime_context = SimpleNamespace(
+        context={
+            "orchestration_phase": "specialist",
+            "geo_budget": RuntimeBudget(opus_cost_usd=1.0),
+        }
+    )
+    result = middleware.after_model(
+        {"messages": [SimpleNamespace(tool_calls=[])]}, runtime_context
+    )
+
+    assert result["jump_to"] == "model"
+    assert "task to delegate" in result["messages"][0].content
 
 
 def test_todo_continuation_does_not_consume_decision_turn() -> None:

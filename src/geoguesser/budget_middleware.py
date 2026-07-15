@@ -4,8 +4,8 @@ from collections.abc import Callable, Mapping
 from time import perf_counter
 from typing import Any
 
-from langchain.agents.middleware.types import AgentMiddleware, ModelRequest, ToolCallRequest
-from langchain_core.messages import ToolMessage
+from langchain.agents.middleware.types import AgentMiddleware, ModelRequest, ToolCallRequest, hook_config
+from langchain_core.messages import HumanMessage, ToolMessage
 
 from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
 from geoguesser.specialist_result import normalize_specialist_result
@@ -73,6 +73,32 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         self.max_output_tokens = max_output_tokens
         self.component = component
 
+    @hook_config(can_jump_to=["model"])
+    def after_model(self, state: Any, runtime: Any) -> dict[str, Any] | None:
+        """Do not let a plain supervisor response terminate an active MAS phase."""
+        context = getattr(runtime, "context", None)
+        phase = context.get("orchestration_phase") if isinstance(context, Mapping) else None
+        if phase not in {"todo", "specialist"}:
+            return None
+        budget = context.get(CONTEXT_KEY) if isinstance(context, Mapping) else None
+        messages = state.get("messages", []) if isinstance(state, Mapping) else []
+        if not messages or getattr(messages[-1], "tool_calls", None):
+            return None
+        if phase == "todo":
+            next_action = "write_todos"
+        elif isinstance(budget, RuntimeBudget) and budget.specialist_tasks == 0:
+            next_action = "task to delegate to a configured specialist"
+        else:
+            next_action = "the next required MAS tool"
+        return {
+            "messages": [
+                HumanMessage(
+                    content=f"Continue the required MAS workflow. Call {next_action} now; do not return plain text."
+                )
+            ],
+            "jump_to": "model",
+        }
+
     def wrap_model_call(self, request: ModelRequest[Any], handler: Callable[..., Any]) -> Any:
         budget = _budget(request.runtime)
         budget.check_capacity()
@@ -122,13 +148,25 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         context = _context(request.runtime)
         phase = context.get("orchestration_phase") if context is not None else None
         if phase is not None and name == "write_todos" and phase not in {"todo", "specialist"}:
-            raise BudgetExceeded("write_todos is only allowed while the MAS run is active")
+            return ToolMessage(
+                content="Todo updates are closed after finalization; continue with the required next tool.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
         if phase is not None and name == "task" and phase != "specialist":
-            raise BudgetExceeded("specialist delegation is only allowed after the todo phase")
+            return ToolMessage(
+                content="Specialist delegation is only allowed after the initial todo plan and before reexamination.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
         if phase is not None and name == "reexamine_region" and phase != "specialist":
-            raise BudgetExceeded("re-examination is only allowed after specialist evidence")
-        if phase is not None and name == "emit_prediction" and phase != "specialist":
-            raise BudgetExceeded("prediction is only allowed after specialist evidence")
+            return ToolMessage(
+                content="Reexamination is only allowed after specialist evidence and may occur once.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
+        if phase is not None and name == "emit_prediction" and phase not in {"specialist", "finalizing"}:
+            return ToolMessage(
+                content="Prediction is only allowed after specialist evidence.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
         if name == "write_todos":
             result = handler(request)
             if context is not None and context.get("orchestration_phase") == "todo":
@@ -143,14 +181,15 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 or "unknown-specialist"
             ) if isinstance(args, Mapping) else "unknown-specialist"
             progress = getattr(request.runtime, "context", {}).get("progress")
-            if callable(progress):
-                progress(f"delegating to {specialist}")
-            if budget.specialist_tasks >= budget.max_specialist_tasks:
+            try:
+                budget.consume_specialist_task(str(specialist))
+            except BudgetExceeded as exc:
                 return ToolMessage(
-                    content="Specialist delegation cap reached; continue with existing specialist results.",
+                    content=f"{exc}; do not call this specialist again; continue with the next required tool.",
                     tool_call_id=request.tool_call.get("id", ""),
                 )
-            budget.consume_specialist_task(str(specialist))
+            if callable(progress):
+                progress(f"delegating to {specialist}")
             previous_specialist = context.get("active_specialist") if context is not None else None
             if context is not None:
                 context["active_specialist"] = str(specialist)
@@ -171,7 +210,7 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 )
             budget.consume_reexamination()
             if context is not None:
-                context["orchestration_phase"] = "specialist"
+                context["orchestration_phase"] = "finalizing"
         elif name == "emit_prediction" and context is not None:
             context["orchestration_phase"] = "done"
         return handler(request)

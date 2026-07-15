@@ -6,6 +6,21 @@ from geoguesser.runtime_state import GeoContext, GeoState
 from geoguesser.tool_response_cache import ToolResponseCache
 
 import json
+from typing import Literal
+
+
+UniversalCategory = Literal[
+    "driving_side", "license_plates", "road_markings", "language_script",
+    "country_domains", "bollards", "chevrons_guardrails", "vehicles",
+]
+UrbanCategory = Literal[
+    "urban_architecture", "urban_utility_poles", "urban_signage",
+    "street_names_addresses", "businesses_domains", "sidewalks_curbs", "public_transit",
+]
+RuralCategory = Literal[
+    "soil_geology", "vegetation_biomes", "terrain_scenery", "climate",
+    "agriculture_land_use", "rural_architecture", "rural_utility_poles", "rural_roadside_features",
+]
 
 
 def _repository(runtime: ToolRuntime[GeoContext, GeoState]):
@@ -98,7 +113,7 @@ def _lookup(
 
 @tool
 def lookup_universal_clues(
-    category: str,
+    category: UniversalCategory,
     justification: str,
     object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],
@@ -118,7 +133,7 @@ def lookup_universal_clues(
 
 @tool
 def lookup_urban_clues(
-    category: str,
+    category: UrbanCategory,
     justification: str,
     object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],
@@ -138,7 +153,7 @@ def lookup_urban_clues(
 
 @tool
 def lookup_rural_clues(
-    category: str,
+    category: RuralCategory,
     justification: str,
     object_observation: str,
     runtime: ToolRuntime[GeoContext, GeoState],

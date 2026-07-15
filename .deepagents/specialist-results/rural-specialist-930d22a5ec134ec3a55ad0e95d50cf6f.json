@@ -1,0 +1,24 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Paraguay",
+      "Colombia"
+    ],
+    "evidence": [
+      "The presence of 'red soil visible on the roadside' is a hallmark of the Brazilian interior, particularly in agricultural states like Mato Grosso, Mato Grosso do Sul, and Paraná.",
+      "Road markings consisting of a 'double yellow center line' and 'solid white outer shoulder lines' are standard on Brazilian federal and state highways (BR/SP/PR roads).",
+      "The 'flat agricultural or grassy terrain' matches the Cerrado biome or the southern plains, common in central and southern Brazil.",
+      "The 'high-voltage electrical transmission tower' design is consistent with the extensive power grid infrastructure found in rural Brazil.",
+      "Driving on the right and the Google car characteristics are consistent with Brazil."
+    ],
+    "contradictions": [
+      "While Paraguay also features 'red soil' and 'flat agricultural terrain', the specific quality of the highway infrastructure and the presence of high-voltage transmission towers are more characteristic of Brazil's larger-scale development.",
+      "Colombia's rural highways often feature similar markings, but the country is generally more mountainous; the flat terrain described is limited to specific regions like Los Llanos."
+    ],
+    "confidence": 90
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-930d22a5ec134ec3a55ad0e95d50cf6f.json"
+}

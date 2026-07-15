@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from threading import Lock
 from time import monotonic
 from typing import Any
 
@@ -31,6 +32,8 @@ class RuntimeBudget:
     spent_usd: float = 0.0
     usage_events: list[dict[str, Any]] | None = None
     specialists_used: set[str] = field(default_factory=set)
+    # Opaque runtime-only synchronization; it must not become part of the agent schema.
+    _specialist_lock: Any = field(default_factory=Lock, repr=False)
     started_at: float = field(default_factory=monotonic)
     capacity_warning: str | None = None
 
@@ -91,14 +94,15 @@ class RuntimeBudget:
         self.orchestrator_turns += 1
 
     def consume_specialist_task(self, specialist: str | None = None) -> bool:
-        if specialist is not None and specialist in self.specialists_used:
-            raise BudgetExceeded(f"specialist {specialist!r} may only be called once per run")
-        if self.specialist_tasks >= self.max_specialist_tasks:
-            raise BudgetExceeded("specialist delegation limit reached")
-        self.specialist_tasks += 1
-        if specialist is not None:
-            self.specialists_used.add(specialist)
-        return True
+        with self._specialist_lock:
+            if specialist is not None and specialist in self.specialists_used:
+                raise BudgetExceeded(f"specialist {specialist!r} may only be called once per run")
+            if self.specialist_tasks >= self.max_specialist_tasks:
+                raise BudgetExceeded("specialist delegation limit reached")
+            self.specialist_tasks += 1
+            if specialist is not None:
+                self.specialists_used.add(specialist)
+            return True
 
     def consume_reexamination(self) -> None:
         if self.reexaminations >= self.max_reexaminations:
