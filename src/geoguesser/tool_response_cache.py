@@ -18,6 +18,9 @@ class ToolResponseCache:
         root = Path(os.environ.get("DEEPAGENTS_CACHE_DIR", ".deepagents"))
         self.path = path or root / "tool_response_cache.json"
         self._lock = threading.Lock()
+        # The cache contents persist across runs, but read capacity is scoped to this
+        # cache instance, which is created for one MAS runtime context/run.
+        self._reads: dict[str, int] = {}
 
     def _load(self) -> dict[str, Any]:
         if not self.path.exists():
@@ -40,11 +43,10 @@ class ToolResponseCache:
             entry = data.get(key)
             if not isinstance(entry, dict) or "response" not in entry:
                 return None, None
-            reads = int(entry.get("reads", 0))
+            reads = self._reads.get(key, 0)
             if reads >= MAX_CACHE_READS:
                 return None, "tool response cache read capacity reached"
-            entry["reads"] = reads + 1
-            self._save(data)
+            self._reads[key] = reads + 1
             return entry["response"], None
 
     def put(self, key: str, response: Any) -> None:
@@ -52,5 +54,5 @@ class ToolResponseCache:
             data = self._load()
             if key in data:
                 return
-            data[key] = {"response": response, "reads": 0}
+            data[key] = {"response": response}
             self._save(data)

@@ -13,7 +13,7 @@
   },
   "{\"category\": \"soil_geology\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
-    "reads": 2
+    "reads": 3
   },
   "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],

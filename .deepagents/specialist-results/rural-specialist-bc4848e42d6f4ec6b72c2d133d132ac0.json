@@ -1,0 +1,22 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Mexico"
+    ],
+    "evidence": [
+      "The presence of red soil is a highly characteristic feature of the Brazilian interior, particularly in agricultural states like Mato Grosso and Goiás.",
+      "Double solid yellow center lines with white solid edge lines are the standard road marking configuration in Brazil for two-way traffic.",
+      "The description of a white camera car with black roof rails and a front-mounted antenna matches the Gen 4 Google Street View vehicle used extensively in Brazil.",
+      "Large-scale flat dry agricultural fields and a hazy/smoky sky are indicative of the Brazilian Cerrado during the 'queimadas' (burning season).",
+      "High voltage lattice pylons of this nature are consistent with Brazilian regional power grid infrastructure."
+    ],
+    "contradictions": [
+      "While double yellow lines are also used in Mexico, the combination of red soil and specific camera car features is significantly more common in Brazil."
+    ],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-bc4848e42d6f4ec6b72c2d133d132ac0.json"
+}

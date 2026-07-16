@@ -45,6 +45,7 @@ class GeoContext(TypedDict):
     scan_objects: dict[str, set[str]]
     active_specialist: str | None
     specialist_tool_calls: dict[str, int]
+    todo_plan: list[dict[str, str]]
     tool_response_cache: ToolResponseCache
     progress: Callable[[str], None]
     orchestration_phase: str

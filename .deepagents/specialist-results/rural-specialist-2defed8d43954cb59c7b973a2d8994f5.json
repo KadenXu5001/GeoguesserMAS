@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Brazil (Mato Grosso)",
+      "Brazil (Goiás)",
+      "Colombia",
+      "Mexico"
+    ],
+    "evidence": [
+      "Double yellow continuous center lines are the standard in Brazil for no-passing zones.",
+      "The presence of deep reddish soil in large, flat agricultural fields is highly characteristic of the Brazilian Center-West, specifically states like Mato Grosso and Goiás.",
+      "Scattered palm trees and deciduous trees in a flat savanna-like landscape match the Brazilian Cerrado biome.",
+      "A low perimeter wall with pillars is a common architectural style for 'fazenda' (farm) entrances in rural Brazil.",
+      "The white pickup truck camera vehicle is frequently seen in Gen 4 coverage in Brazil."
+    ],
+    "contradictions": [
+      "Double yellow lines are also used in Colombia and Mexico, but the combination of extreme flatness and specific red soil is most indicative of the Brazilian interior."
+    ],
+    "confidence": 92
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-2defed8d43954cb59c7b973a2d8994f5.json"
+}

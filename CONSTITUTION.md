@@ -41,8 +41,9 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   the initial extraction, but it may not skip, reorder, or replace the required phases with plain
   text.
 - Only deterministic reference-tool responses may be persisted in the local Deep Agents cache.
-  A cached tool response may be read at most three times in total; after that, the tool must
-  return a capacity warning and the MAS must not make another lookup API call.
+  A cached tool response may be read at most three times in total per MAS run; the read counter
+  resets for each new run. After that per-run limit, the tool must return a capacity warning and
+  the MAS must not make another lookup API call.
 
 ## Re-examination policy
 

@@ -14,6 +14,100 @@ from geoguesser.specialist_result import normalize_specialist_result
 CONTEXT_KEY = "geo_budget"
 
 
+_SPECIALIST_CATEGORIES = {
+    "urban-specialist": {
+        "driving_side", "license_plates", "road_markings", "language_script",
+        "country_domains", "bollards", "chevrons_guardrails", "vehicles",
+        "urban_architecture", "urban_utility_poles", "urban_signage",
+        "street_names_addresses", "businesses_domains", "sidewalks_curbs", "public_transit",
+    },
+    "rural-specialist": {
+        "driving_side", "license_plates", "road_markings", "language_script",
+        "country_domains", "bollards", "chevrons_guardrails", "vehicles",
+        "soil_geology", "vegetation_biomes", "terrain_scenery", "climate",
+        "agriculture_land_use", "rural_architecture", "rural_utility_poles",
+        "rural_roadside_features",
+    },
+}
+
+_TODO_STATUSES = {"pending", "in_progress", "completed"}
+
+
+def _todo_validation_error(request: ToolCallRequest, context: Mapping[str, Any]) -> str | None:
+    """Enforce the MAS's single, forward-only todo plan before the tool runs."""
+    args = request.tool_call.get("args") or {}
+    todos = args.get("todos") if isinstance(args, Mapping) else None
+    if not isinstance(todos, list) or not todos:
+        return "write_todos requires a non-empty todo list"
+
+    normalized: list[dict[str, str]] = []
+    for item in todos:
+        if not isinstance(item, Mapping):
+            return "each todo must be an object with content and status"
+        content = item.get("content")
+        status = item.get("status")
+        if not isinstance(content, str) or not content.strip():
+            return "each todo requires non-empty content"
+        if status not in _TODO_STATUSES:
+            return "each todo status must be pending, in_progress, or completed"
+        normalized.append({"content": content, "status": status})
+
+    previous = context.get("todo_plan")
+    if not previous:
+        if normalized[0]["status"] != "in_progress":
+            return "the first todo must be in_progress in the initial plan"
+        if any(item["status"] != "pending" for item in normalized[1:]):
+            return "future todos must be pending in the initial plan"
+        return None
+
+    if len(previous) != len(normalized) or any(
+        old["content"] != new["content"]
+        for old, new in zip(previous, normalized)
+    ):
+        return "todo updates may only update statuses on the existing plan"
+
+    allowed_transitions = {
+        "pending": {"pending", "in_progress"},
+        "in_progress": {"in_progress", "completed"},
+        "completed": {"completed"},
+    }
+    for old, new in zip(previous, normalized):
+        if new["status"] not in allowed_transitions[old["status"]]:
+            return "todo statuses must progress pending -> in_progress -> completed"
+    if normalized[-1]["status"] == "completed":
+        return "the final prediction todo cannot be completed before emit_prediction"
+    return None
+
+
+def _with_authorized_objects(
+    request: ToolCallRequest,
+    specialist: str,
+    context: Mapping[str, Any] | None,
+) -> ToolCallRequest:
+    if context is None or not isinstance(request.tool_call.get("args"), Mapping):
+        return request
+    objects = context.get("scan_objects", {})
+    categories = _SPECIALIST_CATEGORIES.get(specialist, set())
+    lines = [
+        f"- {category}: {observation}"
+        for category in sorted(categories)
+        for observation in sorted(objects.get(category, set()))
+    ]
+    if not lines:
+        return request
+    args = request.tool_call["args"]
+    description = str(args.get("description", ""))
+    authorized = (
+        "\n\nAUTHORIZED EXTRACTION OBJECTS (copy observation text verbatim; "
+        "use only a category/object pair listed here):\n" + "\n".join(lines)
+    )
+    modified_call = {
+        **request.tool_call,
+        "args": {**args, "description": description + authorized},
+    }
+    return request.override(tool_call=modified_call)
+
+
 def _budget(runtime: Any) -> RuntimeBudget:
     context = getattr(runtime, "context", None)
     value = context.get(CONTEXT_KEY) if isinstance(context, Mapping) else getattr(context, CONTEXT_KEY, None)
@@ -168,7 +262,20 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 tool_call_id=request.tool_call.get("id", ""),
             )
         if name == "write_todos":
+            if context is not None:
+                todo_error = _todo_validation_error(request, context)
+                if todo_error:
+                    return ToolMessage(
+                        content=f"Invalid MAS todo plan: {todo_error}",
+                        tool_call_id=request.tool_call.get("id", ""),
+                    )
             result = handler(request)
+            if context is not None:
+                args = request.tool_call.get("args") or {}
+                context["todo_plan"] = [
+                    {"content": item["content"], "status": item["status"]}
+                    for item in args["todos"]
+                ]
             if context is not None and context.get("orchestration_phase") == "todo":
                 context["orchestration_phase"] = "specialist"
             return result
@@ -190,6 +297,7 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 )
             if callable(progress):
                 progress(f"delegating to {specialist}")
+            request = _with_authorized_objects(request, str(specialist), context)
             previous_specialist = context.get("active_specialist") if context is not None else None
             if context is not None:
                 context["active_specialist"] = str(specialist)

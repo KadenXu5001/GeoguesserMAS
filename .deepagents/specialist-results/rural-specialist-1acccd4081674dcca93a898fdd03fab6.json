@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Cambodia",
+      "Thailand",
+      "Mexico"
+    ],
+    "evidence": [
+      "Solid double yellow center lines are a standard road marking in Brazil to indicate no-passing zones on two-way roads.",
+      "The reddish soil and extremely flat terrain are highly characteristic of the Brazilian Cerrado region, particularly in states like Mato Grosso and Goiás.",
+      "The presence of large deciduous trees with thin canopies and hazy skies suggests the dry/burning season common in the Brazilian interior.",
+      "Driving on the right side of the road is consistent with Brazilian traffic laws.",
+      "Lattice power pylons are common for high-voltage transmission across the vast agricultural plains of Brazil."
+    ],
+    "contradictions": [
+      "Thailand is a candidate for red soil and double yellow lines, but it is a left-hand drive (LHD) country, which contradicts the observation suggesting driving on the right.",
+      "While Cambodia has red soil and is right-hand drive, its road infrastructure typically features single white or yellow lines rather than the double yellow markings seen in the Americas."
+    ],
+    "confidence": 85
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-1acccd4081674dcca93a898fdd03fab6.json"
+}

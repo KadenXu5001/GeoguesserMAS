@@ -62,6 +62,25 @@ def test_duplicate_specialist_task_returns_feedback_without_calling_handler() ->
     assert called == []
 
 
+def test_task_receives_verbatim_authorized_extraction_objects() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("task", budget, "rural-specialist")
+    request.runtime.context.update({
+        "scan_objects": {"road_markings": {"solid white outer shoulder lines and double yellow center line"}},
+    })
+    captured = {}
+
+    def handler(value):
+        captured["request"] = value
+        return SPECIALIST_JSON
+
+    middleware.wrap_tool_call(request, handler)
+
+    description = captured["request"].tool_call["args"]["description"]
+    assert "solid white outer shoulder lines and double yellow center line" in description
+
+
 def test_model_request_receives_output_token_cap_and_usage_is_recorded() -> None:
     from types import SimpleNamespace
 
@@ -128,6 +147,16 @@ def test_supervisor_can_update_todos_during_active_run() -> None:
     middleware = BudgetMiddleware()
     request = tool_request("write_todos", budget)
     request.runtime.context["orchestration_phase"] = "specialist"
+    request.runtime.context["todo_plan"] = [
+        {"content": "Analyze", "status": "in_progress"},
+        {"content": "Emit prediction", "status": "pending"},
+    ]
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Analyze", "status": "completed"},
+            {"content": "Emit prediction", "status": "pending"},
+        ]
+    }
     called = []
 
     result = middleware.wrap_tool_call(
@@ -143,10 +172,59 @@ def test_initial_todo_plan_advances_to_specialist_phase() -> None:
     middleware = BudgetMiddleware()
     request = tool_request("write_todos", budget)
     request.runtime.context["orchestration_phase"] = "todo"
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Analyze", "status": "in_progress"},
+            {"content": "Emit prediction", "status": "pending"},
+        ]
+    }
 
     middleware.wrap_tool_call(request, lambda value: "todos-created")
 
     assert request.runtime.context["orchestration_phase"] == "specialist"
+
+
+def test_invalid_initial_todo_plan_cannot_complete_future_step() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "todo"
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Analyze and delegate", "status": "in_progress"},
+            {"content": "Synthesize findings", "status": "pending"},
+            {"content": "Emit prediction", "status": "completed"},
+        ]
+    }
+    called = []
+
+    result = middleware.wrap_tool_call(
+        request, lambda value: called.append(value) or "unreachable"
+    )
+
+    assert "final prediction todo cannot be completed" in result.content
+    assert called == []
+    assert request.runtime.context["orchestration_phase"] == "todo"
+
+
+def test_todo_updates_are_forward_only_and_keep_final_step_pending() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "todo"
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Analyze and delegate", "status": "in_progress"},
+            {"content": "Synthesize findings", "status": "pending"},
+            {"content": "Emit prediction", "status": "pending"},
+        ]
+    }
+    middleware.wrap_tool_call(request, lambda value: "created")
+    request.runtime.context["orchestration_phase"] = "specialist"
+    request.tool_call["args"]["todos"][0]["status"] = "completed"
+    request.tool_call["args"][1]["status"] = "in_progress"
+
+    assert middleware.wrap_tool_call(request, lambda value: "updated") == "updated"
 
 
 def test_plain_supervisor_response_is_continued_instead_of_terminating() -> None:

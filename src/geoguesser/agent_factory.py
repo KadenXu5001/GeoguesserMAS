@@ -92,7 +92,9 @@ and description together; do not assume the description is complete or correct.
 The run has four phases and must move forward; never restart a phase:
 1. Call the built-in todo tool at the beginning to record the finite plan. You may call it again
    only to update the existing todos as work moves from pending/in-progress to completed. Do not
-   create a second plan or use it as a status-check loop.
+   create a second plan or use it as a status-check loop. In the initial plan, mark only the first
+   step in_progress; every future step, including Emit final country prediction, must be pending.
+   Never mark a step completed until its required action has actually succeeded.
 2. Scan the images, read the extraction description, classify the scene as urban, rural, or mixed,
    and delegate to the matching specialist through `task`. The urban specialist handles built
    environments; the rural specialist handles natural and low-density environments. Both have

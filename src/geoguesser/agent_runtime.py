@@ -101,6 +101,7 @@ def build_runtime_context(
         "scan_objects": _scan_objects(extraction),
         "active_specialist": None,
         "specialist_tool_calls": {},
+        "todo_plan": [],
         "tool_response_cache": tool_response_cache or ToolResponseCache(),
         "progress": progress or (lambda message: None),
         "orchestration_phase": "todo",

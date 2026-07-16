@@ -1,0 +1,19 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil"
+    ],
+    "evidence": [
+      "The presence of solid yellow double center lines is consistent with Brazilian road marking standards on two-way roads.",
+      "Reddish-brown soil (Terra Roxa or Cerrado soil) is a primary indicator of agricultural regions in Brazil, particularly in Mato Grosso, Mato Grosso do Sul, and Paraná.",
+      "Vast flat agricultural fields or plains are characteristic of the Brazilian interior's large-scale soybean and corn production areas.",
+      "Lattice-style electricity transmission towers are standard infrastructure for high-voltage power distribution across rural Brazil.",
+      "The sighting of distant palm trees alongside agricultural plains is highly typical of the Cerrado biome in central Brazil."
+    ],
+    "contradictions": [],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-789e5f0d9d2e4e939775dac249d0a8bc.json"
+}

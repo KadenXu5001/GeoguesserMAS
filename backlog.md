@@ -70,7 +70,7 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 - [ ] Ensure Gemini completes through the MAS tool path; a text-only completion must fail rather than bypass delegation and tool execution.
 - [x] Make specialist reference lookups category-batched: omit country to retrieve all indicators for one category in a single tool call.
 - [x] Add a JSONL result summarizer for exact accuracy, complete cost, image tokens, latency, call count, specialist rate, and re-examination rate.
-- [x] Require at least one specialist, persist each specialist result in the local Deep Agents cache, cap cache reads at three, and stop with a warning after three minutes or $0.50.
+- [x] Require at least one specialist, persist each specialist result in the local Deep Agents cache, cap cache reads at three per run, and stop with a warning after three minutes or $0.50.
 - [x] Implement the original single deep-agent ablation without specialists.
 - [x] Implement exact country accuracy, country-centroid haversine loss, complete cost, image-token cost, latency, and call-count metrics.
 - [ ] Tune prompts and policies only on `dev_v1.csv`.

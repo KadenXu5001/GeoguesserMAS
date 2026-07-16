@@ -34,7 +34,7 @@ The MAS is allowed to exist only if it can preserve the cost advantage over Opus
 
 - exactly one full-scene extraction call containing the four headings;
 - at least one and at most two specialist invocations per panorama, with each configured specialist used at most once;
-- reference-tool responses persisted in the local Deep Agents filesystem cache, with no more than three total cache reads; specialist calls are never replaced by cache hits;
+- reference-tool responses persisted in the local Deep Agents filesystem cache, with no more than three total cache reads per run; specialist calls are never replaced by cache hits;
 - immediate warning/suggestion termination with no further API calls after three minutes or $0.50;
 - specialists and orchestrator receive text only;
 - at most one crop re-examination per panorama;
