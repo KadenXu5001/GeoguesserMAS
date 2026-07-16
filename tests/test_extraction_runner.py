@@ -71,7 +71,13 @@ def test_sends_all_four_views_in_one_call_and_parses_schema(tmp_path: Path) -> N
 
     assert isinstance(result, ExtractionOutput)
     assert len(client.models.calls) == 1
-    assert len(client.models.calls[0]["contents"]) == 5
+    assert len(client.models.calls[0]["contents"]) == 9
+    assert client.models.calls[0]["contents"][0].startswith(
+        "The next image is the cardinal view at heading 0 degrees"
+    )
+    assert client.models.calls[0]["contents"][2].startswith(
+        "The next image is the cardinal view at heading 90 degrees"
+    )
     schema = client.models.calls[0]["config"].response_schema
     assert "$defs" not in str(schema)
     assert "$ref" not in str(schema)

@@ -110,6 +110,16 @@ def extract_cardinal_views(
         with Image.open(view_paths[180]) as h180, Image.open(view_paths[270]) as h270:
             views = [h000.copy(), h090.copy(), h180.copy(), h270.copy()]
 
+    labeled_contents: list[Any] = []
+    for heading, view in zip((0, 90, 180, 270), views):
+        labeled_contents.extend(
+            [
+                f"The next image is the cardinal view at heading {heading} degrees. "
+                "Any bounding boxes found in that image must use this heading.",
+                view,
+            ]
+        )
+
     prompt = EXTRACTION_PROMPT
     for attempt in range(max_attempts):
         if before_attempt is not None:
@@ -118,7 +128,7 @@ def extract_cardinal_views(
         try:
             response = client.models.generate_content(
                 model=model,
-                contents=[*views, prompt],
+                contents=[*labeled_contents, prompt],
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
                     response_schema=_gemini_extraction_schema(),
@@ -133,7 +143,7 @@ def extract_cardinal_views(
                 response = client.models.generate_content(
                     model=model,
                     contents=[
-                        *views,
+                        *labeled_contents,
                         prompt + "\nReturn only valid JSON; it will be validated against the extraction schema locally.",
                     ],
                     config=types.GenerateContentConfig(

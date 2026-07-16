@@ -20,3 +20,4 @@ build/
 *.egg-info/
 .sandbox-venv/
 .sandbox-native/
+web/node_modules/
