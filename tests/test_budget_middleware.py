@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from geoguesser.budget_middleware import BudgetMiddleware
+from geoguesser.budget_middleware import BudgetMiddleware, MAS_TODO_CONTENTS
 from geoguesser.runtime_budget import RuntimeBudget
 
 
@@ -10,7 +10,12 @@ def runtime(budget: RuntimeBudget) -> SimpleNamespace:
 
 def tool_request(name: str, budget: RuntimeBudget, specialist: str | None = None) -> SimpleNamespace:
     args = {"subagent_type": specialist} if specialist else {}
-    return SimpleNamespace(tool_call={"name": name, "args": args}, runtime=runtime(budget))
+    request = SimpleNamespace(
+        tool_call={"id": f"{name}-call", "name": name, "args": args},
+        runtime=runtime(budget),
+    )
+    request.override = lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs})
+    return request
 
 
 SPECIALIST_JSON = '{"candidates":["France"],"evidence":["road"],"contradictions":[],"confidence":80}'
@@ -43,7 +48,7 @@ def test_third_task_returns_feedback_from_middleware(tmp_path) -> None:
     result = middleware.wrap_tool_call(
         tool_request("task", budget, "third-specialist"), lambda value: "unreachable"
     )
-    assert "cap reached" in result.content
+    assert "specialist delegation limit reached" in result.content
 
 
 def test_duplicate_specialist_task_returns_feedback_without_calling_handler() -> None:
@@ -142,6 +147,64 @@ def test_active_orchestrator_requires_a_tool_call() -> None:
     assert captured["request"].tool_choice == "any"
 
 
+def test_task_is_hidden_after_successful_delegation() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    budget.consume_specialist_task("rural-specialist")
+    middleware = BudgetMiddleware()
+    request = SimpleNamespace(
+        runtime=SimpleNamespace(
+            context={"orchestration_phase": "specialist", "geo_budget": budget}
+        ),
+        messages=[],
+        tools=[
+            SimpleNamespace(name="task"),
+            {"type": "function", "function": {"name": "write_todos"}},
+            SimpleNamespace(name="reexamine_region"),
+            SimpleNamespace(name="emit_prediction"),
+        ],
+        model_settings={},
+        model=SimpleNamespace(model="google_genai:gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+    captured = {}
+
+    def handler(value):
+        captured["request"] = value
+        return SimpleNamespace(result=SimpleNamespace(usage_metadata={}))
+
+    middleware.wrap_model_call(request, handler)
+
+    visible_names = [
+        tool.get("function", {}).get("name")
+        if isinstance(tool, dict)
+        else tool.name
+        for tool in captured["request"].tools
+    ]
+    assert visible_names == ["write_todos", "reexamine_region", "emit_prediction"]
+
+
+def test_extraction_phase_binds_exact_extraction_tool() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = SimpleNamespace(
+        runtime=SimpleNamespace(
+            context={"orchestration_phase": "extraction", "geo_budget": budget}
+        ),
+        model_settings={},
+        model=SimpleNamespace(model="google_genai:gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+    captured = {}
+
+    def handler(value):
+        captured["request"] = value
+        return SimpleNamespace(result=SimpleNamespace(usage_metadata={}))
+
+    middleware.wrap_model_call(request, handler)
+
+    assert captured["request"].tool_choice == "extract_visual_evidence"
+
+
 def test_supervisor_can_update_todos_during_active_run() -> None:
     budget = RuntimeBudget(opus_cost_usd=1.0)
     middleware = BudgetMiddleware()
@@ -167,21 +230,57 @@ def test_supervisor_can_update_todos_during_active_run() -> None:
     assert called == [request]
 
 
-def test_initial_todo_plan_advances_to_specialist_phase() -> None:
+def test_initial_todo_plan_advances_to_extraction_phase() -> None:
     budget = RuntimeBudget(opus_cost_usd=1.0)
     middleware = BudgetMiddleware()
     request = tool_request("write_todos", budget)
     request.runtime.context["orchestration_phase"] = "todo"
     request.tool_call["args"] = {
         "todos": [
-            {"content": "Analyze", "status": "in_progress"},
-            {"content": "Emit prediction", "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[0], "status": "in_progress"},
+            {"content": MAS_TODO_CONTENTS[1], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[2], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[3], "status": "pending"},
         ]
     }
 
     middleware.wrap_tool_call(request, lambda value: "todos-created")
 
-    assert request.runtime.context["orchestration_phase"] == "specialist"
+    assert request.runtime.context["orchestration_phase"] == "extraction"
+
+
+def test_initial_todo_plan_requires_extraction_first() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "todo"
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Analyze scene", "status": "in_progress"},
+            {"content": "Emit prediction", "status": "pending"},
+        ]
+    }
+
+    result = middleware.wrap_tool_call(request, lambda value: "unreachable")
+
+    assert "exact order and wording" in result.content
+
+
+def test_initial_todo_plan_requires_exact_tool_order_and_wording() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = tool_request("write_todos", budget)
+    request.runtime.context["orchestration_phase"] = "todo"
+    request.tool_call["args"] = {
+        "todos": [
+            {"content": "Extract visual evidence with extract_visual_evidence", "status": "in_progress"},
+            {"content": "Delegate to urban-specialist or rural-specialist with task", "status": "pending"},
+            {"content": "Optionally reexamine_region only for two close country signals", "status": "pending"},
+            {"content": "Emit final country prediction with emit_prediction", "status": "pending"},
+        ]
+    }
+
+    assert middleware.wrap_tool_call(request, lambda value: "accepted") == "accepted"
 
 
 def test_invalid_initial_todo_plan_cannot_complete_future_step() -> None:
@@ -191,9 +290,10 @@ def test_invalid_initial_todo_plan_cannot_complete_future_step() -> None:
     request.runtime.context["orchestration_phase"] = "todo"
     request.tool_call["args"] = {
         "todos": [
-            {"content": "Analyze and delegate", "status": "in_progress"},
-            {"content": "Synthesize findings", "status": "pending"},
-            {"content": "Emit prediction", "status": "completed"},
+            {"content": MAS_TODO_CONTENTS[0], "status": "in_progress"},
+            {"content": MAS_TODO_CONTENTS[1], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[2], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[3], "status": "completed"},
         ]
     }
     called = []
@@ -214,15 +314,16 @@ def test_todo_updates_are_forward_only_and_keep_final_step_pending() -> None:
     request.runtime.context["orchestration_phase"] = "todo"
     request.tool_call["args"] = {
         "todos": [
-            {"content": "Analyze and delegate", "status": "in_progress"},
-            {"content": "Synthesize findings", "status": "pending"},
-            {"content": "Emit prediction", "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[0], "status": "in_progress"},
+            {"content": MAS_TODO_CONTENTS[1], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[2], "status": "pending"},
+            {"content": MAS_TODO_CONTENTS[3], "status": "pending"},
         ]
     }
     middleware.wrap_tool_call(request, lambda value: "created")
     request.runtime.context["orchestration_phase"] = "specialist"
     request.tool_call["args"]["todos"][0]["status"] = "completed"
-    request.tool_call["args"][1]["status"] = "in_progress"
+    request.tool_call["args"]["todos"][1]["status"] = "in_progress"
 
     assert middleware.wrap_tool_call(request, lambda value: "updated") == "updated"
 
@@ -260,4 +361,49 @@ def test_todo_continuation_does_not_consume_decision_turn() -> None:
         request,
         lambda value: SimpleNamespace(result=SimpleNamespace(usage_metadata={})),
     )
+    assert budget.orchestrator_turns == 0
+
+
+def test_extraction_continuation_consumes_orchestrator_turn() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = SimpleNamespace(
+        runtime=SimpleNamespace(
+            context={"orchestration_phase": "extraction", "geo_budget": budget}
+        ),
+        messages=[
+            SimpleNamespace(tool_calls=[{"id": "todo-1", "name": "write_todos"}]),
+            SimpleNamespace(tool_call_id="todo-1"),
+        ],
+        model_settings={},
+        model=SimpleNamespace(model="gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+
+    middleware.wrap_model_call(
+        request,
+        lambda value: SimpleNamespace(result=SimpleNamespace(usage_metadata={})),
+    )
+
+    assert budget.orchestrator_turns == 1
+
+
+def test_initial_todo_model_call_does_not_consume_decision_turn() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    middleware = BudgetMiddleware()
+    request = SimpleNamespace(
+        runtime=SimpleNamespace(
+            context={"orchestration_phase": "todo", "geo_budget": budget}
+        ),
+        messages=[SimpleNamespace(tool_calls=[])],
+        model_settings={},
+        model=SimpleNamespace(model="gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+
+    middleware.wrap_model_call(
+        request,
+        lambda value: SimpleNamespace(result=SimpleNamespace(usage_metadata={})),
+    )
+
     assert budget.orchestrator_turns == 0

@@ -17,9 +17,9 @@ class CapacityExceeded(BudgetExceeded):
 @dataclass
 class RuntimeBudget:
     opus_cost_usd: float
-    # A delegated run can use three meaningful model calls: choose delegation,
-    # decide whether a targeted re-examination is useful, then finalize.
-    max_orchestrator_turns: int = 3
+    # Extraction adds one bounded perception call before the three meaningful decision calls:
+    # choose delegation, decide whether to re-examine, then finalize.
+    max_orchestrator_turns: int = 4
     # The MAS requires at least one specialist and has two configured specialists total.
     max_specialist_tasks: int = 2
     max_reexaminations: int = 1

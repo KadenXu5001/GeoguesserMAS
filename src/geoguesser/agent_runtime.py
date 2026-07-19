@@ -71,6 +71,12 @@ def _scan_objects(extraction: Any) -> dict[str, set[str]]:
     return objects
 
 
+def apply_extraction_context(context: dict[str, Any], extraction: dict[str, Any]) -> None:
+    """Install validated extraction indexes for specialist authorization in this run."""
+    context["scan_allowed_categories"] = _scan_allowed_categories(extraction)
+    context["scan_objects"] = _scan_objects(extraction)
+
+
 def build_runtime_context(
     *,
     budget: RuntimeBudget,
@@ -105,4 +111,5 @@ def build_runtime_context(
         "tool_response_cache": tool_response_cache or ToolResponseCache(),
         "progress": progress or (lambda message: None),
         "orchestration_phase": "todo",
+        "extraction_attempted": False,
     }

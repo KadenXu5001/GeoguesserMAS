@@ -7,10 +7,19 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 
 - The Deep Agents supervisor is multimodal. Every production MAS run gives it all four cardinal
   images and the structured visual description produced by the extraction preprocessor.
+- Extraction is MAS phase 0 and is represented as a required supervisor tool call. The initial
+  todo plan must always use the canonical four-item order: `Extract visual evidence with
+  extract_visual_evidence`; `Delegate to urban-specialist or rural-specialist with task`;
+  `Optionally reexamine_region only for two close country signals`; and `Emit final country
+  prediction with emit_prediction`. The first item is in progress initially and the remaining
+  items are pending. The supervisor must complete extraction before any specialist,
+  re-examination, or prediction action.
 - The supervisor must scan the images itself. The description is a first-pass aid, not a substitute
   for visual inspection; the supervisor may correct or supplement it using visible evidence.
 - The supervisor and specialists must never receive hidden evaluation metadata such as coordinates,
   country labels, image IDs, filenames, or sequence information.
+- The extraction tool receives only the four cardinal images and its extraction instructions. Its
+  validated output must pass the model-payload safety audit before it is placed in supervisor state.
 
 ## Specialist policy
 
@@ -32,18 +41,27 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   generic checklist.
 - Every reference lookup must include a concise, non-empty justification tied to the specialist's
   observed evidence. A lookup without that justification is rejected by the tool contract.
-- The production execution path is a runtime-enforced sequence: an initial `write_todos` plan,
-  then one or more specialist `task` calls, then optional `reexamine_region`, then exactly one
-  `emit_prediction`. The supervisor may call `write_todos` again while the run is active to update
+- The production execution path is a runtime-enforced sequence: an initial `write_todos` plan whose
+  first item is extraction, exactly one successful extraction tool call, then one or more specialist
+  `task` calls, then optional `reexamine_region`, then exactly one `emit_prediction`. The supervisor
+  may call `write_todos` again while the run is active to update
   existing todo statuses from pending/in-progress to completed, but todo updates may not introduce
   a new planning phase, invoke a specialist, or occur after finalization. Specialists never receive
   or call `write_todos`. The model may choose the specialist and permitted lookup categories from
   the initial extraction, but it may not skip, reorder, or replace the required phases with plain
   text.
+- The extraction tool is single-use per run. It must be marked attempted before its provider call;
+  provider failure, malformed output, or capacity failure is terminal for that run. Extraction must
+  not be retried, have a JSON fallback, or be called again after success or failure.
+- During the extraction phase, runtime middleware must bind the supervisor's tool choice to the
+  exact `extract_visual_evidence` tool name; the supervisor may not deliberate among later tools
+  before extraction.
 - Only deterministic reference-tool responses may be persisted in the local Deep Agents cache.
   A cached tool response may be read at most three times in total per MAS run; the read counter
   resets for each new run. After that per-run limit, the tool must return a capacity warning and
   the MAS must not make another lookup API call.
+- Extraction output may live in the current graph state and trace, but it is not a response-cache
+  entry and must not be used to replace a future run's extraction call.
 
 ## Re-examination policy
 
@@ -63,8 +81,15 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 - Runtime middleware remains the source of hard enforcement for specialist, re-examination,
   orchestrator-turn, token, and cost limits. Prompts may explain these limits but cannot replace
   code enforcement.
+- The initial todo-planning model call is bookkeeping and does not consume a meaningful
+  orchestrator turn. The extraction call and up to three later decision/finalization calls do
+  consume the four-turn orchestrator ceiling; extraction usage is still fully included in cost,
+  token, latency, and runtime-capacity accounting.
 - A run has a hard capacity ceiling of three minutes or $0.50, whichever is reached first. It
-  must return an immediate warning and suggestion and make no further API calls.
+  must return an immediate warning and suggestion and make no further API calls. Extraction
+  latency, tokens, and cost count toward this ceiling and are checked before extraction and before
+  each later supervisor or tool call. Deep Agents graph construction is setup; the per-panorama
+  runtime clock begins when that compiled graph is invoked and must not include graph construction.
 
 ## Observability
 
@@ -72,6 +97,8 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   run structure, system prompts, tool calls, tool results, model outputs, timing, and usage; only
   raw base64 image inputs are redacted from the trace to keep uploads bounded. The local MAS still
   receives and processes the full images.
+- The extraction tool result must expose extraction status, model, usage, latency, and validated
+  feature/object counts in the LangSmith trace. Raw image bytes remain redacted.
 - Trace delivery is synchronous and must be flushed before the process exits. A trace-upload
   failure is an observability failure and must be printed clearly in the terminal; it must not be
   confused with a model or MAS prediction failure.

@@ -9,38 +9,12 @@ from typing import Any, Callable, Mapping
 from geoguesser.agent_factory import create_geoguesser_agent
 from geoguesser.agent_runtime import build_runtime_context
 from geoguesser.cost_model import OPUS_BASELINE
-from geoguesser.extraction import ExtractionOutput
-from geoguesser.extraction_runner import extract_cardinal_views
 from geoguesser.model_payload import assert_model_payload_safe
 from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
 
 
-def _record_extraction_usage(budget: RuntimeBudget, response: Any, latency_ms: int) -> None:
-    metadata = getattr(response, "usage_metadata", None)
-    if metadata is None:
-        metadata = getattr(response, "usage", None)
-
-    def value(*names: str) -> int:
-        for name in names:
-            candidate = getattr(metadata, name, None) if metadata is not None else None
-            if candidate is None and isinstance(metadata, Mapping):
-                candidate = metadata.get(name)
-            if candidate is not None:
-                return int(candidate)
-        return 0
-
-    budget.record_usage(
-        component="extraction",
-        model="gemini-3-flash-preview",
-        input_tokens=value("prompt_token_count", "input_tokens"),
-        output_tokens=value("candidates_token_count", "output_tokens"),
-        image_tokens=value("image_tokens"),
-        latency_ms=latency_ms,
-    )
-
-
 def build_agent_input(
-    extraction: ExtractionOutput,
+    extraction: Any | None = None,
     views: Mapping[int, Path] | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
     """Build the multimodal supervisor input.
@@ -49,12 +23,13 @@ def build_agent_input(
     and image paths are never serialized into the model-facing payload.
     """
     payload = {
-        "extraction_description": extraction.model_dump(),
         "instruction": (
-            "Use this description as a first pass, then scan all four images yourself. "
-            "Correct unsupported description claims and use only visible evidence."
+            "Call extract_visual_evidence first. Then use its result as a first pass and scan all "
+            "four images yourself. Correct unsupported extraction claims and use only visible evidence."
         ),
     }
+    if extraction is not None:
+        payload["extraction_description"] = extraction.model_dump()
     assert_model_payload_safe(payload)
     description = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     content: list[dict[str, Any]] = [{"type": "text", "text": description}]
@@ -122,19 +97,12 @@ def run_mas_row(
         180: root / row["view_h180_path"],
         270: root / row["view_h270_path"],
     }
+    # Graph construction is one-time setup, not per-panorama model/tool inference. Keep it
+    # outside the hard inference budget; callers running batches should pass a shared agent.
+    compiled_agent = agent or create_geoguesser_agent()
     budget = RuntimeBudget(opus_cost_usd=OPUS_BASELINE)
     try:
-        report("extracting four cardinal views")
-        budget.check_capacity()
-        extraction = extract_cardinal_views(
-            gemini_client,
-            views,
-            usage_callback=lambda response, latency: _record_extraction_usage(
-                budget, response, latency
-            ),
-            before_attempt=budget.check_capacity,
-        )
-        report("extraction complete; building multimodal supervisor input")
+        report("starting supervisor; extraction is the required first tool call")
         budget.check_capacity()
         context = build_runtime_context(
             budget=budget,
@@ -142,14 +110,13 @@ def run_mas_row(
             reference_version=reference_version,
             heading_paths=views,
             gemini_client=gemini_client,
-            extraction=extraction.model_dump(),
+            extraction=None,
             progress=report,
         )
-        compiled_agent = agent or create_geoguesser_agent()
         report("supervisor running; selecting specialist and tools")
         invoke_config = {"callbacks": trace_callbacks} if trace_callbacks else None
         result = compiled_agent.invoke(
-            build_agent_input(extraction, views), context=context, config=invoke_config
+            build_agent_input(None, views), context=context, config=invoke_config
         )
         report("supervisor graph completed; validating prediction")
     except BudgetExceeded as exc:

@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Mato Grosso, Brazil",
+      "Goiás, Brazil",
+      "Mato Grosso do Sul, Brazil",
+      "Paraguay"
+    ],
+    "evidence": [
+      "Red soil (Latossolo) is highly characteristic of the Brazilian interior, particularly in the Cerrado biome.",
+      "Double solid yellow center lines are standard in Brazil to indicate a no-passing zone on two-way roads.",
+      "Flat, dry agricultural fields are typical of the large-scale soybean and maize production regions in Mato Grosso and Goiás.",
+      "The description of the vehicle (white roof with black rails) matches the common Google Street View car used in Brazil.",
+      "High-voltage lattice towers are part of Brazil's extensive National Interconnected System (SIN) passing through rural agricultural states."
+    ],
+    "contradictions": [
+      "Argentina and Uruguay typically have darker (mollisol) soils in their primary flat agricultural zones rather than the deep red soil described."
+    ],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-193f6b840d374434bc5aabce913fcefe.json"
+}

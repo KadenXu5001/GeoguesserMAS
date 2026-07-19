@@ -48,7 +48,7 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 - [ ] Review pilot ingestion results, then authorize or revise expansion to all 20 qualified countries.
 - [x] Structurally review frozen pilot manifests: 30 development and 15 evaluation rows, 10/5 per country, with all four rendered views present.
 - [x] Define Deep Agents runtime context/state for extraction, usage, delegation, re-examination, and final prediction.
-- [x] Implement custom Deep Agents middleware for at-least-one and at-most-two `task` delegations (each specialist at most once), one crop call, three bounded orchestrator turns on the delegated-plus-crop path, output-token limits, and the 90%-of-Opus cutoff.
+- [x] Implement custom Deep Agents middleware for at-least-one and at-most-two `task` delegations (each specialist at most once), one crop call, extraction-first sequencing, four bounded orchestrator turns including extraction, output-token limits, and the 90%-of-Opus cutoff.
 - [x] Implement the extraction preprocessor: one Flash call containing all four headings.
 - [x] Define and validate the extraction schema with arrays of detected objects plus one consolidated signal per category.
 - [x] Distinguish `not_present`, `not_detected`, and `present_but_illegible`; normalize bbox coordinates.
@@ -206,6 +206,11 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 2026-07-13 - Live MAS reached finalization but Gemini native structured-output parsing returned empty JSON; removed the redundant response-format layer and kept schema validation in `emit_prediction`.
 2026-07-13 - Live MAS reached the environmental specialist; an invalid `infrastructure` lookup aborted the run, so lookup tools now return corrective feedback instead of raising.
 2026-07-13 - Native sandbox run returned plain text without a tool call; required-tool binding hung with the Google adapter, so switched to explicit ToolStrategy for structured tool-call finalization.
+2026-07-16 - Made Gemini extraction a required single-use supervisor tool call; extraction is now first after todo planning, has no retry/fallback, contributes shared budget usage, and no longer consumes the initial planning turn.
+2026-07-16 - Added canonical exact tool names and four-item todo wording/order to the supervisor prompt and runtime validator; invalid plans are rejected before MAS work begins.
+2026-07-16 - Moved the per-panorama runtime clock to graph invocation and reused one compiled supervisor graph per CLI batch so setup time cannot exhaust the three-minute inference ceiling.
+2026-07-16 - Bound the extraction-phase supervisor call to `extract_visual_evidence` and added progress timing around the actual Gemini request to remove avoidable tool-selection latency.
+2026-07-16 - Added separate timing for the forced supervisor extraction-tool selection call so provider latency and graph/model latency cannot be conflated.
 
 2026-07-13 - Completed the strict 45-panorama France/Thailand/Brazil pilot, exported `dev_v1.csv` and `eval_c1.csv`, and added boundary-filtered replacement scan support.
 

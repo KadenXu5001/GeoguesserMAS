@@ -1,0 +1,19 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil"
+    ],
+    "evidence": [
+      "The presence of a white vehicle roof with a yellow strap is a well-known Google Street View car meta-clue unique to certain regions of Brazil.",
+      "Double yellow center lines are the standard road marking for two-way traffic separation in Brazil.",
+      "Red/orange soil (Terra Roxa) combined with flat, vast agricultural fields is highly characteristic of the Cerrado biome in the Brazilian states of Mato Grosso, Mato Grosso do Sul, and Goiás.",
+      "The hazy or smoky sky and dry vegetation suggest the 'queimadas' (burning) season typical of the Brazilian interior during the dry months.",
+      "The lattice electric transmission tower and large deciduous trees fit the infrastructure and flora of the Brazilian central-west."
+    ],
+    "contradictions": [],
+    "confidence": 98
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-8792f0553a0143a5af76e11663049d37.json"
+}

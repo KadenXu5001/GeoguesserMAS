@@ -99,12 +99,14 @@ def extract_cardinal_views(
     view_paths: Mapping[int, Path],
     *,
     model: str = "gemini-3-flash-preview",
-    max_attempts: int = 2,
+    max_attempts: int = 1,
     usage_callback: Callable[[Any, int], None] | None = None,
     before_attempt: Callable[[], None] | None = None,
 ) -> ExtractionOutput:
     if set(view_paths) != {0, 90, 180, 270}:
         raise ValueError("exactly four cardinal views are required")
+    if max_attempts != 1:
+        raise ValueError("extraction is single-call and max_attempts must be 1")
 
     with Image.open(view_paths[0]) as h000, Image.open(view_paths[90]) as h090:
         with Image.open(view_paths[180]) as h180, Image.open(view_paths[270]) as h270:
@@ -136,36 +138,12 @@ def extract_cardinal_views(
                     thinking_config=types.ThinkingConfig(thinking_budget=0),
                 ),
             )
-        except Exception as exc:
-            if "INVALID_ARGUMENT" not in str(exc) and getattr(exc, "status_code", None) != 400:
-                raise
-            try:
-                response = client.models.generate_content(
-                    model=model,
-                    contents=[
-                        *labeled_contents,
-                        prompt + "\nReturn only valid JSON; it will be validated against the extraction schema locally.",
-                    ],
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        max_output_tokens=3200,
-                        thinking_config=types.ThinkingConfig(thinking_budget=0),
-                    ),
-                )
-            except Exception as fallback_exc:
-                raise RuntimeError(
-                    "Gemini extraction failed in both modes: "
-                    f"structured_schema={exc}; json_only={fallback_exc}"
-                ) from fallback_exc
+        except Exception:
+            raise
         if usage_callback is not None:
             usage_callback(response, round((perf_counter() - started) * 1000))
         try:
             return _parse_response(response)
         except Exception:
-            if attempt == max_attempts - 1:
-                raise
-            prompt = (
-                EXTRACTION_PROMPT
-                + "\nYour previous response was invalid. Return only a complete object matching the schema."
-            )
+            raise
     raise RuntimeError("extraction retry loop exhausted")

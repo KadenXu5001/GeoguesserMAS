@@ -49,8 +49,10 @@ def normalize_specialist_result(
     result: Any,
     *,
     artifact_dir: Path | None = None,
+    tool_call_id: str | None = None,
+    tool_name: str = "task",
 ) -> tuple[Any, dict[str, Any]]:
-    """Normalize a specialist result and preserve the framework command shape."""
+    """Normalize a specialist result while preserving its parent task identity."""
     parsed = _parse_candidate(_candidate_from_result(result))
     document = {
         "schema_version": SCHEMA_VERSION,
@@ -64,10 +66,28 @@ def normalize_specialist_result(
     artifact.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
     content = json.dumps(document, ensure_ascii=False)
 
+    if tool_call_id is None and isinstance(result, ToolMessage):
+        tool_call_id = result.tool_call_id
+    resolved_tool_call_id = tool_call_id or "specialist-result"
+
     if isinstance(result, Command):
         update = dict(result.update or {})
-        update["messages"] = [ToolMessage(content=content, tool_call_id="specialist-result")]
+        update["messages"] = [
+            ToolMessage(
+                content=content,
+                tool_call_id=resolved_tool_call_id,
+                name=tool_name,
+            )
+        ]
         return Command(goto=result.goto, update=update), document
     if isinstance(result, ToolMessage):
-        return ToolMessage(content=content, tool_call_id=result.tool_call_id), document
-    return ToolMessage(content=content, tool_call_id="specialist-result"), document
+        return ToolMessage(
+            content=content,
+            tool_call_id=resolved_tool_call_id,
+            name=tool_name,
+        ), document
+    return ToolMessage(
+        content=content,
+        tool_call_id=resolved_tool_call_id,
+        name=tool_name,
+    ), document

@@ -21,6 +21,8 @@ class UsageEvent(TypedDict, total=False):
 
 class GeoState(TypedDict, total=False):
     extraction: dict[str, Any]
+    extraction_status: str
+    extraction_metrics: dict[str, Any]
     agent_todolist: dict[str, Any]
     specialists_used: list[str]
     specialist_results: list[dict[str, Any]]
@@ -49,3 +51,4 @@ class GeoContext(TypedDict):
     tool_response_cache: ToolResponseCache
     progress: Callable[[str], None]
     orchestration_phase: str
+    extraction_attempted: bool

@@ -23,6 +23,7 @@ os.environ["LANGSMITH_HIDE_OUTPUTS"] = "false"
 sys.path.insert(0, str(ROOT / "src"))
 
 from geoguesser.mas_runner import run_mas_row  # noqa: E402
+from geoguesser.agent_factory import create_geoguesser_agent  # noqa: E402
 from geoguesser.reference_data import load_reference_snapshot  # noqa: E402
 from geoguesser.storage import MongoRepository, connect_database  # noqa: E402
 from geoguesser.gemini_client import create_gemini_client  # noqa: E402
@@ -71,6 +72,8 @@ def main() -> int:
             )
         gemini_client = create_gemini_client()
         langsmith_tracer = create_langsmith_tracer()
+        # Compile the graph once; per-row RuntimeBudget measures inference only.
+        supervisor_agent = create_geoguesser_agent()
         args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open("w", encoding="utf-8") as handle:
             for index, row in enumerate(rows, start=1):
@@ -81,6 +84,7 @@ def main() -> int:
                         gemini_client=gemini_client,
                         reference_repository=repository,
                         reference_version=snapshot["version"],
+                        agent=supervisor_agent,
                         root=ROOT,
                         progress=lambda message, current=index: print(
                             f"[MAS {current}/{len(rows)}] {message}", flush=True

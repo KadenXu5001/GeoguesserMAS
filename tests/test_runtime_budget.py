@@ -8,6 +8,7 @@ def test_enforces_call_caps() -> None:
     budget.consume_orchestrator_turn()
     budget.consume_orchestrator_turn()
     budget.consume_orchestrator_turn()
+    budget.consume_orchestrator_turn()
     budget.consume_specialist_task()
     budget.consume_specialist_task()
     budget.consume_reexamination()
@@ -28,7 +29,7 @@ def test_rejects_repeated_named_specialist() -> None:
 
 
 def test_enforces_ninety_percent_cost_cutoff() -> None:
-    budget = RuntimeBudget(opus_cost_usd=1.0)
+    budget = RuntimeBudget(opus_cost_usd=1.0, max_program_cost_usd=2.0)
     budget.record_cost(0.89)
     with pytest.raises(BudgetExceeded, match="90%"):
         budget.record_cost(0.02)

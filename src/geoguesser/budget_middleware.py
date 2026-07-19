@@ -32,6 +32,13 @@ _SPECIALIST_CATEGORIES = {
 
 _TODO_STATUSES = {"pending", "in_progress", "completed"}
 
+MAS_TODO_CONTENTS = (
+    "Extract visual evidence with extract_visual_evidence",
+    "Delegate to urban-specialist or rural-specialist with task",
+    "Optionally reexamine_region only for two close country signals",
+    "Emit final country prediction with emit_prediction",
+)
+
 
 def _todo_validation_error(request: ToolCallRequest, context: Mapping[str, Any]) -> str | None:
     """Enforce the MAS's single, forward-only todo plan before the tool runs."""
@@ -54,8 +61,15 @@ def _todo_validation_error(request: ToolCallRequest, context: Mapping[str, Any])
 
     previous = context.get("todo_plan")
     if not previous:
+        if tuple(item["content"] for item in normalized) != MAS_TODO_CONTENTS:
+            return (
+                "the initial todo plan must use this exact order and wording: "
+                + " | ".join(MAS_TODO_CONTENTS)
+            )
         if normalized[0]["status"] != "in_progress":
             return "the first todo must be in_progress in the initial plan"
+        if normalized[-1]["status"] == "completed":
+            return "the final prediction todo cannot be completed before emit_prediction"
         if any(item["status"] != "pending" for item in normalized[1:]):
             return "future todos must be pending in the initial plan"
         return None
@@ -121,6 +135,16 @@ def _context(runtime: Any) -> Mapping[str, Any] | None:
     return value if isinstance(value, Mapping) else None
 
 
+def _model_tool_name(tool: Any) -> str | None:
+    """Return a model-visible tool name for BaseTool and provider-dict forms."""
+    if isinstance(tool, Mapping):
+        function = tool.get("function")
+        if isinstance(function, Mapping):
+            return function.get("name")
+        return tool.get("name")
+    return getattr(tool, "name", None)
+
+
 def _continues_after_todo(request: Any) -> bool:
     """TodoMiddleware requires a model continuation after ``write_todos``.
 
@@ -138,6 +162,16 @@ def _continues_after_todo(request: Any) -> bool:
             if tool_call.get("id") == tool_call_id:
                 return tool_call.get("name") == "write_todos"
     return False
+
+
+def _is_initial_todo_call(request: Any, context: Mapping[str, Any] | None) -> bool:
+    """The initial planning model call is bookkeeping, not a geographic decision turn."""
+    if context is None or context.get("orchestration_phase") != "todo":
+        return False
+    if context.get("todo_plan"):
+        return False
+    messages = getattr(request, "messages", []) or []
+    return not any(getattr(message, "tool_calls", None) for message in messages)
 
 
 def _request_trace(request: Any) -> dict[str, Any]:
@@ -172,7 +206,7 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         """Do not let a plain supervisor response terminate an active MAS phase."""
         context = getattr(runtime, "context", None)
         phase = context.get("orchestration_phase") if isinstance(context, Mapping) else None
-        if phase not in {"todo", "specialist"}:
+        if phase not in {"todo", "extraction", "specialist"}:
             return None
         budget = context.get(CONTEXT_KEY) if isinstance(context, Mapping) else None
         messages = state.get("messages", []) if isinstance(state, Mapping) else []
@@ -180,6 +214,8 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             return None
         if phase == "todo":
             next_action = "write_todos"
+        elif phase == "extraction":
+            next_action = "extract_visual_evidence"
         elif isinstance(budget, RuntimeBudget) and budget.specialist_tasks == 0:
             next_action = "task to delegate to a configured specialist"
         else:
@@ -196,7 +232,17 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
     def wrap_model_call(self, request: ModelRequest[Any], handler: Callable[..., Any]) -> Any:
         budget = _budget(request.runtime)
         budget.check_capacity()
-        if not _continues_after_todo(request):
+        context = _context(request.runtime)
+        continues_after_todo = _continues_after_todo(request)
+        extraction_selection = (
+            continues_after_todo
+            and context is not None
+            and context.get("orchestration_phase") == "extraction"
+        )
+        if (
+            not _is_initial_todo_call(request, context)
+            and (not continues_after_todo or extraction_selection)
+        ):
             try:
                 budget.consume_orchestrator_turn()
             except Exception as exc:
@@ -219,9 +265,20 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         # ``emit_prediction`` is the only valid terminal path; wrap_tool_call enforces the
         # phase-specific ordering when the model makes its choice.
         overrides = {"model_settings": settings}
+        tools = getattr(request, "tools", None)
+        if tools is not None and budget.specialist_tasks > 0:
+            # A mixed-scene decision may issue both specialist calls together. Once that
+            # decision has executed, later model turns must not see ``task`` again.
+            overrides["tools"] = [tool for tool in tools if _model_tool_name(tool) != "task"]
         if context := _context(request.runtime):
             if context.get("orchestration_phase") != "done":
-                overrides["tool_choice"] = "any"
+                # The first substantive supervisor call must not deliberate among all tools.
+                # Bind it to the exact extraction tool; later phases may choose among tools.
+                overrides["tool_choice"] = (
+                    "extract_visual_evidence"
+                    if context.get("orchestration_phase") == "extraction"
+                    else "any"
+                )
         bounded_request = request.override(**overrides) if hasattr(request, "override") else request
         response = handler(bounded_request)
         usage = getattr(getattr(response, "result", None), "usage_metadata", None)
@@ -233,6 +290,13 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 output_tokens=int(usage.get("output_tokens", 0) or 0),
                 latency_ms=round((perf_counter() - started) * 1000),
             )
+        if context is not None and context.get("orchestration_phase") == "extraction":
+            progress = context.get("progress")
+            if callable(progress):
+                progress(
+                    "supervisor extraction-tool selection completed "
+                    f"({round((perf_counter() - started) * 1000)} ms)"
+                )
         return response
 
     def wrap_tool_call(self, request: ToolCallRequest, handler: Callable[..., Any]) -> Any:
@@ -251,9 +315,19 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 content="Specialist delegation is only allowed after the initial todo plan and before reexamination.",
                 tool_call_id=request.tool_call.get("id", ""),
             )
+        if phase is not None and name == "extract_visual_evidence" and phase != "extraction":
+            return ToolMessage(
+                content="Visual extraction is only allowed once immediately after the initial todo plan.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
         if phase is not None and name == "reexamine_region" and phase != "specialist":
             return ToolMessage(
                 content="Reexamination is only allowed after specialist evidence and may occur once.",
+                tool_call_id=request.tool_call.get("id", ""),
+            )
+        if name == "reexamine_region" and budget.specialist_tasks < 1:
+            return ToolMessage(
+                content="Reexamination requires at least one completed specialist task first.",
                 tool_call_id=request.tool_call.get("id", ""),
             )
         if phase is not None and name == "emit_prediction" and phase not in {"specialist", "finalizing"}:
@@ -277,8 +351,15 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                     for item in args["todos"]
                 ]
             if context is not None and context.get("orchestration_phase") == "todo":
-                context["orchestration_phase"] = "specialist"
+                context["orchestration_phase"] = "extraction"
             return result
+        if name == "extract_visual_evidence":
+            if context is not None and context.get("extraction_attempted"):
+                return ToolMessage(
+                    content="Visual extraction has already been attempted; do not call it again.",
+                    tool_call_id=request.tool_call.get("id", ""),
+                )
+            return handler(request)
         if name == "task":
             args = request.tool_call.get("args") or {}
             specialist = (
@@ -306,7 +387,12 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             finally:
                 if context is not None:
                     context["active_specialist"] = previous_specialist
-            normalized, _ = normalize_specialist_result(str(specialist), result)
+            normalized, _ = normalize_specialist_result(
+                str(specialist),
+                result,
+                tool_call_id=request.tool_call.get("id", ""),
+                tool_name="task",
+            )
             if callable(progress):
                 progress(f"{specialist} returned standardized JSON result")
             return normalized
