@@ -25,7 +25,15 @@ def runtime() -> SimpleNamespace:
 
 
 def test_specialist_tools_query_only_allowed_categories() -> None:
-    assert lookup_universal_clues.func("driving_side", "double yellow center line implies right-side traffic", "double yellow center line", runtime(), "Thailand")[0]["version"] == "reference-v1"
+    context = runtime()
+    assert lookup_universal_clues.func("driving_side", "double yellow center line implies right-side traffic", "double yellow center line", context, "Thailand")[0]["version"] == "reference-v1"
+    assert context.context["reference_lookup_details"] == [{
+        "specialist": "rural-specialist",
+        "tool": "lookup_universal_clues",
+        "category": "driving_side",
+        "object_observation": "double yellow center line",
+        "justification": "double yellow center line implies right-side traffic",
+    }]
     assert lookup_rural_clues.func("rural_architecture", "low-density roadside homes are visible", "low-density roadside homes", runtime(), "Thailand")[0]["category"] == "rural_architecture"
 
 

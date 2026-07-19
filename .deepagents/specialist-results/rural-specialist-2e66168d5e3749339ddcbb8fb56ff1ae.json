@@ -1,0 +1,25 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil",
+      "Mexico",
+      "Argentina",
+      "United States",
+      "Uruguay"
+    ],
+    "evidence": [
+      "Double solid yellow center lines indicate right-hand traffic and are standard in Brazil and other American countries.",
+      "The presence of reddish soil (Terra Roxa) is a very strong indicator for Brazil, particularly in the states of Paraná, São Paulo, and Mato Grosso do Sul.",
+      "The metal lattice electricity pylon is a common infrastructure feature in rural Brazil.",
+      "Flat farmland with large deciduous trees is consistent with the agricultural landscapes of Southern and Central Brazil.",
+      "The white camera car is a frequent observation in Brazilian Google Street View coverage."
+    ],
+    "contradictions": [
+      "While Mexico and the US also use double yellow lines, the specific combination with highly reddish soil is most characteristic of Brazil."
+    ],
+    "confidence": 92
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-2e66168d5e3749339ddcbb8fb56ff1ae.json"
+}

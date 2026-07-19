@@ -70,6 +70,37 @@ REFERENCE_VALIDATOR = {
     }
 }
 
+VISION_ANALYSIS_CACHE_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "_id", "cache_version", "source_id", "view_hashes", "payload",
+            "created_at", "updated_at",
+        ],
+        "properties": {
+            "_id": {"bsonType": "string", "minLength": 64, "maxLength": 64},
+            "cache_version": {"bsonType": "string", "minLength": 1},
+            "source_id": {"bsonType": "string", "minLength": 1},
+            "view_hashes": {
+                "bsonType": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": {"bsonType": ["string", "null"]},
+            },
+            "payload": {
+                "bsonType": "object",
+                "required": ["analysis", "informedEvidence"],
+                "properties": {
+                    "analysis": {"bsonType": "object"},
+                    "informedEvidence": {"bsonType": "array"},
+                },
+            },
+            "created_at": {"bsonType": "date"},
+            "updated_at": {"bsonType": "date"},
+        },
+    }
+}
+
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -104,6 +135,7 @@ class MongoRepository:
         self._ensure_collection("dataset_versions", DATASET_VALIDATOR)
         self._ensure_collection("ingestion_attempts", None)
         self._ensure_collection("reference_rows", REFERENCE_VALIDATOR)
+        self._ensure_collection("vision_analysis_cache", VISION_ANALYSIS_CACHE_VALIDATOR)
 
         self.database.panoramas.create_index(
             [("mapillary_image_id", ASCENDING)], unique=True, name="uq_mapillary_image"
@@ -134,6 +166,10 @@ class MongoRepository:
             [("version", ASCENDING), ("category", ASCENDING), ("indicator", ASCENDING), ("source_url", ASCENDING)],
             unique=True,
             name="uq_reference_row",
+        )
+        self.database.vision_analysis_cache.create_index(
+            [("source_id", ASCENDING), ("cache_version", ASCENDING)],
+            name="source_cache_version",
         )
 
         pilot = pilot_dataset_document()

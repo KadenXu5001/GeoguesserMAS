@@ -1,14 +1,16 @@
 const http = require("node:http");
 const path = require("node:path");
 const fs = require("node:fs/promises");
-const { randomInt, randomUUID } = require("node:crypto");
+const { createHash, randomInt, randomUUID } = require("node:crypto");
 const { spawn } = require("node:child_process");
+const { MongoClient } = require("mongodb");
 
 const ROOT = path.resolve(__dirname, "..");
 const PORT = Number(process.env.VISION_PORT || 3000);
 const PYTHON = process.env.PYTHON || (process.platform === "win32" ? "python" : "python3");
 const HEADINGS = [0, 90, 180, 270];
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
+const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v1";
 
 function send(res, status, body, type = "application/json", headers = {}) {
   res.writeHead(status, {
@@ -63,10 +65,83 @@ async function listTrainingPanoramas(root = ROOT) {
           heading,
           path.resolve(root, row[`view_h${String(heading).padStart(3, "0")}_path`]),
         ])),
+        viewHashes: Object.fromEntries(HEADINGS.map((heading) => [
+          heading,
+          row[`view_h${String(heading).padStart(3, "0")}_sha256`],
+        ])),
       });
     }
   }
   return rows;
+}
+
+function visionAnalysisCacheKey(panorama) {
+  const identity = {
+    version: VISION_ANALYSIS_CACHE_VERSION,
+    sourceId: panorama.sourceId,
+    viewHashes: HEADINGS.map((heading) => panorama.viewHashes?.[heading] || null),
+  };
+  return createHash("sha256").update(JSON.stringify(identity)).digest("hex");
+}
+
+function browserSafeAnalysisPayload(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("Vision analysis did not return an object.");
+  }
+  if (!value.analysis || typeof value.analysis !== "object" || Array.isArray(value.analysis)) {
+    throw new Error("Vision analysis did not return structured extraction data.");
+  }
+  if (!Array.isArray(value.informedEvidence)) {
+    throw new Error("Vision analysis did not return an informed-evidence list.");
+  }
+  return {
+    analysis: value.analysis,
+    informedEvidence: value.informedEvidence,
+  };
+}
+
+function createMongoAnalysisStore({
+  uri = process.env.MONGODB_URI || "mongodb://localhost:27017",
+  databaseName = process.env.MONGODB_DATABASE || "geoguesser",
+} = {}) {
+  const client = new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
+  let collectionPromise;
+
+  function collection() {
+    if (!collectionPromise) {
+      collectionPromise = client.connect().then(() => client
+        .db(databaseName)
+        .collection("vision_analysis_cache"));
+    }
+    return collectionPromise;
+  }
+
+  return {
+    async get(cacheKey) {
+      const document = await (await collection()).findOne({ _id: cacheKey });
+      return document ? browserSafeAnalysisPayload(document.payload) : null;
+    },
+    async set(cacheKey, payload, metadata) {
+      const safePayload = browserSafeAnalysisPayload(payload);
+      await (await collection()).updateOne(
+        { _id: cacheKey },
+        {
+          $set: {
+            cache_version: VISION_ANALYSIS_CACHE_VERSION,
+            source_id: metadata.sourceId,
+            view_hashes: metadata.viewHashes,
+            payload: safePayload,
+            updated_at: new Date(),
+          },
+          $setOnInsert: { created_at: new Date() },
+        },
+        { upsert: true },
+      );
+    },
+    async close() {
+      await client.close();
+    },
+  };
 }
 
 class RoundStore {
@@ -135,9 +210,9 @@ function serializeRound(round) {
 }
 
 async function runVisionAnalysis(paths, { root = ROOT, python = PYTHON } = {}) {
-  const input = JSON.stringify({ paths, model: "gemini-3-flash-preview" });
+  const input = JSON.stringify({ paths });
   return new Promise((resolve, reject) => {
-    const child = spawn(python, [path.join(root, "scripts", "run_vision_bbox.py")], {
+    const child = spawn(python, [path.join(root, "scripts", "run_vision_mas.py")], {
       cwd: root,
       env: { ...process.env, PYTHONPATH: path.join(root, "src") },
       stdio: ["pipe", "pipe", "pipe"],
@@ -148,7 +223,10 @@ async function runVisionAnalysis(paths, { root = ROOT, python = PYTHON } = {}) {
     child.stderr.on("data", (chunk) => { stderr += chunk; });
     child.on("error", reject);
     child.on("close", (code) => {
-      if (code !== 0) return reject(new Error(stderr || `Vision process exited with ${code}.`));
+      if (code !== 0) {
+        console.error(stderr || `Vision process exited with ${code}.`);
+        return reject(new Error(stderr || `Vision process exited with ${code}.`));
+      }
       try {
         resolve(JSON.parse(stdout));
       } catch {
@@ -196,13 +274,14 @@ function createAppServer({
   root = ROOT,
   panoramas,
   analyze = (paths) => runVisionAnalysis(paths, { root }),
+  analysisStore = createMongoAnalysisStore(),
   randomIndex,
 } = {}) {
   const panoramaPromise = panoramas ? Promise.resolve(panoramas) : listTrainingPanoramas(root);
   const storePromise = panoramaPromise.then((items) => new RoundStore(items, randomIndex));
-  const analysisCache = new Map();
+  const inFlightAnalyses = new Map();
 
-  return http.createServer(async (req, res) => {
+  const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, "http://127.0.0.1");
       const store = await storePromise;
@@ -246,18 +325,33 @@ function createAppServer({
       if (req.method === "POST" && analyzeMatch) {
         const round = store.get(analyzeMatch[1]);
         if (!round) return send(res, 404, { error: "Training round not found." });
-        const cacheKey = round.panorama.sourceId;
-        const cached = analysisCache.has(cacheKey);
-        if (!cached) {
-          const task = analyze(HEADINGS.map((heading) => round.panorama.views[heading]));
-          analysisCache.set(cacheKey, Promise.resolve(task));
+        const cacheKey = visionAnalysisCacheKey(round.panorama);
+        const persisted = await analysisStore.get(cacheKey);
+        if (persisted) {
+          return send(res, 200, { ...persisted, cached: true });
+        }
+
+        let task = inFlightAnalyses.get(cacheKey);
+        if (!task) {
+          task = (async () => {
+            const generated = browserSafeAnalysisPayload(
+              await analyze(HEADINGS.map((heading) => round.panorama.views[heading])),
+            );
+            await analysisStore.set(cacheKey, generated, {
+              sourceId: round.panorama.sourceId,
+              viewHashes: HEADINGS.map((heading) => round.panorama.viewHashes?.[heading] || null),
+            });
+            return generated;
+          })();
+          inFlightAnalyses.set(cacheKey, task);
         }
         try {
-          const analysis = await analysisCache.get(cacheKey);
-          return send(res, 200, { analysis, cached });
+          const analysis = await task;
+          return send(res, 200, { ...analysis, cached: false });
         } catch (error) {
-          analysisCache.delete(cacheKey);
           throw error;
+        } finally {
+          if (inFlightAnalyses.get(cacheKey) === task) inFlightAnalyses.delete(cacheKey);
         }
       }
 
@@ -267,6 +361,8 @@ function createAppServer({
       send(res, 400, { error: error.message || "Request failed." });
     }
   });
+  server.on("close", () => { void analysisStore.close?.(); });
+  return server;
 }
 
 if (require.main === module) {
@@ -277,7 +373,10 @@ if (require.main === module) {
 
 module.exports = {
   RoundStore,
+  browserSafeAnalysisPayload,
   createAppServer,
+  createMongoAnalysisStore,
   listTrainingPanoramas,
   serializeRound,
+  visionAnalysisCacheKey,
 };

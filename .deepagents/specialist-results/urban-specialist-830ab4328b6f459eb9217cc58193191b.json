@@ -1,0 +1,19 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "urban-specialist",
+  "result": {
+    "candidates": [
+      "France"
+    ],
+    "evidence": [
+      "The 'APRR' logo identifies the Autoroutes Paris-Rhin-Rhône, a major motorway operator in France.",
+      "The text 'SAUF SERVICE' on the supplementary text plate is French for 'except service', confirming the language and legal context.",
+      "White road bollards with red reflectors or caps are a standard feature of French road infrastructure.",
+      "The use of blue directional signage for motorways and right-hand traffic is consistent with French road standards.",
+      "The environmental conditions (temperate deciduous vegetation) and infrastructure (metal guardrails, specific lane markings) align with Western Europe, specifically France."
+    ],
+    "contradictions": [],
+    "confidence": 100
+  },
+  "artifact": ".deepagents\\specialist-results\\urban-specialist-830ab4328b6f459eb9217cc58193191b.json"
+}

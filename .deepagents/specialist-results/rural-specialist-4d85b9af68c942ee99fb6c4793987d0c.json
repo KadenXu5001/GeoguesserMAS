@@ -1,0 +1,26 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Denmark",
+      "Germany",
+      "Poland",
+      "Netherlands",
+      "France"
+    ],
+    "evidence": [
+      "Right-hand driving side on a multi-lane highway is consistent with Continental Europe.",
+      "The presence of a large 3-blade wind turbine in a flat agricultural setting is highly characteristic of the Danish and Northern German landscapes.",
+      "Solid white outer edge lines and broken white inner lane lines are standard highway markings for European expressways.",
+      "Flat agricultural fields with deciduous trees and bushes suggest a Northern European temperate climate.",
+      "Double-rail metal guardrails are a standard safety feature on Danish and German highway networks.",
+      "A white car hood without a visible antenna is common in recent Google Street View coverage (Gen 4) in Denmark."
+    ],
+    "contradictions": [
+      "The lack of specific signage or language on the road makes it difficult to definitively distinguish between Denmark, Northern Germany, and Poland."
+    ],
+    "confidence": 75
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-4d85b9af68c942ee99fb6c4793987d0c.json"
+}

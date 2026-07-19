@@ -9,6 +9,14 @@ from geoguesser.runtime_budget import RuntimeBudget
 from geoguesser.tool_response_cache import ToolResponseCache
 
 
+def merge_decision_logs(
+    left: list[dict[str, Any]], right: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Merge append-only decision events without duplicating final snapshots."""
+    merged = {item.get("sequence"): item for item in [*left, *right]}
+    return [merged[key] for key in sorted(merged) if key is not None]
+
+
 class UsageEvent(TypedDict, total=False):
     component: str
     model: str
@@ -32,6 +40,7 @@ class GeoState(TypedDict, total=False):
     # the constitutionally required emit_prediction tool.
     structured_response: dict[str, Any]
     usage: Annotated[list[UsageEvent], add]
+    decision_log: Annotated[list[dict[str, Any]], merge_decision_logs]
 
 
 class GeoContext(TypedDict):
@@ -43,6 +52,7 @@ class GeoContext(TypedDict):
     reexamine_model: str
     require_specialist: bool
     reference_lookup_categories: set[str]
+    reference_lookup_details: list[dict[str, str]]
     scan_allowed_categories: set[str]
     scan_objects: dict[str, set[str]]
     active_specialist: str | None
@@ -52,3 +62,6 @@ class GeoContext(TypedDict):
     progress: Callable[[str], None]
     orchestration_phase: str
     extraction_attempted: bool
+    final_prediction: dict[str, Any] | None
+    decision_log: list[dict[str, Any]]
+    decision_log_lock: Any

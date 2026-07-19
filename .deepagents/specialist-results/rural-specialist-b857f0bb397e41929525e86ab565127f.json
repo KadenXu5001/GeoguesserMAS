@@ -1,0 +1,19 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Brazil"
+    ],
+    "evidence": [
+      "Reddish soil in agricultural fields is a highly characteristic feature of the Brazilian interior, particularly in states such as Mato Grosso, Mato Grosso do Sul, and Paraná, where 'terra roxa' or red latosols are prevalent.",
+      "The road markings, consisting of a solid yellow center line and solid white edge lines, match the standard traffic signaling used in Brazil for two-way rural highways.",
+      "Hazy or smoky sky conditions are a common occurrence in Brazil during the dry season (typically August to October) due to agricultural burning (queimadas) in the Cerrado and Amazon regions.",
+      "The description of a concrete utility pole with a cross-arm is consistent with the standard electrical infrastructure found across rural Brazil.",
+      "The combination of flat rural terrain and extensive agricultural use is typical of the Brazilian Midwest (Centro-Oeste)."
+    ],
+    "contradictions": [],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-b857f0bb397e41929525e86ab565127f.json"
+}

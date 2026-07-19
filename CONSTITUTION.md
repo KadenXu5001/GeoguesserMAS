@@ -103,6 +103,24 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   failure is an observability failure and must be printed clearly in the terminal; it must not be
   confused with a model or MAS prediction failure.
 
+## Frontend design fidelity
+
+- `FRONTEND_DESIGN.md` is the governing specification for all frontend layout, interaction,
+  routing, presentation state, and user-facing behavior. Every frontend change must begin by
+  reading that document and must conform to it.
+- A frontend change that adds, removes, or alters behavior or design decisions must update
+  `FRONTEND_DESIGN.md` first. Only after the specification records the approved behavior may code,
+  styles, frontend-facing APIs, tests, or supporting documentation be changed.
+- User-provided screenshots are the source of truth for frontend layout. Implementations must
+  preserve their visible structure, content hierarchy, element placement, grouping, and overall
+  composition.
+- Small adjustments to dimensions, spacing, or colors are permitted when they materially improve
+  visual quality, readability, responsiveness, or consistency. Such refinements must preserve the
+  screenshot's intended layout and must not add, remove, reorder, or substantially redesign visible
+  interface elements without explicit user approval.
+- A frontend change is incomplete until focused validation confirms that the implementation matches
+  both `FRONTEND_DESIGN.md` and the approved screenshot references.
+
 ## Change discipline
 
 Before changing MAS code, prompts, tools, state, budgets, tracing, or architecture, perform a

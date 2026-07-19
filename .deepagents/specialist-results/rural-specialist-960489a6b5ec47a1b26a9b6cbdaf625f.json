@@ -1,0 +1,26 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Philippines",
+      "Brazil",
+      "Mexico",
+      "Cambodia",
+      "Colombia"
+    ],
+    "evidence": [
+      "The 'Double yellow solid center line' is a standard road marking used in the Philippines to denote no-overtaking zones.",
+      "The 'White painted curb edge' is frequently observed in Philippine road infrastructure, especially near settlements or improved rural roads.",
+      "The combination of 'Palm tree' (pinnate type) and 'Reddish/lateritic soil' is highly characteristic of the tropical rural landscape in the Philippines.",
+      "A white car with a 'yellow ribbon' or tape on the roof rail is a well-known meta-clue for Google Street View coverage in the Philippines.",
+      "Driving on the right side of the road matches the Philippines' traffic regulations."
+    ],
+    "contradictions": [
+      "Double yellow lines are also common in North and South America, but the specific 'yellow ribbon' meta-clue is distinctively associated with the Philippines in the context of Google Street View.",
+      "Thailand and Indonesia have similar vegetation and soil but drive on the left."
+    ],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-960489a6b5ec47a1b26a9b6cbdaf625f.json"
+}

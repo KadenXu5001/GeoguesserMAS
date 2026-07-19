@@ -15,8 +15,8 @@ const HOVER_STYLE = {
   fillOpacity: 0.18,
 };
 const SELECTED_STYLE = {
-  color: "#eafff7",
-  weight: 2.2,
+  stroke: false,
+  weight: 0,
   fillColor: "#6ee7bd",
   fillOpacity: 0.5,
 };

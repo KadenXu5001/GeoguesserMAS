@@ -34,5 +34,120 @@
   "{\"category\": \"rural_roadside_features\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
     "response": [],
     "reads": 1
+  },
+  "{\"category\": \"urban_architecture\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v1\"}": {
+    "response": []
+  },
+  "{\"category\": \"urban_utility_poles\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Brazil",
+        "indicator": "slim indentations or steps; some concrete poles have circular holes",
+        "description": "Common Brazilian electricity-pole appearance.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "France",
+        "indicator": "wooden poles should commonly have a blue square sticker, with exceptions",
+        "description": "French wooden-pole marker.",
+        "source_url": "https://geotips.net/europe/"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Thailand",
+        "indicator": "concrete poles with small holes",
+        "description": "Thai concrete-pole pattern.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
+  },
+  "{\"category\": \"urban_signage\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "green signs point to towns/villages; blue signs identify administrative or local information; warning signs use yellow diamonds; official sign backs are black",
+        "description": "Brazilian sign colors and backs.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "France",
+        "indicator": "city and local-road signs use A, E, C and D route systems; multilingual regional signs can occur",
+        "description": "French route and regional sign patterns.",
+        "source_url": "https://geotips.net/europe/"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Thailand",
+        "indicator": "blue/green location signs, white sign poles with black bases, yellow diamond warning signs",
+        "description": "Thai urban and road signage.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
+  },
+  "{\"category\": \"language_script\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Brazil",
+        "indicator": "Portuguese; words may use ã, õ, â, ê, ô, ç and endings such as ão",
+        "description": "Portuguese indicators useful against Spanish in South America.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "France",
+        "indicator": "French alphabet and French regional language variants can appear on signs",
+        "description": "French and regional-language sign clues.",
+        "source_url": "https://geotips.net/europe/"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Thailand",
+        "indicator": "Thai script with distinctive complex characters",
+        "description": "Thai script clue.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
+  },
+  "{\"category\": \"bollards\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "bollards",
+        "country": "Brazil",
+        "indicator": "roadside kilometer/state-road signs are more useful than conventional bollards; conventional bollards are uncommon",
+        "description": "Brazilian roadside marker guidance.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "universal",
+        "category": "bollards",
+        "country": "France",
+        "indicator": "large white bollards, sometimes with red reflector; snow areas may have red-cap variant",
+        "description": "French bollard patterns.",
+        "source_url": "https://geotips.net/europe/"
+      },
+      {
+        "family": "universal",
+        "category": "bollards",
+        "country": "Thailand",
+        "indicator": "black-and-white striped bollards; road-number markers may include bird symbols",
+        "description": "Thai bollards and road markers.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
   }
 }

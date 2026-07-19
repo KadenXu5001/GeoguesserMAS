@@ -108,8 +108,19 @@ function WorldTrainingScreen({ round, state, setState, onHome, onVision, onNext 
   </main>;
 }
 
-function VisionImage({ round, direction, objects }) {
-  return <article className="vision-view"><div className="vision-image"><img src={round.viewUrls[direction]} alt={`${DIRECTION_NAMES[direction]} cardinal view`} /><div className="bbox-layer">{objects.map((object, index) => <div className="bbox" key={`${object.key}-${index}`} style={{ left: `${object.bbox.xmin / 10}%`, top: `${object.bbox.ymin / 10}%`, width: `${(object.bbox.xmax - object.bbox.xmin) / 10}%`, height: `${(object.bbox.ymax - object.bbox.ymin) / 10}%`, borderColor: object.color }}><span style={{ background: object.color }}>{object.key.replaceAll("_", " ")} · {object.confidence}%</span></div>)}</div><span className="direction-tag">{DIRECTION_NAMES[direction]} · {direction}°</span></div></article>;
+function boxStyle(bbox) {
+  return { left: `${bbox.xmin / 10}%`, top: `${bbox.ymin / 10}%`, width: `${(bbox.xmax - bbox.xmin) / 10}%`, height: `${(bbox.ymax - bbox.ymin) / 10}%` };
+}
+
+function VisionImage({ round, direction, objects, showAgentSees, showAgentInforms, informedEvidence }) {
+  return <article className="vision-view"><div className="vision-image"><img src={round.viewUrls[direction]} alt={`${DIRECTION_NAMES[direction]} cardinal view`} /><div className="bbox-layer">
+    {showAgentSees && objects.map((object, index) => <div className="bbox" key={`${object.key}-${index}`} style={{ ...boxStyle(object.bbox), borderColor: object.color }}><span style={{ background: object.color }}>{object.key.replaceAll("_", " ")} · {object.confidence}%</span></div>)}
+    {showAgentInforms && informedEvidence?.heading === direction && <div className="informed-bbox" style={boxStyle(informedEvidence.bbox)} tabIndex="0" aria-label={`Evidence: ${informedEvidence.description}`}><span className="informed-badge">Informs</span><span className="informed-tooltip" role="tooltip">{informedEvidence.description}</span></div>}
+  </div><span className="direction-tag">{DIRECTION_NAMES[direction]} · {direction}°</span></div></article>;
+}
+
+function OverlaySwitch({ label, description, checked, disabled, onChange }) {
+  return <label className={`overlay-switch ${disabled ? "disabled" : ""}`}><span><strong>{label}</strong><small>{description}</small></span><input type="checkbox" checked={checked} disabled={disabled} onChange={(event) => onChange(event.target.checked)} /><span className="switch-track" aria-hidden="true"><span /></span></label>;
 }
 
 function VisionScreen({ round, state, setState, onBack }) {
@@ -117,7 +128,7 @@ function VisionScreen({ round, state, setState, onBack }) {
     if (state.analysis || state.analysisLoading || state.analysisError) return;
     setState((current) => ({ ...current, analysisLoading: true, analysisError: "" }));
     analyzeRound(round.roundId).then((payload) => {
-      setState((current) => ({ ...current, analysis: payload.analysis, analysisLoading: false }));
+      setState((current) => ({ ...current, analysis: payload.analysis, informedEvidence: payload.informedEvidence || [], analysisLoading: false }));
     }).catch((error) => {
       setState((current) => ({ ...current, analysisError: error.message, analysisLoading: false }));
     });
@@ -125,11 +136,15 @@ function VisionScreen({ round, state, setState, onBack }) {
 
   const objectsByDirection = useMemo(() => Object.fromEntries(DIRECTIONS.map((direction) => [direction, Object.entries(CATEGORY_COLORS).flatMap(([key, color]) => (state.analysis?.[key]?.objects || []).filter((object) => object.heading === direction && object.bbox).map((object) => ({ ...object, key, color })))])), [state.analysis]);
   const observationCount = Object.values(objectsByDirection).reduce((sum, objects) => sum + objects.length, 0);
+  const informedEvidence = state.informedEvidence || [];
+  const selectedEvidence = informedEvidence.find((item) => item.id === state.selectedEvidenceId) || informedEvidence[0] || null;
 
   return <div className="vision-page"><AppHeader onHome={onBack} /><main className="page-shell vision-shell">
     <section className="page-heading vision-heading"><button className="back-link" onClick={onBack}><Icon name="arrowLeft" size={17} /> Back to panorama</button><div><span>Optional hint · Vision MAS</span><h1>See what the agent sees</h1></div><div className="place-id">Answer remains hidden</div></section>
-    <section className="vision-intro"><div><div className="eyebrow"><span /> Four-view analysis</div><h2>Visual evidence, made visible.</h2><p>The agent scans all four cardinal views. Colored boxes highlight the evidence it uses to reason about this place.</p></div>{state.analysisLoading && <div className="analysis-state"><span className="spinner" />Analyzing once for this panorama…</div>}</section>
-    <section className="vision-grid">{DIRECTIONS.map((direction) => <VisionImage key={direction} round={round} direction={direction} objects={objectsByDirection[direction]} />)}</section>
+    <section className="vision-intro"><div><div className="eyebrow"><span /> Four-view analysis</div><h2>Visual evidence, made visible.</h2><p>Compare everything the agent detected with the smaller set of clues that informed its final prediction.</p></div><div className="vision-controls" aria-label="Vision overlay controls"><div className="controls-title"><span>Overlay controls</span>{state.analysisLoading && <span className="spinner" />}</div><OverlaySwitch label="What the agent sees" description="All detected objects" checked={state.showAgentSees} disabled={!state.analysis} onChange={(showAgentSees) => setState((current) => ({ ...current, showAgentSees }))} /><OverlaySwitch label="What the agent informs" description="Prediction evidence" checked={state.showAgentInforms} disabled={!informedEvidence.length} onChange={(showAgentInforms) => setState((current) => ({ ...current, showAgentInforms }))} />{state.analysisLoading && <small className="controls-status">Analyzing once for this panorama…</small>}</div></section>
+    {informedEvidence.length > 0 && <section className="informed-selector" aria-label="Evidence that informed the prediction"><div><span className="section-label"><Icon name="spark" size={17} /> What the agent informs</span><strong>Select one clue to highlight</strong></div><div className="informed-options">{informedEvidence.map((item, index) => <button key={item.id} className={selectedEvidence?.id === item.id ? "selected" : ""} onClick={() => setState((current) => ({ ...current, selectedEvidenceId: item.id }))} aria-pressed={selectedEvidence?.id === item.id}><span>{index + 1}</span><span><strong>{item.observation}</strong><small>{item.description}</small></span></button>)}</div></section>}
+    {!state.analysisLoading && state.analysis && informedEvidence.length === 0 && <div className="informed-empty">No final evidence could be associated with a detected bounding box for this panorama.</div>}
+    <section className="vision-grid">{DIRECTIONS.map((direction) => <VisionImage key={direction} round={round} direction={direction} objects={objectsByDirection[direction]} showAgentSees={state.showAgentSees} showAgentInforms={state.showAgentInforms} informedEvidence={selectedEvidence} />)}</section>
     {state.analysisError && <div className="analysis-empty error"><Icon name="eye" size={28} /><strong>Analysis could not be completed</strong><span>{state.analysisError}</span><button onClick={() => setState((current) => ({ ...current, analysisError: "", analysisLoading: false }))}>Try again</button></div>}
     <section className="evidence-panel"><div className="evidence-header"><div><span className="section-label"><Icon name="layers" size={18} /> Bounding boxes guide</span><h2>Evidence the agent noticed</h2></div><span>{observationCount} observations</span></div><div className="evidence-list">{Object.entries(CATEGORY_COLORS).map(([key, color]) => <div className="evidence-key" key={key}><span style={{ background: color }} /><div><strong>{key.replaceAll("_", " ")}</strong><small>{(state.analysis?.[key]?.objects || []).length} detected</small></div></div>)}</div></section>
   </main></div>;
@@ -142,7 +157,7 @@ function LoadingScreen({ message, onHome }) {
 function App() {
   const [path, setPath] = useState(window.location.pathname);
   const [round, setRound] = useState(null);
-  const [roundState, setRoundState] = useState({ selectedCountry: null, result: null, viewState: { yaw: 0, pitch: 0, zoom: 35 }, analysis: null, analysisLoading: false, analysisError: "", loadingNext: false });
+  const [roundState, setRoundState] = useState({ selectedCountry: null, result: null, viewState: { yaw: 0, pitch: 0, zoom: 35 }, analysis: null, informedEvidence: [], selectedEvidenceId: null, showAgentSees: false, showAgentInforms: true, analysisLoading: false, analysisError: "", loadingNext: false });
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState("");
 
@@ -166,7 +181,7 @@ function App() {
   }, [routeRoundId, round?.roundId]);
 
   const go = (nextPath) => navigate(nextPath, setPath);
-  const resetRoundState = () => setRoundState({ selectedCountry: null, result: null, viewState: { yaw: 0, pitch: 0, zoom: 35 }, analysis: null, analysisLoading: false, analysisError: "", loadingNext: false });
+  const resetRoundState = () => setRoundState({ selectedCountry: null, result: null, viewState: { yaw: 0, pitch: 0, zoom: 35 }, analysis: null, informedEvidence: [], selectedEvidenceId: null, showAgentSees: false, showAgentInforms: true, analysisLoading: false, analysisError: "", loadingNext: false });
 
   async function startRound() {
     setStarting(true); setError("");

@@ -27,12 +27,16 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
 
     MongoRepository(database).initialize()
 
-    assert database.create_collection.call_count == 4
+    assert database.create_collection.call_count == 5
     database.panoramas.create_index.assert_any_call(
         [("mapillary_image_id", 1)], unique=True, name="uq_mapillary_image"
     )
     database.panoramas.create_index.assert_any_call(
         [("location", "2dsphere")], name="geo_location"
+    )
+    database.vision_analysis_cache.create_index.assert_called_once_with(
+        [("source_id", 1), ("cache_version", 1)],
+        name="source_cache_version",
     )
     update = database.dataset_versions.update_one.call_args
     assert update.args[0] == {"version": "pilot_v1"}

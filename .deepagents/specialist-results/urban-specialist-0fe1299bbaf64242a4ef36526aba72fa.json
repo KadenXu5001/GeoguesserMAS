@@ -1,0 +1,22 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "urban-specialist",
+  "result": {
+    "candidates": [
+      "France",
+      "Belgium",
+      "Luxembourg",
+      "Switzerland"
+    ],
+    "evidence": [
+      "Waste bins: The bin with a yellow lid (bac jaune) is the national standard for recycling in France.",
+      "Urban architecture: The 'stone masonry building' described as rubble masonry with brick-lined openings is a characteristic vernacular style in France, often seen in regions like the Loire Valley or Ile-de-France.",
+      "Overall context: The combination of a public park near water with modern circular-head street lighting and French-standard waste management strongly indicates a French commune."
+    ],
+    "contradictions": [
+      "Similar stone masonry with brick accents can occasionally be found in neighboring Belgium or Luxembourg, though waste bin colors may differ."
+    ],
+    "confidence": 90
+  },
+  "artifact": ".deepagents\\specialist-results\\urban-specialist-0fe1299bbaf64242a4ef36526aba72fa.json"
+}

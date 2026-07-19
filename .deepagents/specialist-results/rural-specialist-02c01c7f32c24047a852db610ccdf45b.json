@@ -1,0 +1,19 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Thailand"
+    ],
+    "evidence": [
+      "The Google car is described as a silver/white pickup truck with a distinctive hood scoop and a flat bed, which is the characteristic Gen 2/3 capture vehicle used for coverage in Thailand.",
+      "Road markings feature a broken yellow center line and white edge lines, which is the standard marking scheme for two-way rural roads in Thailand.",
+      "The scene drives on the left, consistent with Thai traffic laws.",
+      "Concrete utility poles with horizontal cross-arms are the standard design for power infrastructure in rural Thailand.",
+      "The presence of vast green rice paddies in a tropical climate is highly representative of the Thai agricultural landscape, particularly in the Central Plains or Isan regions."
+    ],
+    "contradictions": [],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-02c01c7f32c24047a852db610ccdf45b.json"
+}

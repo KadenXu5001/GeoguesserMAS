@@ -136,6 +136,10 @@ def extract_cardinal_views(
                     response_schema=_gemini_extraction_schema(),
                     max_output_tokens=3200,
                     thinking_config=types.ThinkingConfig(thinking_budget=0),
+                    http_options=types.HttpOptions(
+                        timeout=30_000,
+                        retry_options=types.HttpRetryOptions(attempts=1),
+                    ),
                 ),
             )
         except Exception:

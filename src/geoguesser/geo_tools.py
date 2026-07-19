@@ -14,6 +14,7 @@ from google.genai import types
 
 from geoguesser.bbox import crop_normalized_bbox
 from geoguesser.agent_runtime import apply_extraction_context
+from geoguesser.decision_log import record_decision, snapshot_decision_log
 from geoguesser.extraction_runner import extract_cardinal_views
 from geoguesser.model_payload import assert_model_payload_safe
 from geoguesser.prediction import CountryPrediction
@@ -73,6 +74,14 @@ def extract_visual_evidence(runtime: ToolRuntime[GeoContext, GeoState]) -> Comma
         progress = context.get("progress")
         if callable(progress):
             progress("extract_visual_evidence: Gemini request started")
+        record_decision(
+            context,
+            "extraction_started",
+            "Structured visual extraction started for the four cardinal views.",
+            tool="extract_visual_evidence",
+            headings=[0, 90, 180, 270],
+            reason_code="required_phase_zero",
+        )
         response_holder: dict[str, Any] = {}
 
         def record(response: Any, latency_ms: int) -> None:
@@ -105,12 +114,27 @@ def extract_visual_evidence(runtime: ToolRuntime[GeoContext, GeoState]) -> Comma
                 f"({metrics['latency_ms']} ms; {metrics['object_count']} objects)"
             )
         context["orchestration_phase"] = "specialist"
+        record_decision(
+            context,
+            "extraction_completed",
+            "Validated visual evidence is available for supervisor and specialist reasoning.",
+            tool="extract_visual_evidence",
+            metrics=metrics,
+            present_categories=[
+                category
+                for category, value in payload.items()
+                if isinstance(value, Mapping)
+                and value.get("status") in {"present", "present_but_illegible"}
+            ],
+            reason_code="schema_and_payload_audit_passed",
+        )
         content = json.dumps({"status": "succeeded", "metrics": metrics, "extraction": payload}, ensure_ascii=False)
         return Command(
             update={
                 "extraction": payload,
                 "extraction_status": "succeeded",
                 "extraction_metrics": metrics,
+                "decision_log": snapshot_decision_log(context),
                 "messages": [ToolMessage(content, tool_call_id=runtime.tool_call_id or "")],
             }
         )
@@ -120,11 +144,20 @@ def extract_visual_evidence(runtime: ToolRuntime[GeoContext, GeoState]) -> Comma
         if callable(progress):
             progress(f"extract_visual_evidence: Gemini request failed ({exc})")
         metrics = {"status": "failed", "model": "gemini-3-flash-preview", "latency_ms": round((perf_counter() - started) * 1000), "error": str(exc)}
+        record_decision(
+            context,
+            "extraction_failed",
+            "Visual extraction failed and the run was terminated without retry.",
+            tool="extract_visual_evidence",
+            error=str(exc),
+            reason_code="single_attempt_provider_or_validation_failure",
+        )
         return Command(
             goto=END,
             update={
                 "extraction_status": "failed",
                 "extraction_metrics": metrics,
+                "decision_log": snapshot_decision_log(context),
                 "messages": [ToolMessage(json.dumps(metrics), tool_call_id=runtime.tool_call_id or "")],
             },
         )
@@ -153,14 +186,38 @@ def emit_prediction(
         alternatives=alternatives,
         evidence=evidence,
     )
+    prediction_document = prediction.model_dump()
     budget = _budget_from_runtime(runtime)
     if runtime.context.get("require_specialist", False) and budget.specialist_tasks < 1:
         raise RuntimeError("MAS requires at least one specialist delegation before prediction")
+    current_todos = runtime.context.get("todo_plan")
+    if not isinstance(current_todos, list) or len(current_todos) != 4:
+        raise RuntimeError("emit_prediction requires the canonical four-item todo plan")
+    final_todos = [dict(item) for item in current_todos]
+    final_todos[-1]["status"] = "completed"
+    runtime.context["todo_plan"] = final_todos
+    # Keep a runtime-context copy as a durable handoff. Some LangGraph terminal
+    # paths can omit a tool Command's state update from the value returned by
+    # ``invoke`` even though the terminal tool completed successfully.
+    runtime.context["final_prediction"] = prediction_document
+    runtime.context["orchestration_phase"] = "done"
+    record_decision(
+        runtime.context,
+        "prediction_finalized",
+        "Final prediction was emitted and its todo was completed atomically.",
+        tool="emit_prediction",
+        prediction=prediction_document,
+        todo_before=current_todos,
+        todo_after=final_todos,
+        reason_code="terminal_prediction_committed",
+    )
     content = prediction.model_dump_json()
     return Command(
         goto=END,
         update={
-            "final_prediction": prediction.model_dump(),
+            "final_prediction": prediction_document,
+            "todos": final_todos,
+            "decision_log": snapshot_decision_log(runtime.context),
             "messages": [ToolMessage(content, tool_call_id=runtime.tool_call_id or "")],
         },
     )
@@ -212,6 +269,10 @@ def reexamine_region(
                 response_mime_type="text/plain",
                 max_output_tokens=350,
                 thinking_config=types.ThinkingConfig(thinking_budget=0),
+                http_options=types.HttpOptions(
+                    timeout=30_000,
+                    retry_options=types.HttpRetryOptions(attempts=1),
+                ),
             ),
         )
     result = {
@@ -223,10 +284,33 @@ def reexamine_region(
         "score_b": score_b,
         "answer": response.text.strip(),
     }
+    todos = runtime.context.get("todo_plan")
+    completed_todos = None
+    if isinstance(todos, list) and len(todos) == 4:
+        completed_todos = [dict(item) for item in todos]
+        completed_todos[2]["status"] = "completed"
+        runtime.context["todo_plan"] = completed_todos
+    record_decision(
+        runtime.context,
+        "reexamination_completed",
+        "The authorized crop was inspected to compare the two close signals.",
+        tool="reexamine_region",
+        heading=heading,
+        question=question.strip(),
+        signal_a=signal_a.strip(),
+        score_a=score_a,
+        signal_b=signal_b.strip(),
+        score_b=score_b,
+        answer=result["answer"],
+        todo_after=completed_todos or [],
+        reason_code="bounded_crop_result",
+    )
     content = json.dumps(result, ensure_ascii=False)
     return Command(
         update={
             "reexamine_results": [result],
+            **({"todos": completed_todos} if completed_todos is not None else {}),
+            "decision_log": snapshot_decision_log(runtime.context),
             "messages": [ToolMessage(content, tool_call_id=runtime.tool_call_id or "")],
         }
     )

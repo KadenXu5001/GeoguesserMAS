@@ -7,6 +7,7 @@ from typing import Any
 from langchain.agents.middleware.types import AgentMiddleware, ModelRequest, ToolCallRequest, hook_config
 from langchain_core.messages import HumanMessage, ToolMessage
 
+from geoguesser.decision_log import record_decision
 from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
 from geoguesser.specialist_result import normalize_specialist_result
 
@@ -38,6 +39,14 @@ MAS_TODO_CONTENTS = (
     "Optionally reexamine_region only for two close country signals",
     "Emit final country prediction with emit_prediction",
 )
+
+MAS_INITIAL_TODOS = [
+    {
+        "content": content,
+        "status": "in_progress" if index == 0 else "pending",
+    }
+    for index, content in enumerate(MAS_TODO_CONTENTS)
+]
 
 
 def _todo_validation_error(request: ToolCallRequest, context: Mapping[str, Any]) -> str | None:
@@ -189,6 +198,66 @@ def _request_trace(request: Any) -> dict[str, Any]:
     }
 
 
+def _required_protocol_tool(
+    context: Mapping[str, Any] | None,
+    budget: RuntimeBudget | None,
+) -> str | None:
+    """Return the one tool that can advance the current deterministic phase."""
+    if context is None:
+        return None
+    phase = context.get("orchestration_phase")
+    if phase == "todo":
+        return "write_todos"
+    if phase == "extraction":
+        return "extract_visual_evidence"
+    if phase == "finalizing":
+        return "emit_prediction"
+    if phase != "specialist":
+        return None
+
+    plan = context.get("todo_plan")
+    if not isinstance(plan, list) or len(plan) < 2:
+        return "write_todos"
+    if plan[0].get("status") != "completed":
+        return "write_todos"
+    specialist_tasks = budget.specialist_tasks if isinstance(budget, RuntimeBudget) else 0
+    if specialist_tasks == 0:
+        return "task" if plan[1].get("status") == "in_progress" else "write_todos"
+    if plan[1].get("status") != "completed":
+        return "write_todos"
+    return None
+
+
+def _serialized_tool_message(message: Any, required_tool: str | None) -> Any | None:
+    """Collapse unsafe parallel protocol calls to one ordered call.
+
+    Two distinct specialist tasks remain legal because they are work inside the same
+    todo item. Every other combination is serialized before ToolNode can fan it out.
+    """
+    calls = list(getattr(message, "tool_calls", None) or [])
+    if len(calls) <= 1:
+        return None
+    if required_tool in {None, "task"} and all(
+        call.get("name") == "task" for call in calls
+    ):
+        specialists = {
+            (call.get("args") or {}).get("subagent_type")
+            for call in calls
+            if isinstance(call.get("args"), Mapping)
+        }
+        if len(calls) <= 2 and len(specialists) == len(calls):
+            return None
+    if required_tool is not None:
+        selected = next((call for call in calls if call.get("name") == required_tool), calls[0])
+        return message.model_copy(update={"tool_calls": [selected]})
+    priority = ("write_todos", "reexamine_region", "emit_prediction")
+    selected = next(
+        (call for name in priority for call in calls if call.get("name") == name),
+        calls[0],
+    )
+    return message.model_copy(update={"tool_calls": [selected]})
+
+
 class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
     """Enforce MAS hard caps from the current invocation's runtime context."""
 
@@ -201,31 +270,79 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         self.max_output_tokens = max_output_tokens
         self.component = component
 
+    @hook_config(can_jump_to=["end"])
+    def before_model(self, state: Any, runtime: Any) -> dict[str, Any] | None:
+        """Prevent the agent loop's static edge from calling the model after termination."""
+        context = getattr(runtime, "context", None)
+        phase = context.get("orchestration_phase") if isinstance(context, Mapping) else None
+        if phase in {"done", "failed"}:
+            return {"jump_to": "end"}
+        return None
+
     @hook_config(can_jump_to=["model"])
     def after_model(self, state: Any, runtime: Any) -> dict[str, Any] | None:
         """Do not let a plain supervisor response terminate an active MAS phase."""
         context = getattr(runtime, "context", None)
         phase = context.get("orchestration_phase") if isinstance(context, Mapping) else None
-        if phase not in {"todo", "extraction", "specialist"}:
+        if phase not in {"todo", "extraction", "specialist", "finalizing"}:
             return None
         budget = context.get(CONTEXT_KEY) if isinstance(context, Mapping) else None
         messages = state.get("messages", []) if isinstance(state, Mapping) else []
-        if not messages or getattr(messages[-1], "tool_calls", None):
+        if not messages:
             return None
+        if getattr(messages[-1], "tool_calls", None):
+            proposed = [call.get("name") for call in messages[-1].tool_calls]
+            required = _required_protocol_tool(context, budget)
+            serialized = _serialized_tool_message(
+                messages[-1],
+                required,
+            )
+            event = record_decision(
+                context,
+                "model_tool_proposal",
+                "Supervisor proposed its next tool action.",
+                proposed_tools=proposed,
+                required_tool=required,
+                executed_tools=(
+                    [call.get("name") for call in serialized.tool_calls]
+                    if serialized is not None
+                    else proposed
+                ),
+                serialized=serialized is not None,
+                reason_code=(
+                    "protocol_parallel_calls_serialized"
+                    if serialized is not None
+                    else "proposal_matches_runtime_phase"
+                ),
+            )
+            result = {"decision_log": [event]}
+            if serialized is not None:
+                result["messages"] = [serialized]
+            return result
         if phase == "todo":
             next_action = "write_todos"
         elif phase == "extraction":
             next_action = "extract_visual_evidence"
+        elif phase == "finalizing":
+            next_action = "emit_prediction"
         elif isinstance(budget, RuntimeBudget) and budget.specialist_tasks == 0:
             next_action = "task to delegate to a configured specialist"
         else:
             next_action = "the next required MAS tool"
+        event = record_decision(
+            context,
+            "plain_response_rejected",
+            "Supervisor returned text while a protocol tool was required.",
+            required_tool=next_action,
+            reason_code="active_phase_requires_tool",
+        )
         return {
             "messages": [
                 HumanMessage(
                     content=f"Continue the required MAS workflow. Call {next_action} now; do not return plain text."
                 )
             ],
+            "decision_log": [event],
             "jump_to": "model",
         }
 
@@ -248,6 +365,11 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             except Exception as exc:
                 raise type(exc)(f"{exc}; request_trace={_request_trace(request)}") from exc
         settings = dict(getattr(request, "model_settings", None) or {})
+        # LangChain's Gemini integration otherwise defaults to six attempts and no
+        # deadline. MAS calls are deliberately single-attempt and bounded.
+        settings.setdefault("max_retries", 1)
+        settings.setdefault("timeout", 30.0)
+        settings.setdefault("thinking_budget", 0)
         model_object = getattr(request, "model", None)
         model_name = str(getattr(model_object, "model", model_object or "")).lower()
         provider_limit_key = "max_output_tokens" if "gemini" in model_name else "max_tokens"
@@ -272,12 +394,17 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             overrides["tools"] = [tool for tool in tools if _model_tool_name(tool) != "task"]
         if context := _context(request.runtime):
             if context.get("orchestration_phase") != "done":
-                # The first substantive supervisor call must not deliberate among all tools.
-                # Bind it to the exact extraction tool; later phases may choose among tools.
+                # Tool choice follows protocol state. The model chooses geographic
+                # content, but it never chooses which workflow phase runs next.
                 overrides["tool_choice"] = (
-                    "extract_visual_evidence"
-                    if context.get("orchestration_phase") == "extraction"
-                    else "any"
+                    _required_protocol_tool(context, budget) or "any"
+                )
+                record_decision(
+                    context,
+                    "runtime_route",
+                    "Runtime selected the only legal next workflow action.",
+                    required_tool=overrides["tool_choice"],
+                    reason_code="phase_and_todo_state",
                 )
         bounded_request = request.override(**overrides) if hasattr(request, "override") else request
         response = handler(bounded_request)
@@ -305,43 +432,78 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         budget.check_capacity()
         context = _context(request.runtime)
         phase = context.get("orchestration_phase") if context is not None else None
-        if phase is not None and name == "write_todos" and phase not in {"todo", "specialist"}:
+        record_decision(
+            context,
+            "tool_requested",
+            "A supervisor tool call reached runtime enforcement.",
+            tool=name,
+            reason_code="model_tool_call",
+        )
+
+        def reject_tool(content: str, reason_code: str) -> ToolMessage:
+            record_decision(
+                context,
+                "tool_rejected",
+                "Runtime rejected a tool call that did not match the enforced workflow.",
+                tool=name,
+                reason_code=reason_code,
+                feedback=content,
+            )
             return ToolMessage(
-                content="Todo updates are closed after finalization; continue with the required next tool.",
+                content=content,
                 tool_call_id=request.tool_call.get("id", ""),
+            )
+
+        if phase is not None and name == "write_todos" and phase not in {"todo", "specialist"}:
+            return reject_tool(
+                "Todo updates are closed after finalization; continue with the required next tool.",
+                "todo_update_outside_active_phase",
             )
         if phase is not None and name == "task" and phase != "specialist":
-            return ToolMessage(
-                content="Specialist delegation is only allowed after the initial todo plan and before reexamination.",
-                tool_call_id=request.tool_call.get("id", ""),
+            return reject_tool(
+                "Specialist delegation is only allowed after the initial todo plan and before reexamination.",
+                "specialist_outside_specialist_phase",
             )
         if phase is not None and name == "extract_visual_evidence" and phase != "extraction":
-            return ToolMessage(
-                content="Visual extraction is only allowed once immediately after the initial todo plan.",
-                tool_call_id=request.tool_call.get("id", ""),
+            return reject_tool(
+                "Visual extraction is only allowed once immediately after the initial todo plan.",
+                "extraction_outside_extraction_phase",
             )
         if phase is not None and name == "reexamine_region" and phase != "specialist":
-            return ToolMessage(
-                content="Reexamination is only allowed after specialist evidence and may occur once.",
-                tool_call_id=request.tool_call.get("id", ""),
+            return reject_tool(
+                "Reexamination is only allowed after specialist evidence and may occur once.",
+                "reexamination_outside_specialist_phase",
             )
         if name == "reexamine_region" and budget.specialist_tasks < 1:
-            return ToolMessage(
-                content="Reexamination requires at least one completed specialist task first.",
-                tool_call_id=request.tool_call.get("id", ""),
+            return reject_tool(
+                "Reexamination requires at least one completed specialist task first.",
+                "reexamination_before_specialist",
             )
         if phase is not None and name == "emit_prediction" and phase not in {"specialist", "finalizing"}:
-            return ToolMessage(
-                content="Prediction is only allowed after specialist evidence.",
-                tool_call_id=request.tool_call.get("id", ""),
+            return reject_tool(
+                "Prediction is only allowed after specialist evidence.",
+                "prediction_before_specialist",
             )
         if name == "write_todos":
             if context is not None:
+                previous_plan = [dict(item) for item in context.get("todo_plan", [])]
+                if context.get("orchestration_phase") == "todo" and not context.get("todo_plan"):
+                    # The initial plan is protocol state, not a creative model decision.
+                    # Keep the required model/tool call while making its deterministic
+                    # payload canonical in one pass instead of retrying malformed args.
+                    request = request.override(
+                        tool_call={
+                            **request.tool_call,
+                            "args": {
+                                "todos": [dict(item) for item in MAS_INITIAL_TODOS],
+                            },
+                        }
+                    )
                 todo_error = _todo_validation_error(request, context)
                 if todo_error:
-                    return ToolMessage(
-                        content=f"Invalid MAS todo plan: {todo_error}",
-                        tool_call_id=request.tool_call.get("id", ""),
+                    return reject_tool(
+                        f"Invalid MAS todo plan: {todo_error}",
+                        "invalid_todo_transition",
                     )
             result = handler(request)
             if context is not None:
@@ -350,14 +512,23 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                     {"content": item["content"], "status": item["status"]}
                     for item in args["todos"]
                 ]
+                record_decision(
+                    context,
+                    "todo_updated",
+                    "Canonical todo statuses advanced after a completed stage.",
+                    tool="write_todos",
+                    todo_before=previous_plan,
+                    todo_after=context["todo_plan"],
+                    reason_code="validated_forward_transition",
+                )
             if context is not None and context.get("orchestration_phase") == "todo":
                 context["orchestration_phase"] = "extraction"
             return result
         if name == "extract_visual_evidence":
             if context is not None and context.get("extraction_attempted"):
-                return ToolMessage(
-                    content="Visual extraction has already been attempted; do not call it again.",
-                    tool_call_id=request.tool_call.get("id", ""),
+                return reject_tool(
+                    "Visual extraction has already been attempted; do not call it again.",
+                    "duplicate_extraction",
                 )
             return handler(request)
         if name == "task":
@@ -372,12 +543,21 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             try:
                 budget.consume_specialist_task(str(specialist))
             except BudgetExceeded as exc:
-                return ToolMessage(
-                    content=f"{exc}; do not call this specialist again; continue with the next required tool.",
-                    tool_call_id=request.tool_call.get("id", ""),
+                return reject_tool(
+                    f"{exc}; do not call this specialist again; continue with the next required tool.",
+                    "specialist_budget_or_duplicate",
                 )
             if callable(progress):
                 progress(f"delegating to {specialist}")
+            record_decision(
+                context,
+                "specialist_delegated",
+                "Supervisor delegated unresolved visible evidence to a specialist.",
+                tool="task",
+                specialist=str(specialist),
+                task_description=(args.get("description", "") if isinstance(args, Mapping) else ""),
+                reason_code="specialist_phase_requires_evidence_analysis",
+            )
             request = _with_authorized_objects(request, str(specialist), context)
             previous_specialist = context.get("active_specialist") if context is not None else None
             if context is not None:
@@ -387,7 +567,7 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             finally:
                 if context is not None:
                     context["active_specialist"] = previous_specialist
-            normalized, _ = normalize_specialist_result(
+            normalized, document = normalize_specialist_result(
                 str(specialist),
                 result,
                 tool_call_id=request.tool_call.get("id", ""),
@@ -395,16 +575,40 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             )
             if callable(progress):
                 progress(f"{specialist} returned standardized JSON result")
+            specialist_result = document.get("result", {})
+            record_decision(
+                context,
+                "specialist_completed",
+                "Specialist returned ranked geographic evidence.",
+                tool="task",
+                specialist=str(specialist),
+                candidates=specialist_result.get("candidates", []),
+                evidence=specialist_result.get("evidence", []),
+                contradictions=specialist_result.get("contradictions", []),
+                confidence=specialist_result.get("confidence"),
+                reason_code="specialist_result_validated",
+            )
             return normalized
         elif name == "reexamine_region":
             if budget.reexaminations >= budget.max_reexaminations:
-                return ToolMessage(
-                    content="Re-examination cap reached; do not request another crop and finalize.",
-                    tool_call_id=request.tool_call.get("id", ""),
+                return reject_tool(
+                    "Re-examination cap reached; do not request another crop and finalize.",
+                    "reexamination_cap",
                 )
             budget.consume_reexamination()
             if context is not None:
+                plan = context.get("todo_plan")
+                if isinstance(plan, list) and len(plan) == 4:
+                    plan = [dict(item) for item in plan]
+                    plan[2]["status"] = "in_progress"
+                    context["todo_plan"] = plan
                 context["orchestration_phase"] = "finalizing"
-        elif name == "emit_prediction" and context is not None:
-            context["orchestration_phase"] = "done"
+                record_decision(
+                    context,
+                    "reexamination_authorized",
+                    "Runtime accepted one close-signal re-examination.",
+                    tool="reexamine_region",
+                    todo_after=context.get("todo_plan", []),
+                    reason_code="two_signals_within_score_gap",
+                )
         return handler(request)

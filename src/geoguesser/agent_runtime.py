@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from threading import Lock
 from typing import Any
 
 from geoguesser.runtime_budget import RuntimeBudget
@@ -103,6 +104,7 @@ def build_runtime_context(
         "reexamine_model": reexamine_model,
         "require_specialist": require_specialist,
         "reference_lookup_categories": set(),
+        "reference_lookup_details": [],
         "scan_allowed_categories": _scan_allowed_categories(extraction),
         "scan_objects": _scan_objects(extraction),
         "active_specialist": None,
@@ -112,4 +114,7 @@ def build_runtime_context(
         "progress": progress or (lambda message: None),
         "orchestration_phase": "todo",
         "extraction_attempted": False,
+        "final_prediction": None,
+        "decision_log": [],
+        "decision_log_lock": Lock(),
     }

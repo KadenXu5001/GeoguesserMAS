@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from langchain.tools import ToolRuntime, tool
 
+from geoguesser.decision_log import record_decision
 from geoguesser.runtime_state import GeoContext, GeoState
 from geoguesser.tool_response_cache import ToolResponseCache
 
@@ -53,37 +54,78 @@ def _lookup(
     justification: str, object_observation: str,
 ) -> list[dict]:
     specialist = runtime.context.get("active_specialist") or "unknown-specialist"
+    record_decision(
+        runtime.context,
+        "reference_lookup_requested",
+        "Specialist requested bounded reference knowledge for visible evidence.",
+        tool=f"lookup_{family}_clues",
+        specialist=specialist,
+        category=category,
+        object_observation=object_observation,
+        justification=justification.strip(),
+        reason_code="specialist_evidence_question",
+    )
+
+    def rejected(payload: dict, reason_code: str) -> list[dict]:
+        record_decision(
+            runtime.context,
+            "reference_lookup_rejected",
+            "Runtime rejected a reference lookup that violated its evidence contract.",
+            tool=f"lookup_{family}_clues",
+            specialist=specialist,
+            category=category,
+            reason_code=reason_code,
+            result=payload,
+        )
+        return [payload]
+
     tool_counts = runtime.context.setdefault("specialist_tool_calls", {})
     count = int(tool_counts.get(specialist, 0))
     if count >= 3:
-        return [{"warning": f"{specialist} lookup cap reached (3 tools); stop and return SpecialistResult"}]
+        return rejected(
+            {"warning": f"{specialist} lookup cap reached (3 tools); stop and return SpecialistResult"},
+            "specialist_lookup_cap",
+        )
     tool_counts[specialist] = count + 1
     if not justification.strip() or len(justification.strip()) < 12:
-        return [{"error": "lookup requires a specific evidence-based justification of at least 12 characters"}]
+        return rejected(
+            {"error": "lookup requires a specific evidence-based justification of at least 12 characters"},
+            "justification_too_short",
+        )
     progress = runtime.context.get("progress")
     if category not in allowed:
-        return [{"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)}]
+        return rejected(
+            {"error": f"unsupported {family} category: {category}", "allowed_categories": sorted(allowed)},
+            "unsupported_category",
+        )
     observations = runtime.context.get("scan_objects", {}).get(category, set())
     if object_observation not in observations:
-        return [{
+        return rejected({
             "error": "lookup must cite an exact object observation from the supervisor extraction",
             "category": category,
             "allowed_objects": sorted(observations),
-        }]
+        }, "object_not_in_extraction")
     if object_observation.casefold() not in justification.casefold():
-        return [{
+        return rejected({
             "error": "lookup justification must explicitly explain why the exact object observation is worth this lookup",
             "object_observation": object_observation,
-        }]
+        }, "justification_missing_exact_object")
     scan_allowed = runtime.context.get("scan_allowed_categories", set())
     if scan_allowed and category not in scan_allowed:
-        return [{
+        return rejected({
             "error": f"category {category} is not supported by the initial extraction scan",
             "scan_allowed_categories": sorted(scan_allowed),
-        }]
+        }, "category_not_present_in_extraction")
     duplicate = _claim_category(runtime, family, category)
     if duplicate:
-        return [{"error": duplicate}]
+        return rejected({"error": duplicate}, "duplicate_category")
+    lookup_detail = {
+        "specialist": specialist,
+        "tool": f"lookup_{family}_clues",
+        "category": category,
+        "object_observation": object_observation,
+        "justification": justification.strip(),
+    }
     version = _version(runtime)
     cache = runtime.context.get("tool_response_cache")
     key = json.dumps(
@@ -96,18 +138,47 @@ def _lookup(
         if cache_error:
             if callable(progress):
                 progress(f"{family} lookup {category}: cache capacity reached")
-            return [{"warning": cache_error, "category": category}]
+            return rejected(
+                {"warning": cache_error, "category": category},
+                "cache_read_capacity",
+            )
         if cached is not None:
             if callable(progress):
                 progress(f"{family} lookup {category}: cache hit")
+            runtime.context.setdefault("reference_lookup_details", []).append(lookup_detail)
+            record_decision(
+                runtime.context,
+                "reference_lookup_completed",
+                "Specialist received deterministic cached reference rows.",
+                tool=f"lookup_{family}_clues",
+                specialist=specialist,
+                category=category,
+                object_observation=object_observation,
+                source="per_run_cache",
+                row_count=len(cached),
+                reason_code="validated_cache_hit",
+            )
             return cached
     if callable(progress):
         progress(f"{family} lookup {category}: querying reference database")
     response = _repository(runtime).lookup_references(
         version=version, category=category, country=country
     )
+    runtime.context.setdefault("reference_lookup_details", []).append(lookup_detail)
     if isinstance(cache, ToolResponseCache):
         cache.put(key, response)
+    record_decision(
+        runtime.context,
+        "reference_lookup_completed",
+        "Specialist received deterministic versioned reference rows.",
+        tool=f"lookup_{family}_clues",
+        specialist=specialist,
+        category=category,
+        object_observation=object_observation,
+        source="reference_repository",
+        row_count=len(response),
+        reason_code="validated_reference_query",
+    )
     return response
 
 
