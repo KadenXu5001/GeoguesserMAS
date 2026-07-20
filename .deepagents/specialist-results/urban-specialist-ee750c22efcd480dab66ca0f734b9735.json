@@ -1,0 +1,22 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "urban-specialist",
+  "result": {
+    "candidates": [
+      "Mandaguaçu, Paraná, Brazil",
+      "Maringá, Paraná, Brazil",
+      "Paraná, Brazil",
+      "Southern Brazil"
+    ],
+    "evidence": [
+      "The text 'AUTO POSTO TREVIZAN II' identifies a specific gas station found in Mandaguaçu, Paraná.",
+      "The phone number '(44) 3013-9770' on the 'SEMINOVOS HUNGARO' vehicle uses the (44) area code, which serves the Maringá and northwestern region of the state of Paraná, Brazil.",
+      "Hungaro is a prominent logistics and transport company (Transportes Hungaro) headquartered in Maringá, Paraná.",
+      "The mention of 'coniferous trees' (likely Araucaria angustifolia) is consistent with the flora of the state of Paraná and the Southern Region of Brazil.",
+      "The Portuguese text 'AUTO POSTO' and 'COMBUSTIVEL DE QUALIDADE' confirms the location is in Brazil."
+    ],
+    "contradictions": [],
+    "confidence": 95
+  },
+  "artifact": ".deepagents\\specialist-results\\urban-specialist-ee750c22efcd480dab66ca0f734b9735.json"
+}

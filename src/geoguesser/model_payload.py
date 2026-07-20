@@ -15,9 +15,18 @@ FORBIDDEN_METADATA_KEYS = frozenset(
         "sequence_id",
         "image_id",
         "mapillary_image_id",
+        "provider",
+        "provider_image_id",
+        "provider_sequence_id",
         "panorama_path",
+        "path",
+        "object_key",
+        "storage_namespace",
+        "storage_uri",
         "filename",
         "sha256",
+        "crc32c",
+        "byte_count",
         "country_iso2",
         "split",
     }
@@ -48,4 +57,3 @@ def assert_model_payload_safe(payload: Any) -> None:
     if violations:
         joined = ", ".join(violations)
         raise ModelPayloadViolation(f"forbidden metadata in model payload: {joined}")
-

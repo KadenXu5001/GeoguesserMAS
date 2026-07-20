@@ -149,5 +149,177 @@
         "source_url": "https://geotips.net/asia/"
       }
     ]
+  },
+  "{\"category\": \"driving_side\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Australia",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Brazil",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Canada",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Chile",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Colombia",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Costa Rica",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "France",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Germany",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "India",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Italy",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Japan",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Morocco",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Netherlands",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "New Zealand",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Poland",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Spain",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Sweden",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Taiwan",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "Thailand",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "United Kingdom",
+        "indicator": "left",
+        "description": "Traffic drives on the left.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      },
+      {
+        "family": "universal",
+        "category": "driving_side",
+        "country": "United States",
+        "indicator": "right",
+        "description": "Traffic drives on the right.",
+        "source_url": "https://geohints.com/meta/drivingSide"
+      }
+    ]
   }
 }

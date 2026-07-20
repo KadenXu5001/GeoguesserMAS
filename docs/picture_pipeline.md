@@ -1,9 +1,25 @@
 # Picture data pipeline
 
-The pipeline stores panorama and rendered image files on disk and stores their metadata,
-checksums, validation history, quality-review state, and split membership in local MongoDB.
-Expiring Mapillary image URLs are fetched only immediately before a download and are not
-persisted.
+The pipeline stores panorama and rendered image files in a local content-addressed object
+store and stores their metadata, checksums, validation history, quality-review state, and split
+membership in local MongoDB. Expiring Mapillary image URLs are fetched only immediately before
+a download and are not persisted.
+
+Set `LOCAL_OBJECT_STORE_ROOT` to choose the storage root. The default is the ignored
+`.local-data/` directory. Original panoramas are curator-only objects under the
+`source-private` namespace. Sanitized cardinal views are separate `runtime-private` objects:
+
+```text
+.local-data/
+  source-private/objects/<sha256-prefix>/<sha256>.<ext>
+  runtime-private/objects/<sha256-prefix>/<sha256>.<ext>
+```
+
+MongoDB retains a transitional local `path` for current tools and also records the portable
+`storage_namespace` and `object_key`, plus SHA-256, CRC32C, byte count, and media type. Cloud
+uploaders can map the same namespace and object key to a bucket without rewriting dataset
+identity. Existing pilot files under `data/panoramas/` and `data/rendered/` remain readable and
+are not moved or modified.
 
 ## Start local services
 
@@ -30,11 +46,10 @@ The default limit is one candidate. Use a country filter to make the test determ
 .\.runtime-win\Scripts\python.exe main.py ingest-pictures --country FR --limit 1
 ```
 
-Accepted originals are written under `data/panoramas/<ISO2>/`. Four 1024x1024 cardinal
-views are written under `data/rendered/<ISO2>/<IMAGE_ID>/`. Automatic quality checks run
-after download; passing panoramas are rendered and moved to `quality_review` for manual
-approval. Re-running the command skips images already downloaded, rejected, under review,
-or rendered.
+Accepted originals and their four 1024x1024 cardinal views are written into the object-store
+namespaces above. Automatic quality checks run after download; passing panoramas are rendered
+and moved to `quality_review` for manual approval. Re-running the command skips images already
+downloaded, rejected, under review, or rendered.
 
 ## Inspect and review the results
 

@@ -1,6 +1,14 @@
 import mercantile
+import pytest
 
-from geoguesser.coverage import CoveragePoint, _tile_coordinate_to_lnglat, select_separated
+from geoguesser.coverage import (
+    CoveragePoint,
+    _neighbor_tiles,
+    _tile_coordinate_to_lnglat,
+    candidate_tiles,
+    scan_country,
+    select_separated,
+)
 
 
 def point(sequence: str, latitude: float, longitude: float) -> CoveragePoint:
@@ -26,3 +34,36 @@ def test_separation_rejects_nearby_points() -> None:
         target=15,
     )
     assert [item.sequence_id for item in selected] == ["a", "c"]
+
+
+def test_candidate_tiles_progressively_fill_deep_budget() -> None:
+    tiles = candidate_tiles([-125.0, 25.0, -67.0, 49.0], zoom=8, max_tiles=64)
+
+    assert len(tiles) == 64
+    assert len({(tile.x, tile.y, tile.z) for tile in tiles}) == 64
+
+
+def test_neighbor_tiles_are_unique_and_adjacent() -> None:
+    origin = mercantile.Tile(x=100, y=100, z=8)
+    neighbors = list(_neighbor_tiles(origin))
+
+    assert len(neighbors) == 8
+    assert len(set(neighbors)) == 8
+    assert all(
+        abs(tile.x - origin.x) <= 1 and abs(tile.y - origin.y) <= 1
+        for tile in neighbors
+    )
+
+
+def test_deep_scan_requires_offline_boundaries() -> None:
+    with pytest.raises(ValueError, match="pinned offline country boundaries"):
+        scan_country(
+            {
+                "iso2": "FR",
+                "country": "France",
+                "continent": "Europe",
+                "bbox": [-5.0, 42.0, 8.0, 51.0],
+            },
+            "token",
+            boundaries=None,
+        )

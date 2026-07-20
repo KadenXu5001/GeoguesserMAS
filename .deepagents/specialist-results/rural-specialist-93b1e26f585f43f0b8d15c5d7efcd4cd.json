@@ -1,0 +1,15 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "France"
+    ],
+    "evidence": [
+      "road"
+    ],
+    "contradictions": [],
+    "confidence": 80
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-93b1e26f585f43f0b8d15c5d7efcd4cd.json"
+}

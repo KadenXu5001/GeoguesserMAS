@@ -1,0 +1,24 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "rural-specialist",
+  "result": {
+    "candidates": [
+      "Thailand",
+      "Indonesia",
+      "Malaysia",
+      "Sri Lanka"
+    ],
+    "evidence": [
+      "The scene features left-hand traffic, which is consistent with Thailand, Indonesia, Malaysia, and Sri Lanka.",
+      "Yellow center lines on asphalt roads are a standard road marking in Thailand, distinguishing it from countries like Malaysia where white center lines are more common.",
+      "Street light and utility poles with black-and-white painted bases are a characteristic infrastructure marking in Thailand and Indonesia to increase visibility.",
+      "The rural landscape with green rice fields and palm trees is indicative of a tropical, Southeast Asian climate and agricultural practice.",
+      "The presence of a white hatchback car is consistent with the popular vehicle types in Thailand, such as the Toyota Yaris or Honda Jazz."
+    ],
+    "contradictions": [
+      "While Indonesia also uses yellow center lines on national roads and black-and-white pole bases, the specific combination of the yellow line and pole style is most ubiquitous in Thailand."
+    ],
+    "confidence": 90
+  },
+  "artifact": ".deepagents\\specialist-results\\rural-specialist-cc9c6eb3540a424cbcc4d36a370738b6.json"
+}

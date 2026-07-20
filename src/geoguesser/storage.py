@@ -313,19 +313,32 @@ class MongoRepository:
         byte_count: int,
         width: int,
         height: int,
+        object_key: str | None = None,
+        storage_namespace: str | None = None,
+        crc32c: str | None = None,
+        content_type: str = "application/octet-stream",
     ) -> None:
+        panorama_file = {
+            "path": path,
+            "sha256": sha256,
+            "byte_count": byte_count,
+            "width": width,
+            "height": height,
+            "content_type": content_type,
+        }
+        for key, value in (
+            ("object_key", object_key),
+            ("storage_namespace", storage_namespace),
+            ("crc32c", crc32c),
+        ):
+            if value is not None:
+                panorama_file[key] = str(value)
         self.database.panoramas.update_one(
             {"mapillary_image_id": mapillary_image_id},
             {
                 "$set": {
                     "status": "downloaded",
-                    "panorama_file": {
-                        "path": path,
-                        "sha256": sha256,
-                        "byte_count": byte_count,
-                        "width": width,
-                        "height": height,
-                    },
+                    "panorama_file": panorama_file,
                     "updated_at": utc_now(),
                 }
             },

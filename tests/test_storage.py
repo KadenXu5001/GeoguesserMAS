@@ -85,3 +85,33 @@ def test_assign_validated_rejects_cross_split_sequence() -> None:
             split="development",
             boundary_dataset="example-v1",
         )
+
+
+def test_mark_downloaded_records_cloud_ready_object_reference() -> None:
+    database = MagicMock()
+
+    MongoRepository(database).mark_downloaded(
+        "image-a",
+        path=".local-data/source-private/objects/ab/abcdef.jpg",
+        sha256="abcdef",
+        byte_count=123,
+        width=400,
+        height=200,
+        object_key="objects/ab/abcdef.jpg",
+        storage_namespace="source-private",
+        crc32c="4waSgw==",
+        content_type="image/jpeg",
+    )
+
+    update = database.panoramas.update_one.call_args.args[1]["$set"]
+    assert update["panorama_file"] == {
+        "path": ".local-data/source-private/objects/ab/abcdef.jpg",
+        "sha256": "abcdef",
+        "byte_count": 123,
+        "width": 400,
+        "height": 200,
+        "content_type": "image/jpeg",
+        "object_key": "objects/ab/abcdef.jpg",
+        "storage_namespace": "source-private",
+        "crc32c": "4waSgw==",
+    }

@@ -1,0 +1,15 @@
+{
+  "schema_version": "specialist-result-v1",
+  "specialist": "environmental-specialist",
+  "result": {
+    "candidates": [
+      "France"
+    ],
+    "evidence": [
+      "road"
+    ],
+    "contradictions": [],
+    "confidence": 80
+  },
+  "artifact": ".deepagents\\specialist-results\\environmental-specialist-d2f88e1130474126a1563b42bd5375bd.json"
+}

@@ -9,6 +9,11 @@ from PIL import Image, ImageDraw
 
 from geoguesser.boundaries import CountryBoundaries
 from geoguesser.mapillary import MapillaryClient
+from geoguesser.object_store import (
+    RUNTIME_PRIVATE,
+    SOURCE_PRIVATE,
+    ObjectStore,
+)
 from geoguesser.panorama import CARDINAL_HEADINGS, render_cardinal_views
 from geoguesser.pilot import PILOT_COUNTRIES
 from geoguesser.quality import assess_panorama
@@ -64,6 +69,7 @@ def ingest_picture_candidates(
     coverage_path: Path = DEFAULT_COVERAGE_SCAN,
     panorama_dir: Path = DEFAULT_PANORAMA_DIR,
     rendered_dir: Path = DEFAULT_RENDERED_DIR,
+    object_store: ObjectStore | None = None,
 ) -> dict[str, int]:
     counts = {
         "examined": 0,
@@ -124,17 +130,41 @@ def ingest_picture_candidates(
                 boundary_dataset=boundaries.dataset_id,
             )
 
-            panorama_path = panorama_dir / actual_country / f"{image_id}.jpg"
-            downloaded = mapillary.download_original(metadata, panorama_path)
+            if object_store is None:
+                panorama_path = panorama_dir / actual_country / f"{image_id}.jpg"
+                downloaded = mapillary.download_original(metadata, panorama_path)
+                panorama_file = {
+                    "path": downloaded.path.as_posix(),
+                    "sha256": downloaded.sha256,
+                    "byte_count": downloaded.byte_count,
+                    "content_type": "image/jpeg",
+                }
+            else:
+                with object_store.staging_directory(prefix="download-") as staging:
+                    staging_path = Path(staging) / f"{image_id}.jpg"
+                    downloaded = mapillary.download_original(metadata, staging_path)
+                    stored = object_store.put_file(
+                        downloaded.path,
+                        namespace=SOURCE_PRIVATE,
+                        content_type="image/jpeg",
+                    )
+                if stored.sha256 != downloaded.sha256:
+                    raise RuntimeError("object-store checksum changed after download")
+                panorama_path = stored.path
+                panorama_file = stored.as_document()
             repository.mark_downloaded(
                 image_id,
-                path=downloaded.path.as_posix(),
-                sha256=downloaded.sha256,
-                byte_count=downloaded.byte_count,
+                path=str(panorama_file["path"]),
+                sha256=str(panorama_file["sha256"]),
+                byte_count=int(panorama_file["byte_count"]),
                 width=downloaded.width,
                 height=downloaded.height,
+                object_key=panorama_file.get("object_key"),
+                storage_namespace=panorama_file.get("storage_namespace"),
+                crc32c=panorama_file.get("crc32c"),
+                content_type=str(panorama_file["content_type"]),
             )
-            assessment = assess_panorama(downloaded.path)
+            assessment = assess_panorama(panorama_path)
             repository.record_quality(image_id, assessment.as_document())
             if not assessment.automatic_pass:
                 repository.record_attempt(
@@ -145,18 +175,33 @@ def ingest_picture_candidates(
                 )
                 counts["rejected"] += 1
                 continue
-            view_paths = render_cardinal_views(
-                downloaded.path,
-                rendered_dir / actual_country / image_id,
-            )
-            views = [
-                {
-                    "heading": heading,
-                    "path": path.as_posix(),
-                    "sha256": _file_sha256(path),
-                }
-                for heading, path in zip(CARDINAL_HEADINGS, view_paths)
-            ]
+            if object_store is None:
+                view_paths = render_cardinal_views(
+                    panorama_path,
+                    rendered_dir / actual_country / image_id,
+                )
+                views = [
+                    {
+                        "heading": heading,
+                        "path": path.as_posix(),
+                        "sha256": _file_sha256(path),
+                    }
+                    for heading, path in zip(CARDINAL_HEADINGS, view_paths)
+                ]
+            else:
+                with object_store.staging_directory(prefix="render-") as staging:
+                    view_paths = render_cardinal_views(
+                        panorama_path,
+                        Path(staging),
+                    )
+                    views = []
+                    for heading, path in zip(CARDINAL_HEADINGS, view_paths):
+                        view = object_store.put_file(
+                            path,
+                            namespace=RUNTIME_PRIVATE,
+                            content_type="image/jpeg",
+                        ).as_document()
+                        views.append({"heading": heading, **view})
             repository.mark_rendered(image_id, views)
             repository.record_attempt(image_id, "ingest", "pending_quality_review")
             counts["rendered"] += 1

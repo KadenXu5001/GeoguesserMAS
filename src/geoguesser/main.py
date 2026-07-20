@@ -143,6 +143,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.command == "ingest-pictures":
                 from geoguesser.boundaries import CountryBoundaries
                 from geoguesser.mapillary import MapillaryClient
+                from geoguesser.object_store import LocalObjectStore
                 from geoguesser.picture_pipeline import ingest_picture_candidates
 
                 result = ingest_picture_candidates(
@@ -153,6 +154,7 @@ def main(argv: list[str] | None = None) -> int:
                     country_iso2=args.country,
                     split=args.split,
                     coverage_path=args.coverage_path,
+                    object_store=LocalObjectStore.from_environment(),
                 )
                 print(json.dumps(result, indent=2))
                 return 0 if result["failed"] == 0 else 2
