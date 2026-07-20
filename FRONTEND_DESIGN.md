@@ -185,6 +185,8 @@ The Vision MAS screenshot is the structural reference. The screen contains:
 - A compact overlay-controls box with independent switch controls labeled `What the agent sees`
   and `What the agent informs`.
 - When informed evidence exists, a one-at-a-time evidence selector beneath the controls.
+- A clearly labeled agent-prediction card that shows the single country selected by the MAS and
+  distinguishes it from the hidden ground-truth answer.
 - An action to return to the active world-training round.
 - Clear indication that this screen is an optional Vision Agent Guide.
 
@@ -205,12 +207,17 @@ The Vision MAS screenshot is the structural reference. The screen contains:
   cardinal view, and placing a pointer over the highlight reveals its short description. Keyboard
   focus reveals the same description, and touch users can read it in the persistent selected-item
   control.
+- Evidence-selector cards must never permanently truncate their clue text. On pointer hover or
+  keyboard focus, a card expands smoothly within the selector while its siblings contract slightly
+  so the full observation and description can be read. On touch-sized layouts, the selected card
+  displays its full text without relying on hover.
 - The informed overlay has stronger visual emphasis than the complete extraction overlay. It is
   enabled by default; the complete extraction overlay is disabled by default. If no final evidence
   can be associated with a bounded extracted object, the guide explains that no highlightable
   informed evidence is available instead of inventing a location.
-- The browser receives the final prediction evidence needed by the guide, but the prediction's
-  country, alternatives, and other answer-like output remain server-side.
+- The browser receives the final prediction evidence and the MAS's single chosen country needed by
+  the guide. The country is presented explicitly as an agent prediction that may be wrong, not as
+  the hidden answer. Alternatives and all other answer-like or evaluation output remain server-side.
 - Vision analysis normally runs once per panorama and is persisted in a server-controlled website
   cache for later visits, including visits after the website server restarts. If that initial MAS
   run fails with a transient transport or Gemini capacity error, the website may start exactly one
@@ -271,8 +278,8 @@ Before the World training redesign is complete, focused validation must demonstr
 12. The Vision Guide switches independently control complete extraction and informed overlays;
     informed items can be selected individually and expose their short descriptions by hover,
     keyboard focus, and touch-accessible persistent text.
-13. Pre-guess Vision Guide payloads expose evidence text but not the predicted country,
-    alternatives, or hidden answer metadata.
+13. Pre-guess Vision Guide payloads expose evidence text and the single predicted country, but not
+    alternatives, ground truth, or other hidden answer metadata.
 14. Desktop and mobile visual checks conform to the approved references.
 15. The production frontend build and `git diff --check` pass.
 
@@ -335,3 +342,12 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
 - Kept retries outside the failed MAS graph so extraction remains single-use within every run.
 - Continued to cache only successful browser-safe analysis and prohibited retries for deterministic
   validation or policy failures.
+
+### 2026-07-20: Readable evidence cards and visible agent prediction
+
+- Made evidence-selector cards expand smoothly on hover and keyboard focus while neighboring cards
+  yield space; touch layouts show the selected clue without truncation.
+- Added the MAS's single chosen country to the Vision Guide as a clearly labeled model prediction
+  that may differ from the hidden answer.
+- Continued to keep prediction alternatives, ground truth, confidence details, and evaluation
+  metadata out of the browser payload.

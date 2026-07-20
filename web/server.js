@@ -33,7 +33,7 @@ function resolvePythonExecutable({
 const PYTHON = resolvePythonExecutable();
 const HEADINGS = [0, 90, 180, 270];
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
-const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v1";
+const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v2";
 
 function send(res, status, body, type = "application/json", headers = {}) {
   res.writeHead(status, {
@@ -139,9 +139,13 @@ function browserSafeAnalysisPayload(value) {
   if (!Array.isArray(value.informedEvidence)) {
     throw new Error("Vision analysis did not return an informed-evidence list.");
   }
+  if (typeof value.predictedCountry !== "string" || !value.predictedCountry.trim()) {
+    throw new Error("Vision analysis did not return the agent's predicted country.");
+  }
   return {
     analysis: value.analysis,
     informedEvidence: value.informedEvidence,
+    predictedCountry: value.predictedCountry.trim(),
   };
 }
 

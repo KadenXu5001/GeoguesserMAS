@@ -341,5 +341,41 @@
         "source_url": "https://geotips.net/asia/"
       }
     ]
+  },
+  "{\"category\": \"license_plates\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "license_plates",
+        "country": "Brazil",
+        "indicator": "light grey or white; newer Mercosul plates have a blue top bar; service vehicles may use red plates",
+        "description": "Plate appearance and service-vehicle color described by GeoTips.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "universal",
+        "category": "license_plates",
+        "country": "France",
+        "indicator": "older yellow plates can occur; newer coverage commonly shows white plates",
+        "description": "Plate color varies with older versus newer French coverage.",
+        "source_url": "https://geotips.net/europe/"
+      },
+      {
+        "family": "universal",
+        "category": "license_plates",
+        "country": "Japan",
+        "indicator": "green text on white; top characters indicate prefecture",
+        "description": "Common Japanese plate format.",
+        "source_url": "https://geotips.net/asia/"
+      },
+      {
+        "family": "universal",
+        "category": "license_plates",
+        "country": "Thailand",
+        "indicator": "white common plates; yellow commercial plates",
+        "description": "Thailand uses varied plates, with white common and yellow commercial plates.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
   }
 }

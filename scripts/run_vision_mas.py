@@ -91,6 +91,7 @@ def main() -> None:
         print(json.dumps({
             "analysis": result["extraction"],
             "informedEvidence": result["informed_evidence"],
+            "predictedCountry": result["prediction"]["country"],
         }, ensure_ascii=False))
     finally:
         flush_langsmith()

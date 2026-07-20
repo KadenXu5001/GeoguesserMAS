@@ -75,11 +75,11 @@ test("website starts exactly one fresh MAS run after a transient failure", async
     attempts += 1;
     assert.equal(received, request);
     if (attempts === 1) throw new Error("httpx.WriteTimeout: The write operation timed out");
-    return { analysis: {}, informedEvidence: [] };
+    return { analysis: {}, informedEvidence: [], predictedCountry: "France" };
   }, request);
 
   assert.equal(attempts, 2);
-  assert.deepEqual(result, { analysis: {}, informedEvidence: [] });
+  assert.deepEqual(result, { analysis: {}, informedEvidence: [], predictedCountry: "France" });
 });
 
 test("website does not retry a deterministic MAS failure", async () => {
@@ -136,6 +136,7 @@ async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } =
       analyzeCalls += 1;
       return {
         analysis: { signs_and_language: { objects: [] } },
+        predictedCountry: "Portugal",
         informedEvidence: [{
           id: "informed-1",
           description: "Portuguese road text supports Brazil.",
@@ -221,9 +222,12 @@ test("vision analysis is generated once and reused per panorama", async (t) => {
   assert.equal(fixture.getAnalyzeCalls(), 1);
   assert.deepEqual(second.body.analysis, first.body.analysis);
   assert.deepEqual(second.body.informedEvidence, first.body.informedEvidence);
+  assert.equal(second.body.predictedCountry, "Portugal");
   const serialized = JSON.stringify(second.body).toLowerCase();
-  assert.equal(serialized.includes('"country"'), false);
   assert.equal(serialized.includes('"alternatives"'), false);
+  assert.equal(serialized.includes('"groundtruth"'), false);
+  assert.equal(serialized.includes('"correctcountry"'), false);
+  assert.equal(serialized.includes('"countryiso2"'), false);
 });
 
 test("persistent website cache survives a server restart without invoking MAS", async (t) => {
@@ -263,6 +267,7 @@ test("persistent website cache survives a server restart without invoking MAS", 
   assert.equal(second.response.status, 200);
   assert.equal(second.body.cached, true);
   assert.deepEqual(second.body.analysis, first.body.analysis);
+  assert.equal(second.body.predictedCountry, first.body.predictedCountry);
 });
 
 test("failed vision analysis is not persisted", async (t) => {
@@ -273,7 +278,7 @@ test("failed vision analysis is not persisted", async (t) => {
     analyze: async () => {
       attempts += 1;
       if (attempts === 1) throw new Error("temporary provider failure");
-      return { analysis: { infrastructure: { objects: [] } }, informedEvidence: [] };
+      return { analysis: { infrastructure: { objects: [] } }, informedEvidence: [], predictedCountry: "France" };
     },
   });
   t.after(async () => {

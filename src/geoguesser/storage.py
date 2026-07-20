@@ -89,10 +89,11 @@ VISION_ANALYSIS_CACHE_VALIDATOR = {
             },
             "payload": {
                 "bsonType": "object",
-                "required": ["analysis", "informedEvidence"],
+                "required": ["analysis", "informedEvidence", "predictedCountry"],
                 "properties": {
                     "analysis": {"bsonType": "object"},
                     "informedEvidence": {"bsonType": "array"},
+                    "predictedCountry": {"bsonType": "string", "minLength": 1},
                 },
             },
             "created_at": {"bsonType": "date"},
