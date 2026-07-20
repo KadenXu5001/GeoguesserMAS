@@ -4,6 +4,7 @@ import base64
 import hashlib
 import mimetypes
 import os
+import re
 import shutil
 import tempfile
 import uuid
@@ -49,6 +50,8 @@ def crc32c_base64(checksum: int) -> str:
 @dataclass(frozen=True)
 class StoredObject:
     storage_namespace: str
+    country_iso2: str
+    subdivision_code: str | None
     object_key: str
     path: Path
     sha256: str
@@ -59,6 +62,8 @@ class StoredObject:
     def as_document(self) -> dict[str, object]:
         document = asdict(self)
         document["path"] = self.path.as_posix()
+        if self.subdivision_code is None:
+            document.pop("subdivision_code")
         return document
 
 
@@ -68,6 +73,8 @@ class ObjectStore(Protocol):
         source_path: Path,
         *,
         namespace: str,
+        country_iso2: str,
+        subdivision_code: str | None = None,
         content_type: str | None = None,
     ) -> StoredObject: ...
 
@@ -112,13 +119,16 @@ class LocalObjectStore:
         source_path: Path,
         *,
         namespace: str,
+        country_iso2: str,
+        subdivision_code: str | None = None,
         content_type: str | None = None,
     ) -> StoredObject:
         if not source_path.is_file():
             raise FileNotFoundError(f"object-store source file not found: {source_path}")
+        geography_prefix = self._geography_prefix(country_iso2, subdivision_code)
         digest, checksum, byte_count = self._checksums(source_path.open("rb"))
         suffix = source_path.suffix.lower()
-        object_key = f"objects/{digest[:2]}/{digest}{suffix}"
+        object_key = f"{geography_prefix}/objects/{digest[:2]}/{digest}{suffix}"
         destination = self.path_for(namespace, object_key)
         destination.parent.mkdir(parents=True, exist_ok=True)
         if destination.exists():
@@ -148,6 +158,8 @@ class LocalObjectStore:
         detected_type = content_type or mimetypes.guess_type(source_path.name)[0]
         return StoredObject(
             storage_namespace=namespace,
+            country_iso2=country_iso2.upper(),
+            subdivision_code=(subdivision_code.upper() if subdivision_code else None),
             object_key=object_key,
             path=destination,
             sha256=digest,
@@ -155,6 +167,24 @@ class LocalObjectStore:
             byte_count=byte_count,
             content_type=detected_type or "application/octet-stream",
         )
+
+    @staticmethod
+    def _geography_prefix(
+        country_iso2: str,
+        subdivision_code: str | None,
+    ) -> str:
+        country = country_iso2.upper()
+        if not re.fullmatch(r"[A-Z]{2}", country):
+            raise ValueError("object-store country must be an ISO2 code")
+        prefix = f"countries/{country}"
+        if subdivision_code is None:
+            return prefix
+        subdivision = subdivision_code.upper()
+        if not re.fullmatch(r"[A-Z]{2}-[A-Z0-9]{1,3}", subdivision):
+            raise ValueError("object-store subdivision must be an ISO 3166-2 code")
+        if not subdivision.startswith(f"{country}-"):
+            raise ValueError("object-store subdivision does not belong to country")
+        return f"{prefix}/subregions/{subdivision}"
 
     @staticmethod
     def _checksums(source: BinaryIO) -> tuple[str, int, int]:

@@ -25,6 +25,21 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser(
         "download-boundaries", help="download the pinned Natural Earth country boundaries"
     )
+    register_dataset = subparsers.add_parser(
+        "register-dataset",
+        help="validate and register a versioned dataset definition in MongoDB",
+    )
+    register_dataset.add_argument("--dataset", default="worldwide_v2")
+    migrate_assets = subparsers.add_parser(
+        "migrate-local-assets",
+        help="move frozen local dataset media into the country-scoped object store",
+    )
+    migrate_assets.add_argument("--dataset", default="pilot_v1", choices=["pilot_v1"])
+    migrate_assets.add_argument(
+        "--keep-legacy",
+        action="store_true",
+        help="copy and verify assets without removing legacy media files",
+    )
 
     ingest = subparsers.add_parser(
         "ingest-pictures", help="validate, download, and render pilot Mapillary panoramas"
@@ -121,6 +136,69 @@ def main(argv: list[str] | None = None) -> int:
         from geoguesser.boundaries import download_natural_earth
 
         print(download_natural_earth())
+        return 0
+    if args.command == "register-dataset":
+        from dotenv import load_dotenv
+
+        from geoguesser.dataset_definition import (
+            dataset_document,
+            load_dataset_definition,
+        )
+        from geoguesser.storage import MongoRepository, connect_database
+
+        definition = load_dataset_definition(args.dataset)
+        load_dotenv()
+        client, database = connect_database()
+        try:
+            client.admin.command("ping")
+            repository = MongoRepository(database)
+            repository.initialize()
+            repository.register_dataset(dataset_document(definition))
+        finally:
+            client.close()
+        print(
+            json.dumps(
+                {
+                    "version": definition.version,
+                    "countries": len(definition.countries),
+                    "definition_sha256": definition.sha256,
+                },
+                indent=2,
+            )
+        )
+        return 0
+    if args.command == "migrate-local-assets":
+        from dotenv import load_dotenv
+
+        from geoguesser.asset_migration import migrate_pilot_assets
+        from geoguesser.object_store import LocalObjectStore
+        from geoguesser.storage import MongoRepository, connect_database
+
+        load_dotenv()
+        client, database = connect_database()
+        try:
+            client.admin.command("ping")
+            repository = MongoRepository(database)
+            repository.initialize()
+            report = migrate_pilot_assets(
+                LocalObjectStore.from_environment(),
+                repository,
+                remove_legacy_files=not args.keep_legacy,
+            )
+        finally:
+            client.close()
+        print(
+            json.dumps(
+                {
+                    "dataset_version": report["dataset_version"],
+                    "panoramas": report["panorama_count"],
+                    "assets": report["asset_reference_count"],
+                    "legacy_files_removed": report["legacy_files_removed"],
+                    "status": report["status"],
+                },
+                indent=2,
+            )
+        )
         return 0
     if args.command in {
         "ingest-pictures",

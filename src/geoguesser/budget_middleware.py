@@ -13,6 +13,9 @@ from geoguesser.specialist_result import normalize_specialist_result
 
 
 CONTEXT_KEY = "geo_budget"
+# Temporary operational switch: preserve the constitutional optional todo while routing
+# production runs directly from completed specialist work to final prediction.
+REEXAMINATION_ENABLED = False
 
 
 _SPECIALIST_CATEGORIES = {
@@ -154,6 +157,40 @@ def _model_tool_name(tool: Any) -> str | None:
     return getattr(tool, "name", None)
 
 
+def _without_replayed_images(messages: list[Any]) -> tuple[list[Any], int]:
+    """Remove image payloads after the supervisor has already completed visual routing."""
+    updated: list[Any] = []
+    removed = 0
+    for message in messages:
+        content = getattr(message, "content", None)
+        if not isinstance(content, list):
+            updated.append(message)
+            continue
+        filtered = []
+        for block in content:
+            is_image = isinstance(block, Mapping) and (
+                block.get("type") in {"image", "image_url"} or "image_url" in block
+            )
+            is_heading = (
+                isinstance(block, Mapping)
+                and block.get("type") == "text"
+                and str(block.get("text", "")).startswith("Cardinal view heading:")
+            )
+            if is_image or is_heading:
+                removed += int(is_image)
+                continue
+            filtered.append(block)
+        if len(filtered) == len(content):
+            updated.append(message)
+        elif hasattr(message, "model_copy"):
+            updated.append(message.model_copy(update={"content": filtered}))
+        elif isinstance(message, Mapping):
+            updated.append({**message, "content": filtered})
+        else:
+            updated.append(message)
+    return updated, removed
+
+
 def _continues_after_todo(request: Any) -> bool:
     """TodoMiddleware requires a model continuation after ``write_todos``.
 
@@ -225,6 +262,8 @@ def _required_protocol_tool(
         return "task" if plan[1].get("status") == "in_progress" else "write_todos"
     if plan[1].get("status") != "completed":
         return "write_todos"
+    if not REEXAMINATION_ENABLED:
+        return "emit_prediction"
     return None
 
 
@@ -387,11 +426,32 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
         # ``emit_prediction`` is the only valid terminal path; wrap_tool_call enforces the
         # phase-specific ordering when the model makes its choice.
         overrides = {"model_settings": settings}
+        removed_images = 0
         tools = getattr(request, "tools", None)
-        if tools is not None and budget.specialist_tasks > 0:
+        hidden_tools = set()
+        if budget.specialist_tasks > 0:
             # A mixed-scene decision may issue both specialist calls together. Once that
             # decision has executed, later model turns must not see ``task`` again.
-            overrides["tools"] = [tool for tool in tools if _model_tool_name(tool) != "task"]
+            hidden_tools.add("task")
+        if not REEXAMINATION_ENABLED:
+            hidden_tools.add("reexamine_region")
+        if tools is not None and hidden_tools:
+            overrides["tools"] = [
+                tool for tool in tools if _model_tool_name(tool) not in hidden_tools
+            ]
+        if budget.specialist_tasks > 0:
+            compact_messages, removed_images = _without_replayed_images(
+                list(getattr(request, "messages", []) or [])
+            )
+            if removed_images:
+                overrides["messages"] = compact_messages
+                record_decision(
+                    context,
+                    "image_replay_suppressed",
+                    "Images already inspected by the supervisor were omitted from a later model turn.",
+                    removed_images=removed_images,
+                    reason_code="post_specialist_text_only_continuation",
+                )
         if context := _context(request.runtime):
             if context.get("orchestration_phase") != "done":
                 # Tool choice follows protocol state. The model chooses geographic
@@ -407,7 +467,20 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                     reason_code="phase_and_todo_state",
                 )
         bounded_request = request.override(**overrides) if hasattr(request, "override") else request
+        progress = context.get("progress") if context is not None else None
+        phase = context.get("orchestration_phase") if context is not None else None
+        if callable(progress):
+            progress(
+                "supervisor model request started "
+                f"(phase={phase}; omitted_replayed_images={removed_images}; "
+                f"timeout_s={settings['timeout']})"
+            )
         response = handler(bounded_request)
+        if callable(progress):
+            progress(
+                "supervisor model request completed "
+                f"(phase={phase}; latency_ms={round((perf_counter() - started) * 1000)})"
+            )
         usage = getattr(getattr(response, "result", None), "usage_metadata", None)
         if isinstance(usage, Mapping):
             budget.record_usage(
@@ -418,7 +491,6 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
                 latency_ms=round((perf_counter() - started) * 1000),
             )
         if context is not None and context.get("orchestration_phase") == "extraction":
-            progress = context.get("progress")
             if callable(progress):
                 progress(
                     "supervisor extraction-tool selection completed "
@@ -590,6 +662,11 @@ class BudgetMiddleware(AgentMiddleware[Any, Any, Any]):
             )
             return normalized
         elif name == "reexamine_region":
+            if not REEXAMINATION_ENABLED:
+                return reject_tool(
+                    "Re-examination is temporarily disabled; finalize with emit_prediction.",
+                    "reexamination_temporarily_disabled",
+                )
             if budget.reexaminations >= budget.max_reexaminations:
                 return reject_tool(
                     "Re-examination cap reached; do not request another crop and finalize.",

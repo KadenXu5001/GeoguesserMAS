@@ -1,5 +1,6 @@
 const http = require("node:http");
 const path = require("node:path");
+const fsSync = require("node:fs");
 const fs = require("node:fs/promises");
 const { createHash, randomInt, randomUUID } = require("node:crypto");
 const { spawn } = require("node:child_process");
@@ -7,7 +8,29 @@ const { MongoClient } = require("mongodb");
 
 const ROOT = path.resolve(__dirname, "..");
 const PORT = Number(process.env.VISION_PORT || 3000);
-const PYTHON = process.env.PYTHON || (process.platform === "win32" ? "python" : "python3");
+
+function resolvePythonExecutable({
+  root = ROOT,
+  env = process.env,
+  platform = process.platform,
+  existsSync = fsSync.existsSync,
+} = {}) {
+  if (env.PYTHON) return env.PYTHON;
+  const candidates = platform === "win32"
+    ? [
+      path.join(root, ".runtime-win", "Scripts", "python.exe"),
+      path.join(root, ".venv", "Scripts", "python.exe"),
+      path.join(root, "venv", "Scripts", "python.exe"),
+    ]
+    : [
+      path.join(root, ".venv", "bin", "python"),
+      path.join(root, ".runtime-venv", "bin", "python"),
+    ];
+  return candidates.find((candidate) => existsSync(candidate))
+    || (platform === "win32" ? "python" : "python3");
+}
+
+const PYTHON = resolvePythonExecutable();
 const HEADINGS = [0, 90, 180, 270];
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
 const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v1";
@@ -43,6 +66,7 @@ function parseCsv(text) {
 }
 
 async function listTrainingPanoramas(root = ROOT) {
+  const migrationOverlay = await loadStorageMigrationOverlay(root);
   const rows = [];
   for (const split of ["dev_v1", "eval_c1"]) {
     const text = await fs.readFile(path.join(root, "data", "datasets", `${split}.csv`), "utf8");
@@ -50,7 +74,11 @@ async function listTrainingPanoramas(root = ROOT) {
       const width = Number(row.panorama_width);
       const height = Number(row.panorama_height);
       if (!row.panorama_path || width < height * 2) continue;
-      const panoramaPath = path.resolve(root, row.panorama_path);
+      const migrated = migrationOverlay.get(row.mapillary_image_id);
+      const panoramaPath = path.resolve(
+        root,
+        migrated?.panorama_object_store_path || row.panorama_path,
+      );
       try {
         await fs.access(panoramaPath);
       } catch {
@@ -58,12 +86,17 @@ async function listTrainingPanoramas(root = ROOT) {
       }
       rows.push({
         sourceId: row.mapillary_image_id,
+        datasetVersion: row.dataset_version,
         countryIso2: row.country_iso2.toUpperCase(),
         country: row.country,
         panoramaPath,
         views: Object.fromEntries(HEADINGS.map((heading) => [
           heading,
-          path.resolve(root, row[`view_h${String(heading).padStart(3, "0")}_path`]),
+          path.resolve(
+            root,
+            migrated?.view_object_store_paths?.[heading]
+              || row[`view_h${String(heading).padStart(3, "0")}_path`],
+          ),
         ])),
         viewHashes: Object.fromEntries(HEADINGS.map((heading) => [
           heading,
@@ -73,6 +106,18 @@ async function listTrainingPanoramas(root = ROOT) {
     }
   }
   return rows;
+}
+
+async function loadStorageMigrationOverlay(root = ROOT) {
+  const reportPath = path.join(root, "data", "migrations", "pilot_v1_object_store.json");
+  try {
+    const report = JSON.parse(await fs.readFile(reportPath, "utf8"));
+    if (report.status !== "complete" || report.dataset_version !== "pilot_v1") return new Map();
+    return new Map((report.items || []).map((item) => [item.provider_image_id, item]));
+  } catch (error) {
+    if (error.code === "ENOENT") return new Map();
+    throw error;
+  }
 }
 
 function visionAnalysisCacheKey(panorama) {
@@ -209,22 +254,30 @@ function serializeRound(round) {
   return payload;
 }
 
-async function runVisionAnalysis(paths, { root = ROOT, python = PYTHON } = {}) {
-  const input = JSON.stringify({ paths });
+async function runVisionAnalysis(request, { root = ROOT, python = PYTHON } = {}) {
+  const input = JSON.stringify(Array.isArray(request) ? { paths: request } : request);
   return new Promise((resolve, reject) => {
     const child = spawn(python, [path.join(root, "scripts", "run_vision_mas.py")], {
       cwd: root,
-      env: { ...process.env, PYTHONPATH: path.join(root, "src") },
+      env: {
+        ...process.env,
+        PYTHONPATH: path.join(root, "src"),
+        PYTHONIOENCODING: "utf-8",
+        PYTHONUTF8: "1",
+      },
       stdio: ["pipe", "pipe", "pipe"],
     });
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (chunk) => { stdout += chunk; });
-    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+      process.stderr.write(chunk);
+    });
     child.on("error", reject);
     child.on("close", (code) => {
       if (code !== 0) {
-        console.error(stderr || `Vision process exited with ${code}.`);
+        if (!stderr) console.error(`Vision process exited with ${code}.`);
         return reject(new Error(stderr || `Vision process exited with ${code}.`));
       }
       try {
@@ -245,6 +298,48 @@ function mediaType(target) {
   if (target.endsWith(".png")) return "image/png";
   if (target.endsWith(".jpg") || target.endsWith(".jpeg")) return "image/jpeg";
   return "text/html";
+}
+
+function visionMasRequest(panorama) {
+  return {
+    imageId: panorama.sourceId,
+    datasetVersion: panorama.datasetVersion,
+    paths: HEADINGS.map((heading) => panorama.views[heading]),
+    viewHashes: HEADINGS.map((heading) => panorama.viewHashes[heading]),
+  };
+}
+
+function isRetryableVisionError(error) {
+  const status = Number(error?.status || error?.statusCode || error?.code);
+  if ([429, 500, 503, 504].includes(status)) return true;
+  const detail = `${error?.name || ""} ${error?.code || ""} ${error?.message || error || ""}`
+    .toLowerCase();
+  return [
+    "readtimeout",
+    "writetimeout",
+    "connecttimeout",
+    "pooltimeout",
+    "connecterror",
+    "remoteprotocolerror",
+    "timeout error",
+    "timed out",
+    "deadline exceeded",
+    "resource_exhausted",
+    "too many requests",
+    "service unavailable",
+    "503 unavailable",
+    "internal server error",
+  ].some((marker) => detail.includes(marker));
+}
+
+async function analyzeWithTransientRetry(analyze, request) {
+  try {
+    return await analyze(request);
+  } catch (error) {
+    if (!isRetryableVisionError(error)) throw error;
+    console.warn("Vision MAS transient failure; starting one fresh website retry.");
+    return analyze(request);
+  }
 }
 
 async function serveFrontend(res, requestPath, root = ROOT) {
@@ -273,7 +368,7 @@ async function serveFrontend(res, requestPath, root = ROOT) {
 function createAppServer({
   root = ROOT,
   panoramas,
-  analyze = (paths) => runVisionAnalysis(paths, { root }),
+  analyze = (request) => runVisionAnalysis(request, { root }),
   analysisStore = createMongoAnalysisStore(),
   randomIndex,
 } = {}) {
@@ -335,7 +430,7 @@ function createAppServer({
         if (!task) {
           task = (async () => {
             const generated = browserSafeAnalysisPayload(
-              await analyze(HEADINGS.map((heading) => round.panorama.views[heading])),
+              await analyzeWithTransientRetry(analyze, visionMasRequest(round.panorama)),
             );
             await analysisStore.set(cacheKey, generated, {
               sourceId: round.panorama.sourceId,
@@ -368,15 +463,21 @@ function createAppServer({
 if (require.main === module) {
   createAppServer().listen(PORT, "127.0.0.1", () => {
     console.log(`GeoGuessr training frontend: http://127.0.0.1:${PORT}`);
+    console.log(`Vision MAS Python: ${PYTHON}`);
   });
 }
 
 module.exports = {
   RoundStore,
+  analyzeWithTransientRetry,
   browserSafeAnalysisPayload,
   createAppServer,
   createMongoAnalysisStore,
   listTrainingPanoramas,
+  loadStorageMigrationOverlay,
+  isRetryableVisionError,
+  resolvePythonExecutable,
   serializeRound,
+  visionMasRequest,
   visionAnalysisCacheKey,
 };

@@ -1,0 +1,880 @@
+{
+  "schema_version": 1,
+  "migration_version": "pilot-object-store-v1",
+  "dataset_version": "pilot_v1",
+  "status": "complete",
+  "completed_at": "2026-07-20T00:44:28Z",
+  "storage_policy": "country-scoped-content-addressed-private-namespaces-v1",
+  "manifest_sha256": {
+    "data/datasets/dev_v1.csv": "4298a7d042595f91d613158635ec7920d762ff3b9031de061b6c80930e76ad0f",
+    "data/datasets/eval_c1.csv": "55101a3aac359802448288509a25777ff66eca34f4da5684cd6e9ef8eaaae5ef"
+  },
+  "panorama_count": 45,
+  "asset_reference_count": 225,
+  "unique_object_count": 225,
+  "source_byte_count": 107512523,
+  "countries": {
+    "BR": 15,
+    "FR": 15,
+    "TH": 15
+  },
+  "items": [
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1057269228970739",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/93/93a2b45b8f16e399c1672c34b5beea3c04ad77e3d7c759e8c7b2a0aa56ed2f93.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/93/93a2b45b8f16e399c1672c34b5beea3c04ad77e3d7c759e8c7b2a0aa56ed2f93.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/24/24247a8ec40700d0978a04c6afdb2308b163a47e6ced5666c64498b39bce44bb.jpg",
+        "countries/BR/objects/a6/a6adecd487c148785b835b9019835ba2f16f82053509843ca81877b37d61859e.jpg",
+        "countries/BR/objects/bf/bf328d83cb0857fa9f6060548881f2bdea1ba1833bdbbd202ef591f70b79f69b.jpg",
+        "countries/BR/objects/d9/d9d6512ad6b92cf4f667ba51e8321b3b404eb250137e66ae40fc020847ddfed4.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/24/24247a8ec40700d0978a04c6afdb2308b163a47e6ced5666c64498b39bce44bb.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/a6/a6adecd487c148785b835b9019835ba2f16f82053509843ca81877b37d61859e.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/bf/bf328d83cb0857fa9f6060548881f2bdea1ba1833bdbbd202ef591f70b79f69b.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/d9/d9d6512ad6b92cf4f667ba51e8321b3b404eb250137e66ae40fc020847ddfed4.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1248388623080144",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/d2/d2d2a7121ee18ea7292d50b3e491c23d4204cded8c646e442aec0a3b7651a533.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/d2/d2d2a7121ee18ea7292d50b3e491c23d4204cded8c646e442aec0a3b7651a533.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/fc/fcabd4be9b77dd85aa856de1af79bdbc827d9c788cabec3392763073fef6411c.jpg",
+        "countries/BR/objects/eb/ebb76dd46d40d8a61aec4453a1377db772d2a75149eab0529f531660bc9542ed.jpg",
+        "countries/BR/objects/22/226377424c60e486349dced15a075af6d792069d2f25b48300b4b4d2fbe85602.jpg",
+        "countries/BR/objects/2d/2d97d4c3fb698033ba3f963c494037d865d1398ae28e435733d35a95613450d5.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/fc/fcabd4be9b77dd85aa856de1af79bdbc827d9c788cabec3392763073fef6411c.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/eb/ebb76dd46d40d8a61aec4453a1377db772d2a75149eab0529f531660bc9542ed.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/22/226377424c60e486349dced15a075af6d792069d2f25b48300b4b4d2fbe85602.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/2d/2d97d4c3fb698033ba3f963c494037d865d1398ae28e435733d35a95613450d5.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1291196852053821",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/24/2471438175239d8fed433598f9a3d7055bec3d9dc60ce912477d39daeee71a12.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/24/2471438175239d8fed433598f9a3d7055bec3d9dc60ce912477d39daeee71a12.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/a7/a76f85b2d6b122b4ec42fbc55ff330d63f969a263c5a5c64dc1c254833d7319b.jpg",
+        "countries/BR/objects/3f/3f716933dc9bafc7eb00dd5edc19d94d8fb41b101f554ec364781460faea43d4.jpg",
+        "countries/BR/objects/93/9301d45e7febf0014a5399fdce43a69e6e6013a2d9f1f0c762ba9d29037dbd63.jpg",
+        "countries/BR/objects/52/52be2e60ea9693b54c655f498c9a06eed42edd2f8b3bb07f445922585ea6032b.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/a7/a76f85b2d6b122b4ec42fbc55ff330d63f969a263c5a5c64dc1c254833d7319b.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/3f/3f716933dc9bafc7eb00dd5edc19d94d8fb41b101f554ec364781460faea43d4.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/93/9301d45e7febf0014a5399fdce43a69e6e6013a2d9f1f0c762ba9d29037dbd63.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/52/52be2e60ea9693b54c655f498c9a06eed42edd2f8b3bb07f445922585ea6032b.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1304358350733116",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/fb/fb8a3d427c9eaaf13840c395a522eea4e57a5e63face06eb54472ebc61cf298a.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/fb/fb8a3d427c9eaaf13840c395a522eea4e57a5e63face06eb54472ebc61cf298a.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/fe/fe17dad9870fb60c8256600af6c15af48214bbdb5dbfe284f2f104db00712087.jpg",
+        "countries/BR/objects/92/927b5954f738762419701cc458e6113d201601e9b8b01a4b2044596125f0b51f.jpg",
+        "countries/BR/objects/0c/0cbf5b00722a949d3a5d5e175c8b42aacf1ef79360b2990c864d5a1855b9fa20.jpg",
+        "countries/BR/objects/b4/b4818e889a416d3bc4f7a187780b227de6bba9cc642f16adf8435f534f2e41d4.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/fe/fe17dad9870fb60c8256600af6c15af48214bbdb5dbfe284f2f104db00712087.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/92/927b5954f738762419701cc458e6113d201601e9b8b01a4b2044596125f0b51f.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/0c/0cbf5b00722a949d3a5d5e175c8b42aacf1ef79360b2990c864d5a1855b9fa20.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/b4/b4818e889a416d3bc4f7a187780b227de6bba9cc642f16adf8435f534f2e41d4.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1655115725091195",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/e2/e28f9fbd1565e18d835e699793b6d69c4e7b9dde746cc7a5c99506b4691f1e20.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/e2/e28f9fbd1565e18d835e699793b6d69c4e7b9dde746cc7a5c99506b4691f1e20.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/34/345c113397566451510cd114b959cf2b739ef44cfbd18d9514264ba7ee406eb0.jpg",
+        "countries/BR/objects/cc/cc1c75c066a36874043dbc21fa1994026c2662c23904e3dbaaf1c1918dc7c197.jpg",
+        "countries/BR/objects/23/236e0aa858f19c3deb769f08b487d2346c2a676f0d319e0ceae515792f2d6a74.jpg",
+        "countries/BR/objects/89/8922c6cb1bd5f2df56b308c915c983806cba07ea9603dc6123f233b2426dcfc2.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/34/345c113397566451510cd114b959cf2b739ef44cfbd18d9514264ba7ee406eb0.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/cc/cc1c75c066a36874043dbc21fa1994026c2662c23904e3dbaaf1c1918dc7c197.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/23/236e0aa858f19c3deb769f08b487d2346c2a676f0d319e0ceae515792f2d6a74.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/89/8922c6cb1bd5f2df56b308c915c983806cba07ea9603dc6123f233b2426dcfc2.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1751311518953105",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/a3/a366e17236e2263e28cdef6d7bffec9660b6a91867fb50f3c2ba6ae0f67ec160.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/a3/a366e17236e2263e28cdef6d7bffec9660b6a91867fb50f3c2ba6ae0f67ec160.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/51/512f1b8a5f7b4f49c4a410022959087a3680018c1635705c64757e1e3e739f21.jpg",
+        "countries/BR/objects/b9/b941911c8fc4d3b7f6bff3f46613a96afc75c12435d956795d94acad3c2a8d3e.jpg",
+        "countries/BR/objects/72/7235584df9aa233bf634ab15f17d57d31e489cf521c5a5536338654d02466c5b.jpg",
+        "countries/BR/objects/db/db42c421ca82cf21156484967dfc26883c08a592f649582e44cc0387cf78ccdf.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/51/512f1b8a5f7b4f49c4a410022959087a3680018c1635705c64757e1e3e739f21.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/b9/b941911c8fc4d3b7f6bff3f46613a96afc75c12435d956795d94acad3c2a8d3e.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/72/7235584df9aa233bf634ab15f17d57d31e489cf521c5a5536338654d02466c5b.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/db/db42c421ca82cf21156484967dfc26883c08a592f649582e44cc0387cf78ccdf.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "2291742661168552",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/b3/b3aeeb575f735adb91f848fb603e6f3e26912a9a8ad6cd68b891780ce905726e.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/b3/b3aeeb575f735adb91f848fb603e6f3e26912a9a8ad6cd68b891780ce905726e.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/9a/9af0e4aab0b9b909571fa5c12f6841cff2e3bc9268cc1ff54abaa2357a62884f.jpg",
+        "countries/BR/objects/2e/2e601349732b4cf64eb396a54aa4817f941fee059f0d9bd6c23a4f1b18769b81.jpg",
+        "countries/BR/objects/1a/1aa57c6b5f7fa8589ff9dae0098ac068f116a3619548a174a6bc59b4d7cd55f2.jpg",
+        "countries/BR/objects/70/706853536fd0be1b93b4e921421eeeea5847a06386dc34d04fc71b369701a33d.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/9a/9af0e4aab0b9b909571fa5c12f6841cff2e3bc9268cc1ff54abaa2357a62884f.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/2e/2e601349732b4cf64eb396a54aa4817f941fee059f0d9bd6c23a4f1b18769b81.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/1a/1aa57c6b5f7fa8589ff9dae0098ac068f116a3619548a174a6bc59b4d7cd55f2.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/70/706853536fd0be1b93b4e921421eeeea5847a06386dc34d04fc71b369701a33d.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "516925754563569",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/7b/7b1fd8cde5cbce8de6eae83a38020798e99aaafc7f27a15fb2c247980c51765d.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/7b/7b1fd8cde5cbce8de6eae83a38020798e99aaafc7f27a15fb2c247980c51765d.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/1c/1c4ab012439902b28210c78c2f77f244babbb9d65a558df4ab4b29bd8952d995.jpg",
+        "countries/BR/objects/19/19723ec4a6e7e076acf3168505486fb5b9ba59faa15e6a15dab0d82c965b7f72.jpg",
+        "countries/BR/objects/7e/7e168e400d00fd409869f5cc58c03f20559d7831fe641772e6d4cbec17964304.jpg",
+        "countries/BR/objects/51/5129ae5cd9267b30e576a89989b676dd5a8509c53d07c774e95a88023b0384bc.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/1c/1c4ab012439902b28210c78c2f77f244babbb9d65a558df4ab4b29bd8952d995.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/19/19723ec4a6e7e076acf3168505486fb5b9ba59faa15e6a15dab0d82c965b7f72.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/7e/7e168e400d00fd409869f5cc58c03f20559d7831fe641772e6d4cbec17964304.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/51/5129ae5cd9267b30e576a89989b676dd5a8509c53d07c774e95a88023b0384bc.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "574724981552078",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/f7/f74f83d326e08a4d89cf981b32bf0efeec38d4f5fb7191a9b1c1544bb17d4da2.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/f7/f74f83d326e08a4d89cf981b32bf0efeec38d4f5fb7191a9b1c1544bb17d4da2.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/1d/1d0690bc8872dfc4b426a68587cf269f2fda8fe6fc56ea3bb6ba7b0e12a1c9c9.jpg",
+        "countries/BR/objects/82/82c185f5154a9fbf4dded733e43048ea47b8abdb579022b7dae4e81a7374718c.jpg",
+        "countries/BR/objects/80/803b799034e4e50b54b9945cd3828e8dcaaed2c93580b126df73efc9f862898c.jpg",
+        "countries/BR/objects/a6/a634d50b173736bdc89b690f9f6943acbca391537e9dc5f4aba326d085446e5b.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/1d/1d0690bc8872dfc4b426a68587cf269f2fda8fe6fc56ea3bb6ba7b0e12a1c9c9.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/82/82c185f5154a9fbf4dded733e43048ea47b8abdb579022b7dae4e81a7374718c.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/80/803b799034e4e50b54b9945cd3828e8dcaaed2c93580b126df73efc9f862898c.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/a6/a634d50b173736bdc89b690f9f6943acbca391537e9dc5f4aba326d085446e5b.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "8446734478775068",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/9f/9f0aa5e7b8376c4813eecee56deb94541057a9b95900b64d775214a08f47ee09.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/9f/9f0aa5e7b8376c4813eecee56deb94541057a9b95900b64d775214a08f47ee09.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/1a/1a2cbf40b3806a644520f46d51f35db8af5448c13b3b6e4552210ee1f93dd2c9.jpg",
+        "countries/BR/objects/a0/a0414f32f65280588bd633722599f042327b51ffbeda162bae561b0edef0888a.jpg",
+        "countries/BR/objects/8d/8df87e5fb2529e6a874ca71b0fd2f16f822644f92e1ce743532c189c87af492f.jpg",
+        "countries/BR/objects/94/94bd558c9034c531d7de66de3180d0d6367a993915d7ed05928c90f2d0134772.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/1a/1a2cbf40b3806a644520f46d51f35db8af5448c13b3b6e4552210ee1f93dd2c9.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/a0/a0414f32f65280588bd633722599f042327b51ffbeda162bae561b0edef0888a.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/8d/8df87e5fb2529e6a874ca71b0fd2f16f822644f92e1ce743532c189c87af492f.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/94/94bd558c9034c531d7de66de3180d0d6367a993915d7ed05928c90f2d0134772.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1058019072873068",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/52/52580ca3e5e964169d2f265b72ac560a69c8e558908d9454f1532e54fac1dd43.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/52/52580ca3e5e964169d2f265b72ac560a69c8e558908d9454f1532e54fac1dd43.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/ca/ca0bd91b29d3127fdfdcbf93ca925c5bc61cf8538d6ae54cfd8092df0a73b0c2.jpg",
+        "countries/FR/objects/bd/bd51203dd9ebeb4cb7ea62a58c20b5d2897c93ad6d7dcedb04709c751d074adf.jpg",
+        "countries/FR/objects/56/56158b32df9eebfa63747ded08f4a86aab240a702829a3bc18b0969f701fc845.jpg",
+        "countries/FR/objects/68/680ef98a3123c475599fdecdfde2a44302f84e5f3b906bfa7bfec5d8108a844c.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/ca/ca0bd91b29d3127fdfdcbf93ca925c5bc61cf8538d6ae54cfd8092df0a73b0c2.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/bd/bd51203dd9ebeb4cb7ea62a58c20b5d2897c93ad6d7dcedb04709c751d074adf.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/56/56158b32df9eebfa63747ded08f4a86aab240a702829a3bc18b0969f701fc845.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/68/680ef98a3123c475599fdecdfde2a44302f84e5f3b906bfa7bfec5d8108a844c.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1071222191492422",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/9c/9c7e176dc674bdee2e882c9d3efca25b183079be554c4c9a1415adc41ad67704.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/9c/9c7e176dc674bdee2e882c9d3efca25b183079be554c4c9a1415adc41ad67704.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/95/95f8601545b1ed8ce41d1b2b269378ddcbbd4842c6d0d3fb766f9d9772f0a7e6.jpg",
+        "countries/FR/objects/90/906d49c0a714388fdec8cbbe4f9dd9c472ec4f366673987c9a54af58caf57302.jpg",
+        "countries/FR/objects/c9/c95eb2318a5373446f59b9fbb4aad0a7838a75115ae6b6915d8c818f3a0c7962.jpg",
+        "countries/FR/objects/52/526828f17d5f77c6cd56c17504d4fa26a39eba16fa6503a3269693f47c57cf23.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/95/95f8601545b1ed8ce41d1b2b269378ddcbbd4842c6d0d3fb766f9d9772f0a7e6.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/90/906d49c0a714388fdec8cbbe4f9dd9c472ec4f366673987c9a54af58caf57302.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/c9/c95eb2318a5373446f59b9fbb4aad0a7838a75115ae6b6915d8c818f3a0c7962.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/52/526828f17d5f77c6cd56c17504d4fa26a39eba16fa6503a3269693f47c57cf23.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1162876208991752",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/43/4300ffe564b62a6954d62cf1457c508c2da9a33d33a93c46e64978781fb29a49.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/43/4300ffe564b62a6954d62cf1457c508c2da9a33d33a93c46e64978781fb29a49.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/a3/a3792119199870cdb5fc1f7fddddb4f2383753b67c6d0e1c47af8144a26fb250.jpg",
+        "countries/FR/objects/d4/d4dc9a2e8c2d5c7b5830ab2160f734f229d7e67921e23501fe45020c8fbb81e1.jpg",
+        "countries/FR/objects/b5/b527909d3cd1295f5c34de14810d28026eb392e2b8ee18ff9614492568816265.jpg",
+        "countries/FR/objects/c1/c162e21d2ff961ba99073afca6ea8dcaa67081aa42f9fd8b5dc57d640522fa20.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/a3/a3792119199870cdb5fc1f7fddddb4f2383753b67c6d0e1c47af8144a26fb250.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/d4/d4dc9a2e8c2d5c7b5830ab2160f734f229d7e67921e23501fe45020c8fbb81e1.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/b5/b527909d3cd1295f5c34de14810d28026eb392e2b8ee18ff9614492568816265.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/c1/c162e21d2ff961ba99073afca6ea8dcaa67081aa42f9fd8b5dc57d640522fa20.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1192265416047418",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/e8/e8037ed56e3c481717cee28d9e7da4a6338760871b61c8359a46c53c5f9d8621.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/e8/e8037ed56e3c481717cee28d9e7da4a6338760871b61c8359a46c53c5f9d8621.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/e9/e91d3b2bfa574c1477f2cd0c32f20337e70ad5e29879c49f597cbb990f377682.jpg",
+        "countries/FR/objects/e9/e9b495ad91a8dcfcc53ab363b748139a756aa5c06ef04db300adfdde1ec27fdd.jpg",
+        "countries/FR/objects/0a/0a167181027439ee7c470d2be9e26128a77b367fd4aece60e3b5d2c4df48d378.jpg",
+        "countries/FR/objects/83/83f6e8af5417f0dfd70de78832f21d3d706804e169483c1994d3c283cc297f57.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/e9/e91d3b2bfa574c1477f2cd0c32f20337e70ad5e29879c49f597cbb990f377682.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/e9/e9b495ad91a8dcfcc53ab363b748139a756aa5c06ef04db300adfdde1ec27fdd.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/0a/0a167181027439ee7c470d2be9e26128a77b367fd4aece60e3b5d2c4df48d378.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/83/83f6e8af5417f0dfd70de78832f21d3d706804e169483c1994d3c283cc297f57.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1350096039970943",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/c3/c3382c3190431b9cf7d9eec1824cf33356caeedcf9bd4f6b9cd119a94bb07e4e.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/c3/c3382c3190431b9cf7d9eec1824cf33356caeedcf9bd4f6b9cd119a94bb07e4e.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/7f/7fc53588cadd80ad35f2cb98d2cf095e9a04257066d04ce663b39752c05ba6d4.jpg",
+        "countries/FR/objects/aa/aa83c351a6ecc73df9b1f05489385587d7ab17915e7d579eca95d1ca9ddab82d.jpg",
+        "countries/FR/objects/c3/c349e0fc1806f92c7efbb022e454c99e37af10467654f64bda9032c27ae7205c.jpg",
+        "countries/FR/objects/12/127bb8d507d441e7d8762a32d70cee22ac3c92ac9aa269418ffcbdf8cc79c2ee.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/7f/7fc53588cadd80ad35f2cb98d2cf095e9a04257066d04ce663b39752c05ba6d4.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/aa/aa83c351a6ecc73df9b1f05489385587d7ab17915e7d579eca95d1ca9ddab82d.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/c3/c349e0fc1806f92c7efbb022e454c99e37af10467654f64bda9032c27ae7205c.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/12/127bb8d507d441e7d8762a32d70cee22ac3c92ac9aa269418ffcbdf8cc79c2ee.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1419742835788635",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/50/50e038306601d91fafe5bd0a590b27930da56f87ee848911df74871cfab16c69.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/50/50e038306601d91fafe5bd0a590b27930da56f87ee848911df74871cfab16c69.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/84/84b5657381174c304e8940760f02133c811034eec4b478cc8050aabd3aca9e62.jpg",
+        "countries/FR/objects/b6/b6dff5a8ec24086dce980715d2d0b619137dc31676d08553302e81db72ffd13f.jpg",
+        "countries/FR/objects/b0/b02339603ab8fa5966b7f0f17c9d50dce8e26c013b655685aebd89feb51d7661.jpg",
+        "countries/FR/objects/2f/2f85491ef66a3e1a703a88a3e71a6b5312749d323c5586fd7de112a14860f99e.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/84/84b5657381174c304e8940760f02133c811034eec4b478cc8050aabd3aca9e62.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/b6/b6dff5a8ec24086dce980715d2d0b619137dc31676d08553302e81db72ffd13f.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/b0/b02339603ab8fa5966b7f0f17c9d50dce8e26c013b655685aebd89feb51d7661.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/2f/2f85491ef66a3e1a703a88a3e71a6b5312749d323c5586fd7de112a14860f99e.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1834424547111721",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/13/13a79a933c2f97ad656f67ee2a97cd17b41cb718670381fb48a7d5d4766488d3.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/13/13a79a933c2f97ad656f67ee2a97cd17b41cb718670381fb48a7d5d4766488d3.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/7e/7e16a14b8368aa5a004e09e79248e1f64dabf7612aabef78c4af1267def65692.jpg",
+        "countries/FR/objects/1e/1eaf2dbdffd77ad48f2ebcc32ffc44535837189e15a5fe4a40e39fc0713808b7.jpg",
+        "countries/FR/objects/4a/4a8113b63fbd89a2c7661a0aad7c97fb0dd8b641f3b273281a53190a5205a0cb.jpg",
+        "countries/FR/objects/3d/3de3b264f74294c3e42a68f24c19750a063f3a4894c202d33c3eb13f115668bf.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/7e/7e16a14b8368aa5a004e09e79248e1f64dabf7612aabef78c4af1267def65692.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/1e/1eaf2dbdffd77ad48f2ebcc32ffc44535837189e15a5fe4a40e39fc0713808b7.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/4a/4a8113b63fbd89a2c7661a0aad7c97fb0dd8b641f3b273281a53190a5205a0cb.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/3d/3de3b264f74294c3e42a68f24c19750a063f3a4894c202d33c3eb13f115668bf.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "2025688768328048",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/54/54eb5e608e04a7d3858733a6a4ec4516faa9e56c04868844372218b983818acc.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/54/54eb5e608e04a7d3858733a6a4ec4516faa9e56c04868844372218b983818acc.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/ed/edfd94834a04fa1c0e1c75558ca81ff528a0e79d716a676dee9ebac87d69cc86.jpg",
+        "countries/FR/objects/2c/2c2268d5238b3e4c5177ae84f3b79dcc9351728d1274e0122235a68efbd950a8.jpg",
+        "countries/FR/objects/fc/fc290fc5c7762159806c930892435b1933ed67168ca6153fbb3ca4c5ce33b5c7.jpg",
+        "countries/FR/objects/26/26a4dd6d14bf23166a1c989c4eb7b5835094e8d183c5ca1f8741ade40f439c11.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/ed/edfd94834a04fa1c0e1c75558ca81ff528a0e79d716a676dee9ebac87d69cc86.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/2c/2c2268d5238b3e4c5177ae84f3b79dcc9351728d1274e0122235a68efbd950a8.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/fc/fc290fc5c7762159806c930892435b1933ed67168ca6153fbb3ca4c5ce33b5c7.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/26/26a4dd6d14bf23166a1c989c4eb7b5835094e8d183c5ca1f8741ade40f439c11.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "677921998429064",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/26/266aeb2a32d5d71abb82e39b276f43f0c7a68900527df9cd6e26d8c02d734623.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/26/266aeb2a32d5d71abb82e39b276f43f0c7a68900527df9cd6e26d8c02d734623.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/c9/c987f58ff282767cc9c038fea048ccbbda3d07a227d7669386ea406539261654.jpg",
+        "countries/FR/objects/fd/fd3d3c452f547c91d7b8d3041735dcb2b3b37c17532402d9fa7e792e3f392364.jpg",
+        "countries/FR/objects/1e/1e5ee8464c7b5a8aa34491691fb31864919bdd31ed456513301fd6150609b758.jpg",
+        "countries/FR/objects/8b/8ba9baed6d36702c48c322f5b915a669079992b111fe56bceaa0c8594e12d813.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/c9/c987f58ff282767cc9c038fea048ccbbda3d07a227d7669386ea406539261654.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/fd/fd3d3c452f547c91d7b8d3041735dcb2b3b37c17532402d9fa7e792e3f392364.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/1e/1e5ee8464c7b5a8aa34491691fb31864919bdd31ed456513301fd6150609b758.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/8b/8ba9baed6d36702c48c322f5b915a669079992b111fe56bceaa0c8594e12d813.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "681673567789585",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/5c/5c78771e9159c2aa16016b0d8f3b48725ac1af57a8cb8b5db177e4a06ffa61db.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/5c/5c78771e9159c2aa16016b0d8f3b48725ac1af57a8cb8b5db177e4a06ffa61db.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/c9/c9133d25ea5d7ec4a57e6547a482f60be0721f8afa9719a782feb474e1944687.jpg",
+        "countries/FR/objects/bf/bf7a9e5e4e5f8d0c3a9c1373fc5a306c342e2dbf78357071df1e8c2816103a4e.jpg",
+        "countries/FR/objects/ba/ba023da75b06b18dc996f3116907b86ef6547a82ec8950c62d4e0af22d378e3a.jpg",
+        "countries/FR/objects/41/412c421c34e2e88b6aea3bc06bb7881c53c515d7a4a6c13652480e5268c8d5be.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/c9/c9133d25ea5d7ec4a57e6547a482f60be0721f8afa9719a782feb474e1944687.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/bf/bf7a9e5e4e5f8d0c3a9c1373fc5a306c342e2dbf78357071df1e8c2816103a4e.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/ba/ba023da75b06b18dc996f3116907b86ef6547a82ec8950c62d4e0af22d378e3a.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/41/412c421c34e2e88b6aea3bc06bb7881c53c515d7a4a6c13652480e5268c8d5be.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1155908995419772",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/f4/f4bb1bace477dfc1d8f3ee79a9d7661ff7e1c184222fc2d729065691567e4651.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/f4/f4bb1bace477dfc1d8f3ee79a9d7661ff7e1c184222fc2d729065691567e4651.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/37/377df6d74fbcf3e1b4d90e57c411f1656f6fd1c19b05ab5fc552bb4ba89b85b7.jpg",
+        "countries/TH/objects/3a/3a485d98760ab7ad8491b322f4afc1139fd0c567c1947df2213d620035a44dff.jpg",
+        "countries/TH/objects/06/063c9dcf65098c643d556b1d4d01b8167380ed48b3a54527e2e39afd9ce6e09a.jpg",
+        "countries/TH/objects/64/64f34b6a9a9b87081eabf55a1da4ce3deb0c0de8770866d19ff3b069e92534b6.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/37/377df6d74fbcf3e1b4d90e57c411f1656f6fd1c19b05ab5fc552bb4ba89b85b7.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/3a/3a485d98760ab7ad8491b322f4afc1139fd0c567c1947df2213d620035a44dff.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/06/063c9dcf65098c643d556b1d4d01b8167380ed48b3a54527e2e39afd9ce6e09a.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/64/64f34b6a9a9b87081eabf55a1da4ce3deb0c0de8770866d19ff3b069e92534b6.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1294668347676056",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/df/df893516a2b0fb729e5c440d89e765a8abd1e0c17f6a5bafd481d35a69393f24.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/df/df893516a2b0fb729e5c440d89e765a8abd1e0c17f6a5bafd481d35a69393f24.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/9e/9e6b2360f417b311dae46a6f8fb015540d0e071f1dba0cc3268d2d0da3a612f8.jpg",
+        "countries/TH/objects/5c/5cba8e1e94cc122284c66db4251b6a7e702a14df29bc1f487879ef4c20c11774.jpg",
+        "countries/TH/objects/8b/8bbd077bcc741801e26783c1726715b91bb4e9d02df82c53f944e9d3075d4124.jpg",
+        "countries/TH/objects/15/15d899cb22b28338e9ef128bb90838ad3d903b820c87de51b01a291041bc4829.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/9e/9e6b2360f417b311dae46a6f8fb015540d0e071f1dba0cc3268d2d0da3a612f8.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/5c/5cba8e1e94cc122284c66db4251b6a7e702a14df29bc1f487879ef4c20c11774.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/8b/8bbd077bcc741801e26783c1726715b91bb4e9d02df82c53f944e9d3075d4124.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/15/15d899cb22b28338e9ef128bb90838ad3d903b820c87de51b01a291041bc4829.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "140282381932319",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/c1/c13b4a9fc367ea4a2c6ad8da8754ee11996e51e864b4a49b84962af7af169377.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/c1/c13b4a9fc367ea4a2c6ad8da8754ee11996e51e864b4a49b84962af7af169377.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/91/91b6df275dce1cad9836fa0a0070a44d912dc26ea383f7ce9fe9bf42b22babe6.jpg",
+        "countries/TH/objects/20/2092166e0a7b824bb284ae9a7c995690d46cb8fa1df1180066d9746601e48f6f.jpg",
+        "countries/TH/objects/23/23b3e2b53ea7ec15769c5ee5e0bcc8caf610ed3d4f999e839e7dd667faf5cfe7.jpg",
+        "countries/TH/objects/50/505d4c2398b649abaad6e4a4fadf75b1287169c50c9beda1e82e509aad04178a.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/91/91b6df275dce1cad9836fa0a0070a44d912dc26ea383f7ce9fe9bf42b22babe6.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/20/2092166e0a7b824bb284ae9a7c995690d46cb8fa1df1180066d9746601e48f6f.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/23/23b3e2b53ea7ec15769c5ee5e0bcc8caf610ed3d4f999e839e7dd667faf5cfe7.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/50/505d4c2398b649abaad6e4a4fadf75b1287169c50c9beda1e82e509aad04178a.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "174045531704036",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/0d/0db121ac0cf08d58d169beec249469e80a26ef5a3ff63316b8a74533e8f253c1.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/0d/0db121ac0cf08d58d169beec249469e80a26ef5a3ff63316b8a74533e8f253c1.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/ac/acea103bbb773e0fb662da33c5f29243088664f0106815c74e0b5bba8116568d.jpg",
+        "countries/TH/objects/1a/1a023fbc3b21eb114ca4bd14f043d9aa14ce2565ac7b8697a8c22f13133511e0.jpg",
+        "countries/TH/objects/41/41a722a6cfcf049b0eaf85046a09c3364dcdbd46ae1e244bde341c928f2ce569.jpg",
+        "countries/TH/objects/40/40d0c228bb7cde37b4197d25c58d26c38e2150e01c387cafb3aa7b132770cfb9.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/ac/acea103bbb773e0fb662da33c5f29243088664f0106815c74e0b5bba8116568d.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/1a/1a023fbc3b21eb114ca4bd14f043d9aa14ce2565ac7b8697a8c22f13133511e0.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/41/41a722a6cfcf049b0eaf85046a09c3364dcdbd46ae1e244bde341c928f2ce569.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/40/40d0c228bb7cde37b4197d25c58d26c38e2150e01c387cafb3aa7b132770cfb9.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "2830856977165278",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/3a/3a53411c46a60e1a02bcf1132505c99f53b7efcfac06539d0bbbecf1b0a7e437.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/3a/3a53411c46a60e1a02bcf1132505c99f53b7efcfac06539d0bbbecf1b0a7e437.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/64/64d014409eed0474d82ed2066c6968f4b703a3bb9ae2b48f3e2760778068bcb7.jpg",
+        "countries/TH/objects/a9/a99c0802881ada85539e846148ec15a92edb9aab1d7b00fe3f6fe3192a940a74.jpg",
+        "countries/TH/objects/67/67050c1b7f37676f597be0f93bfd128445c578650be09f9f8f82c4601cc5a627.jpg",
+        "countries/TH/objects/4b/4b336706d412e75024895ba0e9ad3f28408e6dca9687ee1cdf42aa92ea416d15.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/64/64d014409eed0474d82ed2066c6968f4b703a3bb9ae2b48f3e2760778068bcb7.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/a9/a99c0802881ada85539e846148ec15a92edb9aab1d7b00fe3f6fe3192a940a74.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/67/67050c1b7f37676f597be0f93bfd128445c578650be09f9f8f82c4601cc5a627.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/4b/4b336706d412e75024895ba0e9ad3f28408e6dca9687ee1cdf42aa92ea416d15.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "404005578344996",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/b7/b73022a8b13aa7cfddb521c6588a6de6c64fa66d12654b9c5d983a49a0e96c90.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/b7/b73022a8b13aa7cfddb521c6588a6de6c64fa66d12654b9c5d983a49a0e96c90.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/23/23faac2d71fa32efb4c5eb235ef1c1c92b6732386e3a77932594da884dbfaee3.jpg",
+        "countries/TH/objects/d5/d5a57176ebe0cadcbc9ba7dda6ba7c9a11065a5e30af69086bf3e51dffd927e6.jpg",
+        "countries/TH/objects/f7/f7f54cd89fa11287733f18477cca259a4cc5588ddb140d7f2d98e03928aee587.jpg",
+        "countries/TH/objects/f1/f1cfc0e164f68110afacbeab83126f3d029956cc41bbb65b1ccc17d19d8392e1.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/23/23faac2d71fa32efb4c5eb235ef1c1c92b6732386e3a77932594da884dbfaee3.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/d5/d5a57176ebe0cadcbc9ba7dda6ba7c9a11065a5e30af69086bf3e51dffd927e6.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/f7/f7f54cd89fa11287733f18477cca259a4cc5588ddb140d7f2d98e03928aee587.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/f1/f1cfc0e164f68110afacbeab83126f3d029956cc41bbb65b1ccc17d19d8392e1.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "497816357937339",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/29/29714620c56054e585f46c06c0f02e151339c0c8dd03d0b9bb6efac736c612d6.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/29/29714620c56054e585f46c06c0f02e151339c0c8dd03d0b9bb6efac736c612d6.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/2d/2daf98aaa09f226dd240f97eea47a5e8099159138cb282c0eb299e82730a575b.jpg",
+        "countries/TH/objects/65/650d4867298fd8b409322f430e879ee1c93140e6223cb94d64598d0d8beaba3a.jpg",
+        "countries/TH/objects/bb/bb5af626853e0f515b1895a6160146267fcaa4fec6ba2e6d0b035389f62c3141.jpg",
+        "countries/TH/objects/d3/d354e4e8e6d55b2681b62fda5290bcaaa1e75520d10d773e081d6cf394a6beb0.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/2d/2daf98aaa09f226dd240f97eea47a5e8099159138cb282c0eb299e82730a575b.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/65/650d4867298fd8b409322f430e879ee1c93140e6223cb94d64598d0d8beaba3a.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/bb/bb5af626853e0f515b1895a6160146267fcaa4fec6ba2e6d0b035389f62c3141.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/d3/d354e4e8e6d55b2681b62fda5290bcaaa1e75520d10d773e081d6cf394a6beb0.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "560306409056480",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/5b/5bfcaebf82751cb35e9910b351d320541065f96f7452f56bba3933224939b6e5.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/5b/5bfcaebf82751cb35e9910b351d320541065f96f7452f56bba3933224939b6e5.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/19/193f0294644eb4d5aa7b76163a80698246185e78f43fa60ffca681e6548c4c43.jpg",
+        "countries/TH/objects/c8/c833067fe7daf483d44eb3302d7908ec142052287420b36e731f8108448ad27b.jpg",
+        "countries/TH/objects/2c/2c652e0a8ba286bd4e8e38b479edb58521ffd01f9fd34bd522a2679920374ff4.jpg",
+        "countries/TH/objects/fd/fd180299c53b313132aebb03c110d5d0e20a561e26b5fe32b0eb768010806c9a.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/19/193f0294644eb4d5aa7b76163a80698246185e78f43fa60ffca681e6548c4c43.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/c8/c833067fe7daf483d44eb3302d7908ec142052287420b36e731f8108448ad27b.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/2c/2c652e0a8ba286bd4e8e38b479edb58521ffd01f9fd34bd522a2679920374ff4.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/fd/fd180299c53b313132aebb03c110d5d0e20a561e26b5fe32b0eb768010806c9a.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "567124064978601",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/9a/9a4d78ab1caf07ca8e23045b7fd2275fe931c3440727d842ab6172c9caa5229d.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/9a/9a4d78ab1caf07ca8e23045b7fd2275fe931c3440727d842ab6172c9caa5229d.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/84/841f1e6eafb495e26696881b0687e4255284a87916054c8006f64095be651878.jpg",
+        "countries/TH/objects/3e/3e04d65b0d933f295b0fda2ff785dfb4abe8adc24c76bb9421b8748bd0ba82cb.jpg",
+        "countries/TH/objects/e0/e0bee4cc2f7fe86463e9de5ff805d6987cd6d99b868c201639376594288a3093.jpg",
+        "countries/TH/objects/9d/9d3df591088f11cf1ec552d4a319506a328422681cfa165107dad9d9ec0bf9bf.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/84/841f1e6eafb495e26696881b0687e4255284a87916054c8006f64095be651878.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/3e/3e04d65b0d933f295b0fda2ff785dfb4abe8adc24c76bb9421b8748bd0ba82cb.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/e0/e0bee4cc2f7fe86463e9de5ff805d6987cd6d99b868c201639376594288a3093.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/9d/9d3df591088f11cf1ec552d4a319506a328422681cfa165107dad9d9ec0bf9bf.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "780632134719309",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/f9/f930068701ce7236d19ee82395f9e3f8f52c5f2de8f071159ac626a73da99a21.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/f9/f930068701ce7236d19ee82395f9e3f8f52c5f2de8f071159ac626a73da99a21.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/1d/1dfd70db9346b6bb3b6ffecf69be0621805ccf6a4e85a2187eca36183c807227.jpg",
+        "countries/TH/objects/c7/c78c6c5dfa431ea2f6b129fdc3c22a19a4344a39663d1a6c8b9373fa7d1539d2.jpg",
+        "countries/TH/objects/22/22f9224074ecff9ccab41089c2303dcda4f7b45db32ca9ff295917bee8203271.jpg",
+        "countries/TH/objects/1b/1bfd2fb72a3f54c875eefebf8569f449a5700612c20027c67d9a959cd0f81950.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/1d/1dfd70db9346b6bb3b6ffecf69be0621805ccf6a4e85a2187eca36183c807227.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/c7/c78c6c5dfa431ea2f6b129fdc3c22a19a4344a39663d1a6c8b9373fa7d1539d2.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/22/22f9224074ecff9ccab41089c2303dcda4f7b45db32ca9ff295917bee8203271.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/1b/1bfd2fb72a3f54c875eefebf8569f449a5700612c20027c67d9a959cd0f81950.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1061211035626917",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/cf/cf28984213c2a6296a15753f300d7ffd5a1f316e0eb9608f294bc3b6271e6196.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/cf/cf28984213c2a6296a15753f300d7ffd5a1f316e0eb9608f294bc3b6271e6196.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/84/843d26747642e03aa3ebd5fdaad36e5d3d04d4d46203f8f8961b98003ce94b02.jpg",
+        "countries/BR/objects/c1/c1769f102c2dce5b3db47c38fef64efe1470eb98da0ba9d5df88939b514fcb10.jpg",
+        "countries/BR/objects/0a/0aa24525519c2d7929835445685c040ebc2f12ff4c71d8568df6e950d18ee475.jpg",
+        "countries/BR/objects/3e/3e8b91c3a9243ea0203615b79a8771b35d563a96e15f82a88f0b5ef452ebe60a.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/84/843d26747642e03aa3ebd5fdaad36e5d3d04d4d46203f8f8961b98003ce94b02.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/c1/c1769f102c2dce5b3db47c38fef64efe1470eb98da0ba9d5df88939b514fcb10.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/0a/0aa24525519c2d7929835445685c040ebc2f12ff4c71d8568df6e950d18ee475.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/3e/3e8b91c3a9243ea0203615b79a8771b35d563a96e15f82a88f0b5ef452ebe60a.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1263973358357207",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/89/89ce787d6be85a303ab117dc3bb9cb4432073f19c5e32c2e71071862dc20f5ef.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/89/89ce787d6be85a303ab117dc3bb9cb4432073f19c5e32c2e71071862dc20f5ef.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/a7/a73d7af664d4973403cfeb20ba32a95bdcfa349b26bb8753e4c15881b99d8eac.jpg",
+        "countries/BR/objects/98/98c0d326e065e5c5fd7d3ca7d5e3e2667a9cd6b3b68151f8b1f7436ed2d17e24.jpg",
+        "countries/BR/objects/96/96cbc6630b5982a07e6c9ec41c9371af91216b9e9635f4939d55025e342a8982.jpg",
+        "countries/BR/objects/f8/f8b30f7208b98d0263ee88a5a8ab47cda72fcf0e144ccf55485e4adb8854fbce.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/a7/a73d7af664d4973403cfeb20ba32a95bdcfa349b26bb8753e4c15881b99d8eac.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/98/98c0d326e065e5c5fd7d3ca7d5e3e2667a9cd6b3b68151f8b1f7436ed2d17e24.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/96/96cbc6630b5982a07e6c9ec41c9371af91216b9e9635f4939d55025e342a8982.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/f8/f8b30f7208b98d0263ee88a5a8ab47cda72fcf0e144ccf55485e4adb8854fbce.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "375829210897089",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/11/11bee9121e90bff66ed78d4a60ca5bab0ebae616e30606d1327e35d702534356.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/11/11bee9121e90bff66ed78d4a60ca5bab0ebae616e30606d1327e35d702534356.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/c9/c92c4d094aad698530bbe62fb88c600ab9ede60e5d52f45816ee268ef214dc0d.jpg",
+        "countries/BR/objects/d3/d3a50345b7ca0d2cfae15d3d600ac189c6243749f76c72720173c57936ce3b8c.jpg",
+        "countries/BR/objects/e2/e2f63e29a3f5e7cec89c9c57ab5248a04f6194e1e490a1521508770f3f88477b.jpg",
+        "countries/BR/objects/05/0550fb0358a06bad9ca4eab232ee873e06383db1643001fdd46bfdc1061fb3db.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/c9/c92c4d094aad698530bbe62fb88c600ab9ede60e5d52f45816ee268ef214dc0d.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/d3/d3a50345b7ca0d2cfae15d3d600ac189c6243749f76c72720173c57936ce3b8c.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/e2/e2f63e29a3f5e7cec89c9c57ab5248a04f6194e1e490a1521508770f3f88477b.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/05/0550fb0358a06bad9ca4eab232ee873e06383db1643001fdd46bfdc1061fb3db.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "530099779765828",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/ff/fffe45a49226744d0c5106a6a433b87784c1e7ac9cd93fa87fb49a7942ec57d8.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/ff/fffe45a49226744d0c5106a6a433b87784c1e7ac9cd93fa87fb49a7942ec57d8.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/49/4909d7888c8f4c3008cb9dc42ca9b60039ea0f15c5080a56ec53af485f6211d3.jpg",
+        "countries/BR/objects/3f/3f14c0ab7fd72207c3b1492e44847cac166db913fbf368e4b3038e66b5bf3c6c.jpg",
+        "countries/BR/objects/7d/7d446d7a5545938d7c00754db1463fce141bd512095c0e9c7e35faa0469d4f4d.jpg",
+        "countries/BR/objects/6d/6d47f59b04c383f05233897346b8e96d0338c8e041ea013fd212be9391335bbc.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/49/4909d7888c8f4c3008cb9dc42ca9b60039ea0f15c5080a56ec53af485f6211d3.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/3f/3f14c0ab7fd72207c3b1492e44847cac166db913fbf368e4b3038e66b5bf3c6c.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/7d/7d446d7a5545938d7c00754db1463fce141bd512095c0e9c7e35faa0469d4f4d.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/6d/6d47f59b04c383f05233897346b8e96d0338c8e041ea013fd212be9391335bbc.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "926184519413229",
+      "country_iso2": "BR",
+      "panorama_object_key": "countries/BR/objects/a3/a3bc3b1bdee85354b1c185f4ebde8924a5c1d60350b0a06e934d71306589ed45.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/BR/objects/a3/a3bc3b1bdee85354b1c185f4ebde8924a5c1d60350b0a06e934d71306589ed45.jpg",
+      "view_object_keys": [
+        "countries/BR/objects/f4/f46de9d9b24667c30afaedcb0c1a6cbcae3b7b8aeb76f0ffc4872f4a08832bf9.jpg",
+        "countries/BR/objects/56/56d0c8a36dac0d89e92917e77039cbdd2fed2338995c09e4cb861c82a4a82ae6.jpg",
+        "countries/BR/objects/a2/a22017a879b45177a529a2a0836218dfbb203b603d417d0f84218f00b74871c8.jpg",
+        "countries/BR/objects/f5/f5207ccc973b9640b94da4c2cbe78b1ba175dc0247dda86f42f5bd5a6e5a813d.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/BR/objects/f4/f46de9d9b24667c30afaedcb0c1a6cbcae3b7b8aeb76f0ffc4872f4a08832bf9.jpg",
+        "90": ".local-data/runtime-private/countries/BR/objects/56/56d0c8a36dac0d89e92917e77039cbdd2fed2338995c09e4cb861c82a4a82ae6.jpg",
+        "180": ".local-data/runtime-private/countries/BR/objects/a2/a22017a879b45177a529a2a0836218dfbb203b603d417d0f84218f00b74871c8.jpg",
+        "270": ".local-data/runtime-private/countries/BR/objects/f5/f5207ccc973b9640b94da4c2cbe78b1ba175dc0247dda86f42f5bd5a6e5a813d.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1024238383223662",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/38/387264f7c79b68fc6a59d1d7021afe1b736c1c6792dfba68d6c663fbde352633.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/38/387264f7c79b68fc6a59d1d7021afe1b736c1c6792dfba68d6c663fbde352633.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/ce/ce01e84aaa7e1212846593b0e0b2735bbfdb8b6ab3a01cb35cba8d4a2f5378d2.jpg",
+        "countries/FR/objects/0b/0bafff6a76974e4f01842a3d2428b52644e3dd4afeddf22377bb59262f0f1dc1.jpg",
+        "countries/FR/objects/da/da3a87bd321152941ba799a6f0003f48776315c235b47d8e33c3db91b02fdb3e.jpg",
+        "countries/FR/objects/4c/4c9c80319d3c01838aa0cbdf2fe5df01ddc520fa989c99e5595f60a73defd4d3.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/ce/ce01e84aaa7e1212846593b0e0b2735bbfdb8b6ab3a01cb35cba8d4a2f5378d2.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/0b/0bafff6a76974e4f01842a3d2428b52644e3dd4afeddf22377bb59262f0f1dc1.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/da/da3a87bd321152941ba799a6f0003f48776315c235b47d8e33c3db91b02fdb3e.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/4c/4c9c80319d3c01838aa0cbdf2fe5df01ddc520fa989c99e5595f60a73defd4d3.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1115477516167222",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/6f/6f7fb67c16b38b0a0ef94adba449bd076a70bb4ff6f92dee5907aabe5022f37b.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/6f/6f7fb67c16b38b0a0ef94adba449bd076a70bb4ff6f92dee5907aabe5022f37b.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/2f/2f25a505b27370f34837c855807b4beb8c9adb4d6bf0b810ecc3920854f2e09c.jpg",
+        "countries/FR/objects/b6/b62c709584b57afc2043b2072e15d05b021bce032af627ea6ceb72256cab4843.jpg",
+        "countries/FR/objects/ee/ee1420b670256d75fa12ee255687ff4f4a76d343617bc7a27549ca44696b2d94.jpg",
+        "countries/FR/objects/be/be8be2746cc549e1050af1942bc1a2aca7e14a815dfc98fdaec44e2709c4dcb6.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/2f/2f25a505b27370f34837c855807b4beb8c9adb4d6bf0b810ecc3920854f2e09c.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/b6/b62c709584b57afc2043b2072e15d05b021bce032af627ea6ceb72256cab4843.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/ee/ee1420b670256d75fa12ee255687ff4f4a76d343617bc7a27549ca44696b2d94.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/be/be8be2746cc549e1050af1942bc1a2aca7e14a815dfc98fdaec44e2709c4dcb6.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1279443400420703",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/2d/2d321b52bdaf148cf9abbd142761198af2366247794da75ad09d7c3c65a4e2ce.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/2d/2d321b52bdaf148cf9abbd142761198af2366247794da75ad09d7c3c65a4e2ce.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/2c/2c2620e1193032770ca90440e21f712d6eb495a822cace94941578d57525f4a1.jpg",
+        "countries/FR/objects/27/27a33209b25688378bdd6ffd6ae5572599199c2a6fc159ac1fda459da357849f.jpg",
+        "countries/FR/objects/b7/b71569cef539061d4fc31fe2a6f533ef0c69a199fcb05e96376d45607a131150.jpg",
+        "countries/FR/objects/45/4501285b16d4861254034d495ee9a21f6bedb7af5bb9a88a2b99bd156fc071b5.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/2c/2c2620e1193032770ca90440e21f712d6eb495a822cace94941578d57525f4a1.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/27/27a33209b25688378bdd6ffd6ae5572599199c2a6fc159ac1fda459da357849f.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/b7/b71569cef539061d4fc31fe2a6f533ef0c69a199fcb05e96376d45607a131150.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/45/4501285b16d4861254034d495ee9a21f6bedb7af5bb9a88a2b99bd156fc071b5.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "408037881833823",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/28/282e3b5ac8a105b5476a7d55e58fc0718850b105c66d4587859b6991da4f5078.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/28/282e3b5ac8a105b5476a7d55e58fc0718850b105c66d4587859b6991da4f5078.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/b6/b6db0ed6fd3de93b6ae9c5649528f54fc1d7c97f442d008fb934642e268aee06.jpg",
+        "countries/FR/objects/bf/bfd2e7ae2f447120e85ca49c6a5fffca229ea826665462c6a3387b19af30043f.jpg",
+        "countries/FR/objects/49/49d2930ac71ecd7e1e1f6e54a90e0d853f6c63ba5548ab2b34f45b845c53ec66.jpg",
+        "countries/FR/objects/23/237e4f662b60a36f538fcbd9d51804864c4b36e86b3d37fe6b65ae49ff9f154e.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/b6/b6db0ed6fd3de93b6ae9c5649528f54fc1d7c97f442d008fb934642e268aee06.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/bf/bfd2e7ae2f447120e85ca49c6a5fffca229ea826665462c6a3387b19af30043f.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/49/49d2930ac71ecd7e1e1f6e54a90e0d853f6c63ba5548ab2b34f45b845c53ec66.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/23/237e4f662b60a36f538fcbd9d51804864c4b36e86b3d37fe6b65ae49ff9f154e.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "694046423109345",
+      "country_iso2": "FR",
+      "panorama_object_key": "countries/FR/objects/e0/e08ffea9083966bead73a3493f8b9c4df3d9e7c3669b240ef58311f81aa84276.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/FR/objects/e0/e08ffea9083966bead73a3493f8b9c4df3d9e7c3669b240ef58311f81aa84276.jpg",
+      "view_object_keys": [
+        "countries/FR/objects/ea/ea8a56620daff8c4ea516b1898c2784aae711f0a6f77ecf48845d9c3847afd5e.jpg",
+        "countries/FR/objects/3c/3c94c11a91ed86d72fe03fb0d4d93ec241214c3aa2369697c46a10bdac1cb05e.jpg",
+        "countries/FR/objects/1b/1bbe7557181e3ee80e6526981932a1d12d1e6e1b9352abbdbe345cdd0abe9eef.jpg",
+        "countries/FR/objects/af/afb8599b4087a540da4307557cec44cb978b33ccb77ae64ba90b1801f06106aa.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/FR/objects/ea/ea8a56620daff8c4ea516b1898c2784aae711f0a6f77ecf48845d9c3847afd5e.jpg",
+        "90": ".local-data/runtime-private/countries/FR/objects/3c/3c94c11a91ed86d72fe03fb0d4d93ec241214c3aa2369697c46a10bdac1cb05e.jpg",
+        "180": ".local-data/runtime-private/countries/FR/objects/1b/1bbe7557181e3ee80e6526981932a1d12d1e6e1b9352abbdbe345cdd0abe9eef.jpg",
+        "270": ".local-data/runtime-private/countries/FR/objects/af/afb8599b4087a540da4307557cec44cb978b33ccb77ae64ba90b1801f06106aa.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1485769529096304",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/95/951cefe95d464ceb2104a18a80f30be063a4a6f16c01d2f194ebaaf50f92401c.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/95/951cefe95d464ceb2104a18a80f30be063a4a6f16c01d2f194ebaaf50f92401c.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/46/46a0d82f1d46671b949ef1fa19c6d25e7633cf8a4c794431b6ef9bbaa692af3e.jpg",
+        "countries/TH/objects/88/8832da1479b1d404db94e7251b60db46f7cca178ab3390a0e8d370993e1e65ba.jpg",
+        "countries/TH/objects/39/39f28ec230df052426b37762de0b12272a01301f377b0885c43f5cbca88c019a.jpg",
+        "countries/TH/objects/06/06b40fea466209b6f489d06f27e81f414e2f85bf47d272e3ee4e97be81207db2.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/46/46a0d82f1d46671b949ef1fa19c6d25e7633cf8a4c794431b6ef9bbaa692af3e.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/88/8832da1479b1d404db94e7251b60db46f7cca178ab3390a0e8d370993e1e65ba.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/39/39f28ec230df052426b37762de0b12272a01301f377b0885c43f5cbca88c019a.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/06/06b40fea466209b6f489d06f27e81f414e2f85bf47d272e3ee4e97be81207db2.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1513927373074611",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/ab/abf6df5f619f0032b4ae8f4fb6c4cf1730ff4e77b6e02f58265cb2a52bb78458.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/ab/abf6df5f619f0032b4ae8f4fb6c4cf1730ff4e77b6e02f58265cb2a52bb78458.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/0f/0f93b164f61adffff8ad617890d3cd7e414afd0e81c8428c0a904d5876d1eba1.jpg",
+        "countries/TH/objects/a3/a3b20de8d0f5073741c28ac8caf495374dea783fd684d1a3ca46095bdd746ada.jpg",
+        "countries/TH/objects/90/90d5e7c5d2b5cbf2249a23cebda4481ec15a7fd107149d534d91db12cc0d4107.jpg",
+        "countries/TH/objects/c0/c0f9b71a192378fc53f85a28d2d8a027c8fe6e61c6cd0c509cf20a91a32c9865.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/0f/0f93b164f61adffff8ad617890d3cd7e414afd0e81c8428c0a904d5876d1eba1.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/a3/a3b20de8d0f5073741c28ac8caf495374dea783fd684d1a3ca46095bdd746ada.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/90/90d5e7c5d2b5cbf2249a23cebda4481ec15a7fd107149d534d91db12cc0d4107.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/c0/c0f9b71a192378fc53f85a28d2d8a027c8fe6e61c6cd0c509cf20a91a32c9865.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "1954473705403556",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/39/3939693a04ea24602be29822fac04bc69b926323acf95b29b1e0284fcf07f77e.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/39/3939693a04ea24602be29822fac04bc69b926323acf95b29b1e0284fcf07f77e.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/77/77c56c62faede5b8ac0f9ca6b5dd666401977e8a8ad68b48fc0ca4bd12788068.jpg",
+        "countries/TH/objects/20/20d30e39910f2980fe18b58ff45e8cbc91e18b661836aa24874c541c81bb2f93.jpg",
+        "countries/TH/objects/61/61d93ac557e1c0d6c3faa2313d0335d03209fdbc391416430c714d7627b5e844.jpg",
+        "countries/TH/objects/e0/e0476222b67b016c9d7a1d9bca8b8e892d5b7904f2b75646843522c99b8ea3df.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/77/77c56c62faede5b8ac0f9ca6b5dd666401977e8a8ad68b48fc0ca4bd12788068.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/20/20d30e39910f2980fe18b58ff45e8cbc91e18b661836aa24874c541c81bb2f93.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/61/61d93ac557e1c0d6c3faa2313d0335d03209fdbc391416430c714d7627b5e844.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/e0/e0476222b67b016c9d7a1d9bca8b8e892d5b7904f2b75646843522c99b8ea3df.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "763180349911733",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/cf/cf6313723512d23272f1a03215417942d2f567db9aa317b7d098cc6a588afdbc.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/cf/cf6313723512d23272f1a03215417942d2f567db9aa317b7d098cc6a588afdbc.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/4e/4ef7bf8f646ad79e320b20553e5b6c4441fb95f1cc1e30998181f75421a0937d.jpg",
+        "countries/TH/objects/0b/0b1ab51463b4c04873a8c9f5173df320ec7cb06cce034ac8d6066d9478892826.jpg",
+        "countries/TH/objects/60/60f5c78e06780073bfaf339fbe2083f028d96c3cc9bddc20e25ef2af786f1d02.jpg",
+        "countries/TH/objects/40/401eee4ffc223d9a9cd85a35383bf89427cc8b01436000717cbe960f1a5d68d7.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/4e/4ef7bf8f646ad79e320b20553e5b6c4441fb95f1cc1e30998181f75421a0937d.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/0b/0b1ab51463b4c04873a8c9f5173df320ec7cb06cce034ac8d6066d9478892826.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/60/60f5c78e06780073bfaf339fbe2083f028d96c3cc9bddc20e25ef2af786f1d02.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/40/401eee4ffc223d9a9cd85a35383bf89427cc8b01436000717cbe960f1a5d68d7.jpg"
+      }
+    },
+    {
+      "provider": "mapillary",
+      "provider_image_id": "794460239705462",
+      "country_iso2": "TH",
+      "panorama_object_key": "countries/TH/objects/9a/9a339985dd44ffde5d6c70d07128549070d0ccf7fee181e0d61c76a7829eae8c.jpg",
+      "panorama_object_store_path": ".local-data/source-private/countries/TH/objects/9a/9a339985dd44ffde5d6c70d07128549070d0ccf7fee181e0d61c76a7829eae8c.jpg",
+      "view_object_keys": [
+        "countries/TH/objects/3d/3d2c794356ce91ab2194adc317d5c2782ff1f81ca0293b58ec513b8941ca20ee.jpg",
+        "countries/TH/objects/f0/f02a6f4e52512076f4c58c4fa9bab94d1ab4b539f704f3ce23cc5e5450fb463b.jpg",
+        "countries/TH/objects/a6/a6573512fe8913f1da344da87c6ec687a7772c3e085764f3b04697345518fe5c.jpg",
+        "countries/TH/objects/41/4123403fffd2adfb4ea627bd29bd627cbd0a531481852c3ef10cadadf22a78f0.jpg"
+      ],
+      "view_object_store_paths": {
+        "0": ".local-data/runtime-private/countries/TH/objects/3d/3d2c794356ce91ab2194adc317d5c2782ff1f81ca0293b58ec513b8941ca20ee.jpg",
+        "90": ".local-data/runtime-private/countries/TH/objects/f0/f02a6f4e52512076f4c58c4fa9bab94d1ab4b539f704f3ce23cc5e5450fb463b.jpg",
+        "180": ".local-data/runtime-private/countries/TH/objects/a6/a6573512fe8913f1da344da87c6ec687a7772c3e085764f3b04697345518fe5c.jpg",
+        "270": ".local-data/runtime-private/countries/TH/objects/41/4123403fffd2adfb4ea627bd29bd627cbd0a531481852c3ef10cadadf22a78f0.jpg"
+      }
+    }
+  ],
+  "legacy_files_removed": 225,
+  "legacy_files_retained": false
+}

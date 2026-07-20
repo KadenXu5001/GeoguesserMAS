@@ -66,7 +66,7 @@ def test_supervisor_prompt_names_exact_todo_and_tool_order() -> None:
     assert all(value in prompt for value in expected)
     assert prompt.index("Immediately call the exact tool named `extract_visual_evidence`") < prompt.index(
         "delegate using the exact tool name `task`"
-    ) < prompt.index("call the exact tool `reexamine_region`") < prompt.index(
+    ) < prompt.index("Re-examination is temporarily disabled") < prompt.index(
         "calling the exact tool `emit_prediction`"
     )
 

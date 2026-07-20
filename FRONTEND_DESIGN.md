@@ -98,6 +98,14 @@ country, submits a guess, and learns whether the country was correct.
   equirectangular images, and the current source dimensions satisfy the 2:1 panorama format.
 - New Mapillary content may be acquired using `MAPILLARY_ACCESS_TOKEN`, but playing existing rounds
   must use local panorama files and must not require a live Mapillary request.
+- The frozen pilot CSVs remain the authoritative round/label manifests, but media resolution may
+  use a validated local storage-migration overlay keyed by source identity. When that overlay is
+  marked complete, the server loads panorama and cardinal-view bytes from country-scoped,
+  content-addressed object-store paths instead of the legacy manifest paths. The overlay and
+  resolved filesystem paths remain server-only and must never appear in pre-guess responses.
+- A completed storage migration may remove the legacy media files only after every replacement
+  object passes its frozen-manifest checksum and the frontend can load all 45 rounds through the
+  overlay. The frozen CSV bytes, labels, split membership, and review decisions remain unchanged.
 - Only records verified as true panoramas may be admitted to the playable set. A record without a
   valid original 360-degree panorama is excluded; it must not fall back to cardinal-view snapping
   or synthetic stitching.
@@ -203,8 +211,11 @@ The Vision MAS screenshot is the structural reference. The screen contains:
   informed evidence is available instead of inventing a location.
 - The browser receives the final prediction evidence needed by the guide, but the prediction's
   country, alternatives, and other answer-like output remain server-side.
-- Vision analysis is generated at most once per panorama and persisted in a server-controlled
-  website cache for later visits, including visits after the website server restarts.
+- Vision analysis normally runs once per panorama and is persisted in a server-controlled website
+  cache for later visits, including visits after the website server restarts. If that initial MAS
+  run fails with a transient transport or Gemini capacity error, the website may start exactly one
+  fresh production MAS run with the same server-side image references. The failed run is never
+  resumed or cached, and validation, policy, and other deterministic failures are not retried.
 - The first guide visit may show a loading state while the analysis runs.
 - Later visits reuse the cached website payload rather than starting the MAS process again. Cache
   lookup happens entirely in the website layer: cached data is never supplied to MAS state,
@@ -307,3 +318,20 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
   while every cache miss still executes the full required workflow.
 - Versioned cache identity by panorama source, rendered-view hashes, and analysis schema, and
   prohibited caching failures or answer-bearing output.
+
+### 2026-07-19: Country-scoped local media migration
+
+- Kept the frozen pilot CSVs authoritative and byte-for-byte unchanged while allowing a validated
+  server-only migration overlay to resolve their media into the country-scoped object store.
+- Required checksum verification and complete 45-round frontend resolution before deleting legacy
+  panorama or rendered-view files.
+- Kept country folders, object keys, source identities, and resolved paths out of every pre-guess
+  browser response.
+
+### 2026-07-19: Bounded website MAS recovery
+
+- Allowed the website analysis boundary to start one fresh MAS run after a transient timeout or
+  Gemini capacity failure from the initial run.
+- Kept retries outside the failed MAS graph so extraction remains single-use within every run.
+- Continued to cache only successful browser-safe analysis and prohibited retries for deterministic
+  validation or policy failures.

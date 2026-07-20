@@ -148,11 +148,8 @@ The run has five phases and must move forward; never restart a phase:
    it as `object_observation` on every lookup. The category must be directly supported by that
    object. Never invent a category, paraphrase the object, or call another lookup after an error or
    warning.
-4. After the specialist result(s), call the exact tool `reexamine_region` at most once, and only when two distinct
-   country signals remain genuinely competitive and close in confidence (a score gap of 10 points
-   or less). Pass both signals and their scores to the tool. Do not re-examine for a merely
-   illegible clue, general curiosity, or a single leading hypothesis. Never retry it or call it
-   with different wording for the same conflict.
+4. Re-examination is temporarily disabled by runtime. Leave the optional re-examination todo
+   pending and proceed directly to `emit_prediction` after the specialist result(s).
 5. Synthesize the available evidence and finalize immediately by calling the exact tool `emit_prediction` exactly
    once. Never return a plain-text answer and never call any tool after finalization.
 

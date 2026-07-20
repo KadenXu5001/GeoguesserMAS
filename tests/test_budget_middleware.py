@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, HumanMessage
 
 from geoguesser.budget_middleware import (
     BudgetMiddleware,
@@ -35,11 +35,10 @@ def test_model_and_tool_caps_use_per_run_context(tmp_path) -> None:
     middleware.wrap_tool_call(
         tool_request("task", budget, "human-clue-specialist"), lambda value: SPECIALIST_JSON
     )
-    middleware.wrap_tool_call(tool_request("reexamine_region", budget), lambda value: "crop-ok")
 
     assert budget.orchestrator_turns == 1
     assert budget.specialist_tasks == 1
-    assert budget.reexaminations == 1
+    assert budget.reexaminations == 0
 
 
 def test_third_task_returns_feedback_from_middleware(tmp_path) -> None:
@@ -272,13 +271,21 @@ def test_two_distinct_specialist_tasks_may_share_the_specialist_phase() -> None:
     assert result["decision_log"][0]["executed_tools"] == ["task", "task"]
 
 
-def test_task_is_hidden_after_successful_delegation() -> None:
+def test_task_and_disabled_reexamination_route_directly_to_prediction() -> None:
     budget = RuntimeBudget(opus_cost_usd=1.0)
     budget.consume_specialist_task("rural-specialist")
     middleware = BudgetMiddleware()
     request = SimpleNamespace(
         runtime=SimpleNamespace(
-            context={"orchestration_phase": "specialist", "geo_budget": budget}
+            context={
+                "orchestration_phase": "specialist",
+                "geo_budget": budget,
+                "todo_plan": [
+                    {**MAS_INITIAL_TODOS[0], "status": "completed"},
+                    {**MAS_INITIAL_TODOS[1], "status": "completed"},
+                    *[dict(item) for item in MAS_INITIAL_TODOS[2:]],
+                ],
+            }
         ),
         messages=[],
         tools=[
@@ -305,7 +312,76 @@ def test_task_is_hidden_after_successful_delegation() -> None:
         else tool.name
         for tool in captured["request"].tools
     ]
-    assert visible_names == ["write_todos", "reexamine_region", "emit_prediction"]
+    assert visible_names == ["write_todos", "emit_prediction"]
+    assert captured["request"].tool_choice == "emit_prediction"
+
+
+def test_post_specialist_model_call_does_not_replay_images() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    budget.consume_specialist_task("rural-specialist")
+    middleware = BudgetMiddleware()
+    image_message = HumanMessage(
+        content=[
+            {"type": "text", "text": "instructions"},
+            {"type": "text", "text": "Cardinal view heading: 0 degrees."},
+            {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64,AAAA"}},
+        ]
+    )
+    progress = []
+    request = SimpleNamespace(
+        runtime=SimpleNamespace(
+            context={
+                "orchestration_phase": "specialist",
+                "geo_budget": budget,
+                "progress": progress.append,
+                "todo_plan": [
+                    {**MAS_INITIAL_TODOS[0], "status": "completed"},
+                    {**MAS_INITIAL_TODOS[1], "status": "completed"},
+                    *[dict(item) for item in MAS_INITIAL_TODOS[2:]],
+                ],
+            }
+        ),
+        messages=[image_message],
+        tools=[SimpleNamespace(name="emit_prediction")],
+        model_settings={},
+        model=SimpleNamespace(model="google_genai:gemini-3-flash-preview"),
+        override=lambda **kwargs: SimpleNamespace(**{**vars(request), **kwargs}),
+    )
+    captured = {}
+
+    def handler(value):
+        captured["request"] = value
+        return SimpleNamespace(result=SimpleNamespace(usage_metadata={}))
+
+    middleware.wrap_model_call(
+        request,
+        handler,
+    )
+
+    assert captured["request"].messages[0].content == [
+        {"type": "text", "text": "instructions"}
+    ]
+    events = request.runtime.context["decision_log"]
+    assert events[-1]["event"] == "runtime_route"
+    assert any(event["event"] == "image_replay_suppressed" for event in events)
+    assert any("omitted_replayed_images=1" in message for message in progress)
+
+
+def test_disabled_reexamination_is_rejected_without_consuming_budget() -> None:
+    budget = RuntimeBudget(opus_cost_usd=1.0)
+    budget.consume_specialist_task("rural-specialist")
+    middleware = BudgetMiddleware()
+    request = tool_request("reexamine_region", budget)
+    request.runtime.context["orchestration_phase"] = "specialist"
+    called = []
+
+    result = middleware.wrap_tool_call(
+        request, lambda value: called.append(value) or "unreachable"
+    )
+
+    assert "temporarily disabled" in result.content
+    assert called == []
+    assert budget.reexaminations == 0
 
 
 def test_extraction_phase_binds_exact_extraction_tool() -> None:

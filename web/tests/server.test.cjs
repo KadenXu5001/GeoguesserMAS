@@ -3,7 +3,15 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs/promises");
 const os = require("node:os");
 const path = require("node:path");
-const { createAppServer, visionAnalysisCacheKey } = require("../server");
+const {
+  analyzeWithTransientRetry,
+  createAppServer,
+  isRetryableVisionError,
+  listTrainingPanoramas,
+  resolvePythonExecutable,
+  visionMasRequest,
+  visionAnalysisCacheKey,
+} = require("../server");
 
 function memoryAnalysisStore(documents = new Map()) {
   return {
@@ -12,6 +20,91 @@ function memoryAnalysisStore(documents = new Map()) {
     async close() {},
   };
 }
+
+test("website MAS prefers the populated project runtime over PATH python", () => {
+  const root = path.join("C:", "project");
+  const expected = path.join(root, ".runtime-win", "Scripts", "python.exe");
+  const resolved = resolvePythonExecutable({
+    root,
+    env: {},
+    platform: "win32",
+    existsSync: (candidate) => candidate === expected,
+  });
+
+  assert.equal(resolved, expected);
+});
+
+test("website MAS honors an explicit PYTHON override", () => {
+  assert.equal(
+    resolvePythonExecutable({
+      root: "unused",
+      env: { PYTHON: "C:\\custom\\python.exe" },
+      platform: "win32",
+      existsSync: () => false,
+    }),
+    "C:\\custom\\python.exe",
+  );
+});
+
+test("website MAS request preserves object-store identity and cardinal order", () => {
+  const request = visionMasRequest({
+    sourceId: "image-1",
+    datasetVersion: "pilot_v1",
+    views: { 270: "h270.jpg", 0: "h000.jpg", 180: "h180.jpg", 90: "h090.jpg" },
+    viewHashes: { 270: "d", 0: "a", 180: "c", 90: "b" },
+  });
+
+  assert.deepEqual(request, {
+    imageId: "image-1",
+    datasetVersion: "pilot_v1",
+    paths: ["h000.jpg", "h090.jpg", "h180.jpg", "h270.jpg"],
+    viewHashes: ["a", "b", "c", "d"],
+  });
+});
+
+test("website MAS retry classification is limited to transient transport and capacity errors", () => {
+  assert.equal(isRetryableVisionError(new Error("httpx.ReadTimeout: read timed out")), true);
+  assert.equal(isRetryableVisionError(Object.assign(new Error("quota"), { status: 429 })), true);
+  assert.equal(isRetryableVisionError(new Error("ExtractionOutput validation failed")), false);
+});
+
+test("website starts exactly one fresh MAS run after a transient failure", async () => {
+  let attempts = 0;
+  const request = { paths: ["0.jpg", "90.jpg", "180.jpg", "270.jpg"] };
+  const result = await analyzeWithTransientRetry(async (received) => {
+    attempts += 1;
+    assert.equal(received, request);
+    if (attempts === 1) throw new Error("httpx.WriteTimeout: The write operation timed out");
+    return { analysis: {}, informedEvidence: [] };
+  }, request);
+
+  assert.equal(attempts, 2);
+  assert.deepEqual(result, { analysis: {}, informedEvidence: [] });
+});
+
+test("website does not retry a deterministic MAS failure", async () => {
+  let attempts = 0;
+  await assert.rejects(
+    analyzeWithTransientRetry(async () => {
+      attempts += 1;
+      throw new Error("ExtractionOutput validation failed");
+    }, {}),
+    /validation failed/,
+  );
+  assert.equal(attempts, 1);
+});
+
+test("website stops after the second transient MAS failure", async () => {
+  let attempts = 0;
+  await assert.rejects(
+    analyzeWithTransientRetry(async () => {
+      attempts += 1;
+      throw new Error("503 UNAVAILABLE");
+    }, {}),
+    /503 UNAVAILABLE/,
+  );
+  assert.equal(attempts, 2);
+});
 
 async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } = {}) {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-server-test-"));
@@ -226,4 +319,64 @@ test("static GeoJSON is served as a feature collection instead of a serialized b
   assert.equal(data.type, "FeatureCollection");
   assert.ok(data.features.length > 0);
   assert.equal(data.type === "Buffer", false);
+});
+
+test("training media resolves through a completed object-store migration overlay", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-migration-test-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const datasetDir = path.join(root, "data", "datasets");
+  const migrationDir = path.join(root, "data", "migrations");
+  const objectDir = path.join(root, ".local-data", "source-private", "countries", "FR");
+  const runtimeDir = path.join(root, ".local-data", "runtime-private", "countries", "FR");
+  await Promise.all([
+    fs.mkdir(datasetDir, { recursive: true }),
+    fs.mkdir(migrationDir, { recursive: true }),
+    fs.mkdir(objectDir, { recursive: true }),
+    fs.mkdir(runtimeDir, { recursive: true }),
+  ]);
+  const panorama = path.join(objectDir, "panorama.jpg");
+  const views = Object.fromEntries([0, 90, 180, 270].map((heading) => [
+    heading,
+    path.join(runtimeDir, `h${heading}.jpg`),
+  ]));
+  await Promise.all([
+    fs.writeFile(panorama, "panorama"),
+    ...Object.values(views).map((target) => fs.writeFile(target, "view")),
+  ]);
+  const headers = [
+    "mapillary_image_id", "country_iso2", "country", "panorama_path",
+    "panorama_width", "panorama_height", "view_h000_path", "view_h000_sha256",
+    "view_h090_path", "view_h090_sha256", "view_h180_path", "view_h180_sha256",
+    "view_h270_path", "view_h270_sha256",
+  ];
+  const values = [
+    "image-1", "FR", "France", "missing-legacy.jpg", "400", "200",
+    "missing-0.jpg", "hash-0", "missing-90.jpg", "hash-90",
+    "missing-180.jpg", "hash-180", "missing-270.jpg", "hash-270",
+  ];
+  await fs.writeFile(
+    path.join(datasetDir, "dev_v1.csv"),
+    `${headers.join(",")}\n${values.join(",")}\n`,
+  );
+  await fs.writeFile(path.join(datasetDir, "eval_c1.csv"), `${headers.join(",")}\n`);
+  await fs.writeFile(
+    path.join(migrationDir, "pilot_v1_object_store.json"),
+    JSON.stringify({
+      status: "complete",
+      dataset_version: "pilot_v1",
+      items: [{
+        provider_image_id: "image-1",
+        panorama_object_store_path: path.relative(root, panorama),
+        view_object_store_paths: Object.fromEntries(
+          Object.entries(views).map(([heading, target]) => [heading, path.relative(root, target)]),
+        ),
+      }],
+    }),
+  );
+
+  const panoramas = await listTrainingPanoramas(root);
+
+  assert.equal(panoramas.length, 1);
+  assert.equal(panoramas[0].panoramaPath, panorama);
+  assert.equal(panoramas[0].views[270], views[270]);
 });

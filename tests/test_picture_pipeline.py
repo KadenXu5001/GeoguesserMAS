@@ -194,12 +194,14 @@ def test_ingest_writes_cloud_ready_content_addressed_assets(tmp_path, monkeypatc
 
     assert counts["rendered"] == 1
     assert repository.downloaded["storage_namespace"] == SOURCE_PRIVATE
-    assert repository.downloaded["object_key"].startswith("objects/")
+    assert repository.downloaded["object_key"].startswith("countries/FR/objects/")
+    assert repository.downloaded["storage_country_iso2"] == "FR"
     assert repository.downloaded["crc32c"]
     assert len(repository.views) == 4
     assert {view["storage_namespace"] for view in repository.views} == {
         RUNTIME_PRIVATE
     }
+    assert {view["country_iso2"] for view in repository.views} == {"FR"}
     assert all(
         store.path_for(RUNTIME_PRIVATE, view["object_key"]).is_file()
         for view in repository.views

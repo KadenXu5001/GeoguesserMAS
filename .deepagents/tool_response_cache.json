@@ -321,5 +321,25 @@
         "source_url": "https://geohints.com/meta/drivingSide"
       }
     ]
+  },
+  "{\"category\": \"rural_architecture\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v1\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "rural_architecture",
+        "country": "Brazil",
+        "indicator": "western homes may be wooden or raised on stilts with metal roofs; northeast homes often use white walls and orange/red tile roofs; southern styles include maintained tile-roof concrete homes",
+        "description": "Broad regional Brazilian architecture patterns.",
+        "source_url": "https://geotips.net/south-america/"
+      },
+      {
+        "family": "rural",
+        "category": "rural_architecture",
+        "country": "Thailand",
+        "indicator": "more regal Thai buildings can have distinctive roofing",
+        "description": "Thai architectural roof clue.",
+        "source_url": "https://geotips.net/asia/"
+      }
+    ]
   }
 }

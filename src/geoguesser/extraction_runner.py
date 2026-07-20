@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import mimetypes
 from collections.abc import Callable, Mapping
 from pathlib import Path
 from time import perf_counter
@@ -8,7 +9,6 @@ from typing import Any
 
 from google import genai
 from google.genai import types
-from PIL import Image
 
 from geoguesser.extraction import ExtractionOutput
 
@@ -17,6 +17,9 @@ EXTRACTION_PROMPT = """Inspect all four street-scene views together and extract 
 Preserve multiple objects per category. For each category provide a status of
 not_present, not_detected, present_but_illegible, or present, plus a concise consolidated
 signal. Use bbox coordinates as integer [ymin, xmin, ymax, xmax] normalized to 0-1000.
+For each object, legibility must be exactly clear, partial, illegible, or not_applicable.
+Category status and object legibility are separate fields: never use present_but_illegible
+as an object's legibility value.
 Do not infer or mention image IDs, filenames, coordinates, timestamps, country labels, or
 any metadata that is not visible in the images."""
 
@@ -31,6 +34,8 @@ def _normalize_provider_payload(value: Any) -> Any:
             normalized["schema_version"] = "extraction-v1"
         if normalized.get("legibility") == "legible":
             normalized["legibility"] = "clear"
+        if normalized.get("legibility") == "present_but_illegible":
+            normalized["legibility"] = "illegible"
         return normalized
     if isinstance(value, list):
         return [_normalize_provider_payload(child) for child in value]
@@ -53,7 +58,11 @@ def _gemini_extraction_schema() -> dict:
             },
             "observation": {"type": "string"},
             "confidence": {"type": "integer"},
-            "legibility": {"type": "string"},
+            "legibility": {
+                "type": "string",
+                "format": "enum",
+                "enum": ["clear", "partial", "illegible", "not_applicable"],
+            },
             "transcription": {"type": "string"},
         },
         "required": ["heading", "observation", "confidence", "legibility"],
@@ -61,7 +70,16 @@ def _gemini_extraction_schema() -> dict:
     category_schema = {
         "type": "object",
         "properties": {
-            "status": {"type": "string"},
+            "status": {
+                "type": "string",
+                "format": "enum",
+                "enum": [
+                    "not_present",
+                    "not_detected",
+                    "present_but_illegible",
+                    "present",
+                ],
+            },
             "objects": {"type": "array", "items": object_schema},
             "signal": {"type": "string"},
         },
@@ -108,12 +126,13 @@ def extract_cardinal_views(
     if max_attempts != 1:
         raise ValueError("extraction is single-call and max_attempts must be 1")
 
-    with Image.open(view_paths[0]) as h000, Image.open(view_paths[90]) as h090:
-        with Image.open(view_paths[180]) as h180, Image.open(view_paths[270]) as h270:
-            views = [h000.copy(), h090.copy(), h180.copy(), h270.copy()]
-
     labeled_contents: list[Any] = []
-    for heading, view in zip((0, 90, 180, 270), views):
+    for heading in (0, 90, 180, 270):
+        path = view_paths[heading]
+        mime_type = mimetypes.guess_type(path.name)[0] or "image/jpeg"
+        if not mime_type.startswith("image/"):
+            raise ValueError(f"cardinal view at heading {heading} is not an image")
+        view = types.Part.from_bytes(data=path.read_bytes(), mime_type=mime_type)
         labeled_contents.extend(
             [
                 f"The next image is the cardinal view at heading {heading} degrees. "

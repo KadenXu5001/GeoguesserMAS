@@ -11,9 +11,14 @@ Set `LOCAL_OBJECT_STORE_ROOT` to choose the storage root. The default is the ign
 
 ```text
 .local-data/
-  source-private/objects/<sha256-prefix>/<sha256>.<ext>
-  runtime-private/objects/<sha256-prefix>/<sha256>.<ext>
+  source-private/countries/<ISO2>/objects/<sha256-prefix>/<sha256>.<ext>
+  runtime-private/countries/<ISO2>/objects/<sha256-prefix>/<sha256>.<ext>
 ```
+
+Country folders use stable ISO codes (`FR`, `GB`, and so on), while display names and user-facing
+aliases stay in versioned dataset metadata. The reserved future subdivision layout is
+`countries/GB/subregions/GB-ENG/...`, allowing a selector such as France plus England to resolve
+`FR` and `GB-ENG` without renaming or duplicating the existing country-level collection.
 
 MongoDB retains a transitional local `path` for current tools and also records the portable
 `storage_namespace` and `object_key`, plus SHA-256, CRC32C, byte count, and media type. Cloud
@@ -27,6 +32,41 @@ are not moved or modified.
 docker compose up -d mongodb
 .\.runtime-win\Scripts\python.exe main.py init-mongodb
 ```
+
+Register the frozen 30-country collection definition before worldwide ingestion:
+
+```powershell
+.\.runtime-win\Scripts\python.exe main.py register-dataset --dataset worldwide_v2
+```
+
+The versioned definition is stored at `data/dataset_definitions/worldwide_v2.json`. It is
+checksum-bound to the reviewed Mapillary coverage report and records the selected countries,
+split targets, split seed, quality policy, and storage policy. Its dataset status remains `draft`
+while the country selection itself is frozen; the dataset becomes `frozen` only after collection,
+manual review, manifest export, and integrity validation are complete.
+
+## Migrate the frozen pilot into the object store
+
+Run the manifest-driven migration before collecting `worldwide_v2`:
+
+```powershell
+.\.runtime-win\Scripts\python.exe main.py migrate-local-assets --dataset pilot_v1
+```
+
+The migration verifies every panorama and cardinal-view SHA-256 against `dev_v1.csv` and
+`eval_c1.csv`, writes the 225 assets into their `FR`, `TH`, or `BR` object-store folders, enriches
+the matching MongoDB records, and writes `data/migrations/pilot_v1_object_store.json`. After the
+entire replacement set is verified, it removes the legacy media files. The frozen manifest bytes,
+labels, splits, quality results, and review decisions remain unchanged. The frontend resolves its
+media through the completed server-only migration report, so country folders and filesystem paths
+remain hidden before a guess.
+
+Production MAS runs also resolve each manifest image identity through that completed migration
+report and reconstruct the four local paths from the `runtime-private` object keys. They do not
+use the frozen legacy path columns after migration, and they fail closed if a migrated identity,
+object, or manifest checksum is inconsistent.
+
+Use `--keep-legacy` only for a non-destructive dry migration that retains the old media files.
 
 ## Install the pinned offline boundaries
 

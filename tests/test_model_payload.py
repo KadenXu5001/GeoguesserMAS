@@ -40,6 +40,7 @@ def test_structured_extraction_payload_is_safe() -> None:
         "crc32c",
         "byte_count",
         "country_iso2",
+        "subdivision_code",
         "split",
     ],
 )

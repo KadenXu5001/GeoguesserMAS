@@ -24,12 +24,12 @@ def test_local_object_store_uses_immutable_content_addressed_keys(tmp_path) -> N
     source.write_bytes(b"stable image bytes")
     store = LocalObjectStore(tmp_path / "store")
 
-    first = store.put_file(source, namespace=RUNTIME_PRIVATE)
-    second = store.put_file(source, namespace=RUNTIME_PRIVATE)
+    first = store.put_file(source, namespace=RUNTIME_PRIVATE, country_iso2="FR")
+    second = store.put_file(source, namespace=RUNTIME_PRIVATE, country_iso2="fr")
 
     digest = hashlib.sha256(source.read_bytes()).hexdigest()
     assert first == second
-    assert first.object_key == f"objects/{digest[:2]}/{digest}.jpg"
+    assert first.object_key == f"countries/FR/objects/{digest[:2]}/{digest}.jpg"
     assert first.path.read_bytes() == source.read_bytes()
     assert first.as_document()["path"] == first.path.as_posix()
 
@@ -47,8 +47,38 @@ def test_local_object_store_detects_corrupt_existing_object(tmp_path) -> None:
     source = tmp_path / "source.jpg"
     source.write_bytes(b"original")
     store = LocalObjectStore(tmp_path / "store")
-    stored = store.put_file(source, namespace=RUNTIME_PRIVATE)
+    stored = store.put_file(source, namespace=RUNTIME_PRIVATE, country_iso2="FR")
     stored.path.write_bytes(b"corrupt")
 
     with pytest.raises(RuntimeError, match="object is corrupt"):
-        store.put_file(source, namespace=RUNTIME_PRIVATE)
+        store.put_file(source, namespace=RUNTIME_PRIVATE, country_iso2="FR")
+
+
+def test_local_object_store_reserves_iso_subregion_hierarchy(tmp_path) -> None:
+    source = tmp_path / "england.jpg"
+    source.write_bytes(b"england panorama")
+    store = LocalObjectStore(tmp_path / "store")
+
+    stored = store.put_file(
+        source,
+        namespace=RUNTIME_PRIVATE,
+        country_iso2="GB",
+        subdivision_code="GB-ENG",
+    )
+
+    assert stored.object_key.startswith("countries/GB/subregions/GB-ENG/objects/")
+    assert stored.country_iso2 == "GB"
+    assert stored.subdivision_code == "GB-ENG"
+
+
+def test_local_object_store_rejects_subregion_from_another_country(tmp_path) -> None:
+    source = tmp_path / "wrong.jpg"
+    source.write_bytes(b"wrong country")
+
+    with pytest.raises(ValueError, match="does not belong"):
+        LocalObjectStore(tmp_path / "store").put_file(
+            source,
+            namespace=RUNTIME_PRIVATE,
+            country_iso2="FR",
+            subdivision_code="GB-ENG",
+        )

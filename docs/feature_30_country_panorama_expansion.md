@@ -140,6 +140,14 @@ Provider-specific response fields must remain inside the provider adapter.
 - Existing Mapillary records are migrated logically as `provider=mapillary` without changing their
   accepted image bytes or review decisions.
 - Storage paths must avoid collisions between providers.
+- Curator-facing and runtime object stores group assets under stable ISO country-code folders.
+  Country folders use ISO 3166-1 alpha-2 codes rather than display names so renaming or aliasing a
+  country does not move stored objects.
+- The reserved hierarchy for future subdivision datasets is
+  `countries/<ISO2>/subregions/<ISO-3166-2>/...`. Subdivision aliases and membership are versioned
+  dataset metadata; they are not inferred from folder names and are never exposed to the model.
+- Within each geographic folder, asset names remain content-addressed so repeated ingestion is
+  idempotent and checksum-verifiable.
 
 ### FR3: Expanded coverage scan
 
@@ -334,4 +342,3 @@ This specification conforms to `CONSTITUTION.md` and does not require an amendme
   offline dataset construction.
 - Implementation must add focused validation for the expanded metadata-isolation invariant and
   finish with a clean `git diff --check`.
-

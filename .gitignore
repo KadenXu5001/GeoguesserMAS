@@ -22,3 +22,4 @@ build/
 .sandbox-venv/
 .sandbox-native/
 web/node_modules/
+.deepagents/

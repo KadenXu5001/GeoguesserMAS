@@ -215,6 +215,78 @@ class MongoRepository:
             upsert=True,
         )
 
+    def register_dataset(self, document: Mapping[str, Any]) -> None:
+        version = str(document.get("version", ""))
+        countries = document.get("countries")
+        if not version or not isinstance(countries, list) or not countries:
+            raise ValueError("dataset document must include version and countries")
+        now = utc_now()
+        self.database.dataset_versions.update_one(
+            {"version": version},
+            {
+                "$set": {**dict(document), "updated_at": now},
+                "$setOnInsert": {"created_at": now},
+            },
+            upsert=True,
+        )
+
+    def attach_object_store_assets(
+        self,
+        image_id: str,
+        *,
+        panorama_object: Mapping[str, Any],
+        view_objects: list[Mapping[str, Any]],
+        migration_version: str,
+    ) -> None:
+        panorama = self.get_panorama(image_id)
+        if panorama is None:
+            raise ValueError(f"cannot migrate unknown panorama: {image_id}")
+        panorama_file = dict(panorama.get("panorama_file") or {})
+        if panorama_file.get("sha256") != panorama_object.get("sha256"):
+            raise ValueError(f"panorama checksum changed before migration: {image_id}")
+        panorama_file.update(dict(panorama_object))
+
+        existing_views = {
+            int(view["heading"]): dict(view)
+            for view in panorama.get("rendered_views", [])
+        }
+        migrated_views = {int(view["heading"]): dict(view) for view in view_objects}
+        if set(existing_views) != {0, 90, 180, 270} or set(migrated_views) != {
+            0,
+            90,
+            180,
+            270,
+        }:
+            raise ValueError(f"panorama does not have four migration views: {image_id}")
+        merged_views = []
+        for heading in (0, 90, 180, 270):
+            if existing_views[heading].get("sha256") != migrated_views[heading].get(
+                "sha256"
+            ):
+                raise ValueError(
+                    f"rendered view checksum changed before migration: {image_id}/{heading}"
+                )
+            merged_views.append({**existing_views[heading], **migrated_views[heading]})
+
+        self.database.panoramas.update_one(
+            {"mapillary_image_id": image_id},
+            {
+                "$set": {
+                    "provider": "mapillary",
+                    "provider_image_id": image_id,
+                    "provider_sequence_id": panorama["sequence_id"],
+                    "panorama_file": panorama_file,
+                    "rendered_views": merged_views,
+                    "storage_migration": {
+                        "version": migration_version,
+                        "status": "complete",
+                        "migrated_at": utc_now(),
+                    },
+                    "updated_at": utc_now(),
+                }
+            },
+        )
+
     def assign_validated(
         self,
         *,
@@ -317,6 +389,8 @@ class MongoRepository:
         storage_namespace: str | None = None,
         crc32c: str | None = None,
         content_type: str = "application/octet-stream",
+        storage_country_iso2: str | None = None,
+        storage_subdivision_code: str | None = None,
     ) -> None:
         panorama_file = {
             "path": path,
@@ -330,6 +404,8 @@ class MongoRepository:
             ("object_key", object_key),
             ("storage_namespace", storage_namespace),
             ("crc32c", crc32c),
+            ("country_iso2", storage_country_iso2),
+            ("subdivision_code", storage_subdivision_code),
         ):
             if value is not None:
                 panorama_file[key] = str(value)

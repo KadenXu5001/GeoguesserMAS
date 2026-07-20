@@ -10,6 +10,9 @@ from typing import Any
 from dotenv import load_dotenv
 
 
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stderr.reconfigure(encoding="utf-8")
+
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 os.environ["LANGSMITH_TRACING"] = "false"
@@ -43,18 +46,33 @@ def flush_langsmith() -> None:
     wait_for_all_tracers()
 
 
-def main() -> None:
-    request = json.load(sys.stdin)
+def build_mas_row(request: dict[str, Any]) -> dict[str, str]:
+    """Preserve object-store identity while adapting the website request to a MAS row."""
     paths = request.get("paths")
     if not isinstance(paths, list) or len(paths) != 4:
         raise ValueError("Vision MAS requires four cardinal view paths")
-    snapshot = load_reference_snapshot(ROOT / "data" / "reference_tables" / "reference_v1.json")
     row = {
-        "view_h000_path": str(Path(paths[0]).resolve()),
-        "view_h090_path": str(Path(paths[1]).resolve()),
-        "view_h180_path": str(Path(paths[2]).resolve()),
-        "view_h270_path": str(Path(paths[3]).resolve()),
+        f"view_h{heading:03d}_path": str(Path(path_value).resolve())
+        for heading, path_value in zip((0, 90, 180, 270), paths)
     }
+    image_id = request.get("imageId")
+    dataset_version = request.get("datasetVersion")
+    if isinstance(image_id, str) and image_id.strip():
+        row["mapillary_image_id"] = image_id.strip()
+    if isinstance(dataset_version, str) and dataset_version.strip():
+        row["dataset_version"] = dataset_version.strip()
+    hashes = request.get("viewHashes")
+    if isinstance(hashes, list) and len(hashes) == 4:
+        for heading, digest in zip((0, 90, 180, 270), hashes):
+            if isinstance(digest, str) and digest.strip():
+                row[f"view_h{heading:03d}_sha256"] = digest.strip()
+    return row
+
+
+def main() -> None:
+    request = json.load(sys.stdin)
+    snapshot = load_reference_snapshot(ROOT / "data" / "reference_tables" / "reference_v1.json")
+    row = build_mas_row(request)
     tracer = create_langsmith_tracer()
     try:
         result = run_mas_row(
@@ -63,6 +81,9 @@ def main() -> None:
             reference_repository=SnapshotRepository(snapshot),
             reference_version=snapshot["version"],
             root=ROOT,
+            progress=lambda message: print(
+                f"[vision-mas] {message}", file=sys.stderr, flush=True
+            ),
             trace_callbacks=[tracer],
         )
         if result.get("warning"):

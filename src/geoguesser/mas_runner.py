@@ -11,6 +11,7 @@ from geoguesser.agent_factory import create_geoguesser_agent
 from geoguesser.agent_runtime import build_runtime_context
 from geoguesser.cost_model import OPUS_BASELINE
 from geoguesser.decision_log import record_decision, snapshot_decision_log
+from geoguesser.mas_assets import resolve_mas_view_paths
 from geoguesser.model_payload import assert_model_payload_safe
 from geoguesser.runtime_budget import BudgetExceeded, RuntimeBudget
 
@@ -155,12 +156,7 @@ def run_mas_row(
     trace_callbacks: list[Any] | None = None,
 ) -> dict[str, Any]:
     report = progress or (lambda message: None)
-    views = {
-        0: root / row["view_h000_path"],
-        90: root / row["view_h090_path"],
-        180: root / row["view_h180_path"],
-        270: root / row["view_h270_path"],
-    }
+    views = resolve_mas_view_paths(row, root=root)
     # Graph construction is one-time setup, not per-panorama model/tool inference. Keep it
     # outside the hard inference budget; callers running batches should pass a shared agent.
     compiled_agent = agent or create_geoguesser_agent()

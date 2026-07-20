@@ -92,26 +92,89 @@ def test_mark_downloaded_records_cloud_ready_object_reference() -> None:
 
     MongoRepository(database).mark_downloaded(
         "image-a",
-        path=".local-data/source-private/objects/ab/abcdef.jpg",
+        path=".local-data/source-private/countries/FR/objects/ab/abcdef.jpg",
         sha256="abcdef",
         byte_count=123,
         width=400,
         height=200,
-        object_key="objects/ab/abcdef.jpg",
+        object_key="countries/FR/objects/ab/abcdef.jpg",
         storage_namespace="source-private",
         crc32c="4waSgw==",
         content_type="image/jpeg",
+        storage_country_iso2="FR",
     )
 
     update = database.panoramas.update_one.call_args.args[1]["$set"]
     assert update["panorama_file"] == {
-        "path": ".local-data/source-private/objects/ab/abcdef.jpg",
+        "path": ".local-data/source-private/countries/FR/objects/ab/abcdef.jpg",
         "sha256": "abcdef",
         "byte_count": 123,
         "width": 400,
         "height": 200,
         "content_type": "image/jpeg",
-        "object_key": "objects/ab/abcdef.jpg",
+        "object_key": "countries/FR/objects/ab/abcdef.jpg",
         "storage_namespace": "source-private",
         "crc32c": "4waSgw==",
+        "country_iso2": "FR",
     }
+
+
+def test_register_dataset_upserts_versioned_country_definition() -> None:
+    database = MagicMock()
+    document = {
+        "version": "worldwide_v2",
+        "kind": "panorama_dataset",
+        "status": "draft",
+        "countries": [{"iso2": "FR", "country": "France", "continent": "Europe"}],
+        "targets": {},
+        "constraints": {},
+    }
+
+    MongoRepository(database).register_dataset(document)
+
+    update = database.dataset_versions.update_one.call_args
+    assert update.args[0] == {"version": "worldwide_v2"}
+    assert update.args[1]["$set"]["countries"] == document["countries"]
+    assert update.kwargs["upsert"] is True
+
+
+def test_attach_object_store_assets_preserves_legacy_paths_and_review_state() -> None:
+    database = MagicMock()
+    database.panoramas.find_one.return_value = {
+        "mapillary_image_id": "image-a",
+        "sequence_id": "sequence-a",
+        "status": "rendered",
+        "quality": {"manual_review": {"status": "approved"}},
+        "panorama_file": {"path": "legacy/panorama.jpg", "sha256": "pano"},
+        "rendered_views": [
+            {"heading": heading, "path": f"legacy/{heading}.jpg", "sha256": f"view-{heading}"}
+            for heading in (0, 90, 180, 270)
+        ],
+    }
+    migrated_views = [
+        {
+            "heading": heading,
+            "sha256": f"view-{heading}",
+            "object_key": f"countries/FR/objects/{heading}",
+            "object_store_path": f".local-data/{heading}.jpg",
+        }
+        for heading in (0, 90, 180, 270)
+    ]
+
+    MongoRepository(database).attach_object_store_assets(
+        "image-a",
+        panorama_object={
+            "sha256": "pano",
+            "object_key": "countries/FR/objects/pano",
+            "object_store_path": ".local-data/pano.jpg",
+        },
+        view_objects=migrated_views,
+        migration_version="pilot-object-store-v1",
+    )
+
+    update = database.panoramas.update_one.call_args.args[1]["$set"]
+    assert update["panorama_file"]["path"] == "legacy/panorama.jpg"
+    assert update["panorama_file"]["object_store_path"] == ".local-data/pano.jpg"
+    assert update["rendered_views"][0]["path"] == "legacy/0.jpg"
+    assert update["rendered_views"][0]["object_store_path"] == ".local-data/0.jpg"
+    assert "quality" not in update

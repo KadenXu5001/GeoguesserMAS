@@ -67,7 +67,8 @@ def views(tmp_path: Path) -> dict[int, Path]:
 
 def test_sends_all_four_views_in_one_call_and_parses_schema(tmp_path: Path) -> None:
     client = Client([Response(__import__("json").dumps(payload()))])
-    result = extract_cardinal_views(client, views(tmp_path))
+    view_paths = views(tmp_path)
+    result = extract_cardinal_views(client, view_paths)
 
     assert isinstance(result, ExtractionOutput)
     assert len(client.models.calls) == 1
@@ -75,6 +76,9 @@ def test_sends_all_four_views_in_one_call_and_parses_schema(tmp_path: Path) -> N
     assert client.models.calls[0]["contents"][0].startswith(
         "The next image is the cardinal view at heading 0 degrees"
     )
+    image_part = client.models.calls[0]["contents"][1]
+    assert image_part.inline_data.mime_type == "image/jpeg"
+    assert image_part.inline_data.data == view_paths[0].read_bytes()
     assert client.models.calls[0]["contents"][2].startswith(
         "The next image is the cardinal view at heading 90 degrees"
     )
@@ -84,6 +88,20 @@ def test_sends_all_four_views_in_one_call_and_parses_schema(tmp_path: Path) -> N
     heading_schema = schema["properties"]["driving_side_and_markings"]["properties"]["objects"]["items"]["properties"]["heading"]
     assert heading_schema["type"] == "integer"
     assert "enum" not in heading_schema
+    category_schema = schema["properties"]["signs_and_language"]
+    assert category_schema["properties"]["status"]["enum"] == [
+        "not_present",
+        "not_detected",
+        "present_but_illegible",
+        "present",
+    ]
+    legibility_schema = category_schema["properties"]["objects"]["items"]["properties"]["legibility"]
+    assert legibility_schema["enum"] == [
+        "clear",
+        "partial",
+        "illegible",
+        "not_applicable",
+    ]
 
 
 def test_malformed_response_is_not_retried(tmp_path: Path) -> None:
@@ -117,6 +135,29 @@ def test_normalizes_known_provider_aliases_before_validation(tmp_path: Path) -> 
     result = extract_cardinal_views(client, views(tmp_path))
     assert result.schema_version == "extraction-v1"
     assert result.driving_side_and_markings.objects[0].legibility == "clear"
+
+
+def test_normalizes_category_status_used_as_object_legibility(tmp_path: Path) -> None:
+    value = payload()
+    value["signs_and_language"] = {
+        "status": "present_but_illegible",
+        "signal": "Text is visible but cannot be read.",
+        "objects": [
+            {
+                "heading": 90,
+                "observation": "distant road sign",
+                "confidence": 75,
+                "legibility": "present_but_illegible",
+            }
+        ],
+    }
+    client = Client([Response(__import__("json").dumps(value))])
+
+    result = extract_cardinal_views(client, views(tmp_path))
+
+    assert result.signs_and_language.status == "present_but_illegible"
+    assert result.signs_and_language.objects[0].legibility == "illegible"
+    assert len(client.models.calls) == 1
 
 
 def test_reports_usage_for_the_single_extraction_call(tmp_path: Path) -> None:

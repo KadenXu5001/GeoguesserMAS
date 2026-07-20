@@ -28,6 +28,7 @@ FORBIDDEN_METADATA_KEYS = frozenset(
         "crc32c",
         "byte_count",
         "country_iso2",
+        "subdivision_code",
         "split",
     }
 )

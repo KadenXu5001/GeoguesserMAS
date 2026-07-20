@@ -146,6 +146,7 @@ def ingest_picture_candidates(
                     stored = object_store.put_file(
                         downloaded.path,
                         namespace=SOURCE_PRIVATE,
+                        country_iso2=actual_country,
                         content_type="image/jpeg",
                     )
                 if stored.sha256 != downloaded.sha256:
@@ -163,6 +164,8 @@ def ingest_picture_candidates(
                 storage_namespace=panorama_file.get("storage_namespace"),
                 crc32c=panorama_file.get("crc32c"),
                 content_type=str(panorama_file["content_type"]),
+                storage_country_iso2=panorama_file.get("country_iso2"),
+                storage_subdivision_code=panorama_file.get("subdivision_code"),
             )
             assessment = assess_panorama(panorama_path)
             repository.record_quality(image_id, assessment.as_document())
@@ -199,6 +202,7 @@ def ingest_picture_candidates(
                         view = object_store.put_file(
                             path,
                             namespace=RUNTIME_PRIVATE,
+                            country_iso2=actual_country,
                             content_type="image/jpeg",
                         ).as_document()
                         views.append({"heading": heading, **view})
