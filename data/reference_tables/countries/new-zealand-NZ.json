@@ -1,0 +1,178 @@
+{
+  "country": "New Zealand",
+  "source_url": "https://geotips.net/oceania/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "New Zealand",
+      "indicator": "yellow and white and green road markings",
+      "description": "New Zealand uses a yellow divider line and white shoulder lines. There are some cases where you can find just white dashed lines. This means that you can pass other drivers. You can also find these in cities. They tell you that there is no parking in this spot. You can also find Green bus lanes and red or green bicycle lanes in urban areas.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "New Zealand",
+      "indicator": "Language and script",
+      "description": "New Zealand uses English and Māori. Most of the North Island contains both languages. A key way to know if a place is a Māori word is if it ends in common vowel pairs, like ‘ui’, ‘ea’, or ‘oa’.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "New Zealand",
+      "indicator": "Distinctive bollards",
+      "description": "(Front). (Back). New Zealand has some unique bollards, so it is worth learning them. If you don’t, you may often confused New Zealand with Australia. (Front). (Back). You can also find these near bridges.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "chevrons_guardrails",
+      "country": "New Zealand",
+      "indicator": "Chevron in New Zealand is yellow and black",
+      "description": "The Chevron in New Zealand is yellow and black, however it has this unique thin black border around the edge.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "New Zealand",
+      "indicator": "Urban architectural traits",
+      "description": "Some cities will have some taller skyscrapers, but they’re not too common of a sight. New Zealand has quite a few houses with this metal roof. Some are in better condition, while others are rusty.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "New Zealand",
+      "indicator": "Urban utility-pole traits",
+      "description": "These concrete poles are mostly found in Suburbs and urban areas. The wooden poles are mostly found in rural areas, but they can also be found closer to urban areas.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "New Zealand",
+      "indicator": "New Zealand uses a solid yellow line for its stop line",
+      "description": "New Zealand uses a solid yellow line for its stop line.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "New Zealand",
+      "indicator": "They just make the assumption that the drivers know better",
+      "description": "They just make the assumption that the drivers know better.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "New Zealand",
+      "indicator": "Urban sign conventions",
+      "description": "New Zealand has these green signs that are on most major roads. That red shield is important as it is the New Zealand State road system. New Zealand uses Diagonal warning signs, and they appear on White wooden poles. The exception is pedestrian crossings, which have black and white striped poles. New Zealand’s Yield signs are white and red. They also have a white painted triangle on the road. This is a unique combination.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "New Zealand",
+      "indicator": "Business and number conventions",
+      "description": "Area codes in New Zealand can be incredibly useful. 02 = Cellphone. 03 = Entire South Island. 04 = Wellington area. 06 = East side of North Island. 07 = Central and west side of North Island. 09 = North end of North Island (from Auckland northwards).",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "New Zealand",
+      "indicator": "Terrain and scenery",
+      "description": "This is the General feel of the North Island. While New Zealand is really diverse, its a generic feel. This is the General feel of the South Island. The best thing to do is imagine the Lord of the Rings movies. If it looks like Middle Earth, its New Zealand.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "New Zealand",
+      "indicator": "These metal poles are found mostly on large highways and near some major cities",
+      "description": "These metal poles are found mostly on large highways and near some major cities. New Zealand uses Yellow poles for their traffic lights. There were found in major cities quite frequently.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "New Zealand",
+      "indicator": "New Zealand’s speed limit signs do not have a KM/H under the number",
+      "description": "New Zealand’s speed limit signs do not have a KM/H under the number.",
+      "source_url": "https://geotips.net/oceania/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "Phone number",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "License plates",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Vegetation / Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 8,
+    "row_count": 13,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

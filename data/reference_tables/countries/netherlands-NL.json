@@ -1,0 +1,361 @@
+{
+  "country": "Netherlands",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Netherlands",
+      "indicator": "license plates are the same from the front and the back",
+      "description": "The license plates are the same from the front and the back.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Netherlands",
+      "indicator": "yellow and black license plates",
+      "description": "Current license plates in the Netherlands are yellow with black letters. The most recent registrations consists of one number, three letters and two numbers, or two numbers, three letters and one number. There are in total 11 combinations available in different colors for specific reasons, but these are far less common.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Netherlands",
+      "indicator": "white and green and red road markings",
+      "description": "Double white stripes in the middle of the road, with a green line in between, means cars are allowed 100 km/h. Double white stripes in the middle without a green line, means cars are allowed 80 km/h. The Netherlands has a lot of red cycling lanes, either alongside the road or completely separate on the side.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Netherlands",
+      "indicator": "It’s often a sort of phonetically spoken/written English",
+      "description": "It’s often a sort of phonetically spoken/written English.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Netherlands",
+      "indicator": "Language and script",
+      "description": "People in the Netherlands speak Dutch and English. It is very common that you will see English on the streets during your Geoguessr missions, often in the form of business names. There is however, another official language within the Netherlands, Frysian. This language is only spoken in the province of Friesland, in the north where Leeuwarden and Heerenveen are located. City names appear in both languages in those areas, the bottom one being Frysian. Street names look different there. You can see â, ê, and û appear, as well as more j’s and y’s than in Dutch. Frysian is actually closer to English than it is to Dutch.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Netherlands",
+      "indicator": "following bollards",
+      "description": "The following bollards, can also be seen alongside smaller roads in between cities/towns/villages.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Netherlands",
+      "indicator": "white and red and black bollards",
+      "description": "This is the most common bollard in the Netherlands, a white bollard with a red reflector. These bollards can be mostly found on the right side of the roads and highways. Less common, also on the right side of the road black bollards with red reflectors can be seen. Bollards on the left side of the road are less common, but often they are white with a white reflector. You can also find bollards with distances on them, counting from the start of the road until the end. Bollards with multiple reflectors exist as well.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Netherlands",
+      "indicator": "Rotterdam is a very modern city when it comes to architecture",
+      "description": "Rotterdam is a very modern city when it comes to architecture. The outskirts were partially unharmed during World War II, but the city center was totally destroyed. Instead of rebuilding like it was before, as they did in many other cities, Rotterdam chose to build a new city. Lots of skyscrapers and unique architecture can be found in the Manhattan of Europe, very different from the rest of the country.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Netherlands",
+      "indicator": "Some towns are still very traditional like Zaanse Schans for instance",
+      "description": "Some towns are still very traditional like Zaanse Schans for instance.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Netherlands",
+      "indicator": "Urban architectural traits",
+      "description": "The Dutch Golden Age roughly spanned the 17th century. Due to the thriving economy, cities expanded greatly. New town halls and storehouses were built, and many new canals were dug out for defense and transport purposes. Houses in cities were generally very narrow.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Netherlands",
+      "indicator": "Urban utility-pole traits",
+      "description": "Electricity poles in the Netherlands look like this. The reclaimed land of Flevoland, as well as the northern Wadden Islands don’t have any such typical electricity poles.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Netherlands",
+      "indicator": "Brown signs normally show touristic information",
+      "description": "Brown signs normally show touristic information. Red and white signs like these are directions for cyclists. These are very clear indications that you are in the Netherlands. Street signs in the Netherlands look like this. Most common they end with -straat, -weg, -pad or -plein (street/road/path/square). Fietspad means bicycle lane, not a street name. Don’t look for a street named Fietspad on the map.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Netherlands",
+      "indicator": "Red for A-roads",
+      "description": "Red for A-roads, Green for E-roads, Yellow for N-roads. Yellow signs with black letters are warning signs with instructions. Think about detours, road constructions, or when two lines merge into one. Most of the time they are not used, but you can see X-es on them, or numbers with speed limits too.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Netherlands",
+      "indicator": "Urban sign conventions",
+      "description": "National hectometer signs are green with white letters. They will have either Li or Re written on them, to indicate that you are on the left (Li) of the right (Re) driveway.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Netherlands",
+      "indicator": "What a lot of people don’t know is that hectometer pole are arguably the best wa",
+      "description": "What a lot of people don’t know is that hectometer pole are arguably the best ways to locate yourself on the map. Besides the national hectometer signs, a lot of provinces have local ones too, and if you know them by heart, your guess will automatically be better. Drenthe. Flevoland. Friesland. Gelderland. Groningen. Limburg. Noord-Brabant. Noord-Holland. Overijssel. Utrecht. Zeeland. Zuid-Holland. Directions to cities are generally blue signs with white letters.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Netherlands",
+      "indicator": "When entering a tunnel",
+      "description": "When entering a tunnel, you will see this. Local areas within cities have a white border around them on the signs.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Netherlands",
+      "indicator": "024 – Nijmegen and surroundings",
+      "description": "024 – Nijmegen and surroundings. 025 – Beverwijk, IJmuiden and surroundings. 026 – Arnhem and surroundings. 029 – Uithoorn, Purmerend and surroundings. 030 – Utrecht and surroundings. 031 – Doetinchem, Wageningen, Ede and surroundings. 032 – Lelystad, Dronten and surroundings. 033 – Amersfoort and surroundings. 034 – Harderwijk, Barneveld, Culemborg, Woerden and surroundings. 035 – Hilversum and surroundings. 036 – Almere and surroundings. 038 – Zwolle and surroundings. 040 – Eindhoven and surroundings. 041 – Oss, Waalwijk and surroundings. 043 – Maastricht and surroundings. 045 – Heerlen and surroundings. 046 – Sittard and surroundings.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Netherlands",
+      "indicator": "047 – Roermond",
+      "description": "047 – Roermond, Venray and surroundings. 048 – Cuijk and surroundings. 049 – Helmond, Weert, Best and surroundings. 050 – Groningen and surroundings. 051 – Drachten, Heerenveen, Sneek, Franeker, Dokkum and surroundings. 052 – Steenwijk, Meppel, Coevorden, Emmeloord, Hoogeveen and surroundings. 053 – Enschede and surroundings. 054 – Oldenzaal, Winterswijk, Almelo and surroundings. 055 – Apeldoorn and surroundings. 056 – Wolvega, Terschelling and surroundings. 057 – Deventer, Zutphen and surroundings. 058 – Leeuwarden and surroundings. 059 – Emmen, Assen, Appingedam, Stadskanaal and surroundings. 070 – Den Haag and surroundings.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Netherlands",
+      "indicator": "071 – Leiden and surroundings",
+      "description": "071 – Leiden and surroundings. 072 – Alkmaar and surroundings. 073 – Den Bosch and surroundings. 074 – Hengelo and surroundings. 075 – Zaanstad and surroundings. 076 – Breda and surroundings. 077 – Venlo and surroundings. 078 – Dordrecht and surroundings. 079 – Zoetermeer and surroundings.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Netherlands",
+      "indicator": "Business and number conventions",
+      "description": "Phone numbers within the Netherlands are systematically arranged. Numbers starting with 01 can be found in the South Western part of the country. Numbers starting with 02 can be found in the North Western part of the country. Numbers starting with 03 can be found in the Central part of the country. Numbers starting with 04 can be found in the South Eastern part of the country. Numbers starting with 05 can be found in the North Eastern part of the country. Numbers starting with 06 are mobile phone numbers which can be found in the whole country. Numbers starting with 07 are the odd ones and spread out over several parts of the country.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Netherlands",
+      "indicator": "Numbers starting with 08 are toll free numbers and can be found in the whole cou",
+      "description": "Numbers starting with 08 are toll free numbers and can be found in the whole country. Numbers starting with 09 are chargeable numbers and can be found in the whole country. 010 – Rotterdam and surroundings. 011 – Zierikzee, Goes, Terneuzen, Middelburg and surroundings. 013 – Tilburg and surroundings. 015 – Delft and surroundings. 016 – Bergen op Zoom, Roosendaal, Tholen and surroundings. 017 – Alphen aan den Rijn, Naaldwijk and surroundings. 018 – Ridderkerk, Spijkenisse, Gouda, Gorinchem and surroundings. 020 – Amsterdam and surroundings. 022 – Den Burg, Den Helder, Enkhuizen, Hoorn and surroundings. 023 – Haarlem and surroundings.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Netherlands",
+      "indicator": "addition",
+      "description": "In addition, mankind has influenced landscape and plant growth for thousands of years, mainly through small-scale and varied agriculture.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Netherlands",
+      "indicator": "same applies to the Oostvaardersplassen in Flevoland created by land reclamation",
+      "description": "The same applies to the Oostvaardersplassen in Flevoland created by land reclamation. The moraines, moors, high moors, fens and deciduous forests, river valleys, brooks and springs located in the east and south each have their characteristic vegetation. In the extreme south one finds a plateau landscape with in the valleys a rich flora, partly bound by limestone, which differs greatly from that of the rest of the country.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Netherlands",
+      "indicator": "Vegetation and biome traits",
+      "description": "Many will be surprised, but the vegetation within the Netherlands is very diverse. The dune areas and overgrown beach plains are unique in Europe. The large low peat bogs (Nieuwkoop, Vechtstreek, Northwest Overijssel, Friesland) find no equivalent anywhere in Western and Southern Europe.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Netherlands",
+      "indicator": "Vegetation and biome traits — Specific tree",
+      "description": "There’s a lot of different trees in the Netherlands, but if we talk about specific ones, then 9 turn out to be very common. Most of these trees can be found in other countries, so seeing one of these trees is not a giveaway for being in The Netherlands. Beech. Birch. Oak. Scots Pine. Els. Ash. Maple. Elm. Poplar.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Specific tree"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Netherlands",
+      "indicator": "Terrain and scenery",
+      "description": "The Netherlands is the country of cute little villages with canals and small little bridges. It is also the country of dikes protecting the people from the water, which are often full with cows or sheep. The Dutch love fields of flowers, windmills, more windmills and of course bicycles. Oh, and it is the country where you can find all garbage bins of the neighborhood piled up, ready to be emptied.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_architecture",
+      "country": "Netherlands",
+      "indicator": "Other places are much more modern",
+      "description": "Other places are much more modern, both in the cities and in the countryside.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "rural",
+      "category": "rural_architecture",
+      "country": "Netherlands",
+      "indicator": "the countryside",
+      "description": "In the countryside, larger houses were built, though not as many.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Netherlands",
+      "indicator": "Rural utility-pole traits variant 2",
+      "description": "There, as well as in other parts of the country you will find electric windmills.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Netherlands",
+      "indicator": "number on the signs indicates the distance in kilometers from the start of the r",
+      "description": "The number on the signs indicates the distance in kilometers from the start of the road. Quite often the road number is clearly visible, giving you a great hint to figure out where you are.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Netherlands",
+      "indicator": "Road numbers are often visible",
+      "description": "Road numbers are often visible.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Netherlands",
+      "indicator": "These can be seen on highways and within cities",
+      "description": "These can be seen on highways and within cities.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Netherlands",
+      "indicator": "When exiting a highway",
+      "description": "When exiting a highway, you will often see this sign.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Specific tree",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Unique Vehicle",
+        "reason": "Only prohibited, duplicative, or image-dependent text remained."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 11,
+    "row_count": 33,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

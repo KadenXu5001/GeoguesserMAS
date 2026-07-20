@@ -377,5 +377,1635 @@
         "source_url": "https://geotips.net/asia/"
       }
     ]
+  },
+  "{\"category\": \"rural_utility_poles\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Argentina",
+        "indicator": "Rural utility-pole traits",
+        "description": "The typical Argentinian pole is made of concrete and split into two, forming an ‘A’ shape with horizontal segments connecting the two sides.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Australia",
+        "indicator": "Rural utility-pole traits",
+        "description": "Australia uses wooden poles for most things, but an occasional metal one may pop up. There are state specific poles, with some being a bit more helpful than others. This is a timber pole. You’ll find them in Western Australia, Tasmania, Victoria, New South Wales, and Queensland. They’re often green, but they can be any color. You can often find this black square with numbers in it. Each number is designed to a unique pole to make utility work easier. What is nice about this square is that it can only be found in Queensland. You can find these metal poles with holes in the Northern Territory and the northern parts of Western Australia.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Australia",
+        "indicator": "Rural utility-pole traits variant 2",
+        "description": "Finally, you can find the “Stobie” pole in South Australia. A Stobie pole is two metal beams joined by tie bolts and held apart by a slab of concrete. It often has artwork towards the bottom and can be used as bus stops if painted Yellow.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Canada",
+        "indicator": "Rural utility-pole traits",
+        "description": "A more in-depth guide will be created soon with specifics.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Chile",
+        "indicator": "Rural utility-pole traits",
+        "description": "These poles are larger at the base and taper to a point at the top of the pole. It feels like the light itself is barely attached to the top of the pole. Its important to note that these are not the only one, but this tapered pole is very common. Keep an eye out for it!.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "France",
+        "indicator": "Rural utility-pole traits",
+        "description": "Any wooden pole in France SHOULD contain a blue square sticker on it. There are always exceptions.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Germany",
+        "indicator": "They can be any shape and size",
+        "description": "They can be any shape and size. Wooden, concrete, and metal poles can be found in all cities.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "India",
+        "indicator": "pole topper in Punjab has a window shape under the central insulator",
+        "description": "The pole topper in Punjab has a window shape under the central insulator. This pole is located in Sikkim and is a mesh design. The poles in Karnataka have this trident design. It is not exclusive to this region, but it very common here. The poles in Tamil Nadu often have poles where the middle insulator is the same height as the two side insulators. Tamil Nadu also will have poles with this black and white painted pattern.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "India",
+        "indicator": "poles in Kerala will have this round yellow sticker",
+        "description": "The poles in Kerala will have this round yellow sticker.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "India",
+        "indicator": "This is the “Regular” India pole and the most common in the country",
+        "description": "This is the “Regular” India pole and the most common in the country. This pole is located mostly in Gujarat. It has holes in the side like Poland or Hungary. This pole is located in Telangana and Andhra Pradesh. It has indents in the concrete like Brazil and Chile. This pole can be found in Chattisgarh and has an additional bar making a trapezoid shape near the top.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Japan",
+        "indicator": "Rural utility-pole traits",
+        "description": "Do not confuse them with Taiwan or South Korea (they have similar):.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Malaysia",
+        "indicator": "Rural utility-pole traits",
+        "description": "Malaysia uses wooden poles.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Mexico",
+        "indicator": "Rural utility-pole traits",
+        "description": "There is an established meta with poles in Mexico. The majority of poles use this octagonal shape. It is a good clue to use. This doesn’t mean that it is the only pole, with wooden poles still being used occasionally.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Electricity Poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Netherlands",
+        "indicator": "Rural utility-pole traits variant 2",
+        "description": "There, as well as in other parts of the country you will find electric windmills.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "New Zealand",
+        "indicator": "These metal poles are found mostly on large highways and near some major cities",
+        "description": "These metal poles are found mostly on large highways and near some major cities. New Zealand uses Yellow poles for their traffic lights. There were found in major cities quite frequently.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Poland",
+        "indicator": "Rural utility-pole traits",
+        "description": "Poland has these characteristic slim holed poles:.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "South Africa",
+        "indicator": "Rural utility-pole traits",
+        "description": "South Africa uses wooden poles in multiple styles. They can often be found around the Rural and developed areas.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "South Korea",
+        "indicator": "Rural utility-pole traits",
+        "description": "South Korea has these black and yellow diagonal stripes on poles that are wider and less tall than the Taiwanese ones:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Spain",
+        "indicator": "Rural utility-pole traits",
+        "description": "Spain uses wooden and concrete poles.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Taiwan",
+        "indicator": "Rural utility-pole traits",
+        "description": "A common site on poles in Taiwan are these black and yellow diagonal lines.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Thailand",
+        "indicator": "Rural utility-pole traits",
+        "description": "Thai poles are concrete and feature these small holes.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "Tunisia",
+        "indicator": "also the single side version of this were only one of the top lights is on the p",
+        "description": "There is also the single side version of this were only one of the top lights is on the pole.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "rural",
+        "category": "rural_utility_poles",
+        "country": "United Kingdom",
+        "indicator": "You will also see these yellow warning signs on most poles",
+        "description": "You will also see these yellow warning signs on most poles. They show a guy getting zapped by a lightning bolt.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      }
+    ]
+  },
+  "{\"category\": \"vegetation_biomes\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "area around the city of Mendoza is particularly pleasant – it is an area with lo",
+        "description": "The area around the city of Mendoza is particularly pleasant – it is an area with lots of vineyards and farms. Poplar trees line the farm roads and big mountains can sometimes be seen in the far distance to the west. Finally, in the far west of Neuquén and Rio Negro provinces are the temperate forests and rising peaks of the Andes. This area has a lot of lakes and some alpine resort towns such as San Carlos de Bariloche and San Martin de los Andes.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "climate is both dry and tropical",
+        "description": "The climate is both dry and tropical, but generally, the west is drier, similar to a Savanna, while the east (in Chaco and Formosa provinces) is very wet. Here is the Grand Chaco of the Formosa and Chaco provinces, mentioned before. Here, a lot of the landscape is marshy, while the vegetation is tropical, including many natural palm trees. Corrientes province in the northeast is also extremely flat, sometimes marshy and sometimes grassland.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "coastal area is mostly flat except for near Comodoro Rivadavia",
+        "description": "The coastal area is mostly flat except for near Comodoro Rivadavia, where rocky plateaus reach the ocean. Inland in Patagonia, the landscape becomes a barren wasteland which looks as if it were an entirely different planet. Here, there are some ridges and plateaus, otherwise it is relatively flat until reaching the Andes near the border.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "furthest south province and its own island is Tierra del Fuego",
+        "description": "The furthest south province and its own island is Tierra del Fuego. Here the climate is very cold. Vegetation consists mostly of evergreens and dead-looking trees. The north of the island is flat, while the south is extremely mountainous. At the southern tip of Tierra del Fuego is Ushuaia, which in itself is recognizable in terms of landscape. Prominent snowcapped peaks with green foothills come straight down to the shores of the Beagle Channel, where the city lies on a slope.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "only clue to watch out for in this region is the large amount of planted pine or",
+        "description": "The only clue to watch out for in this region is the large amount of planted pine or eucalyptus forests. In the far northeast panhandle lies Misiones Province, a very unique and distinguishable region of Argentina. The landscape is mostly rolling hills, and the soil is a very recognizable dark red color. Pine trees are prevalent here, including the noteworthy Parana Pine (See: Specific Plants). As the name implies, Entre Rios is a province between the Parana and Uruguay Rivers. As a result, this area is extremely flat and serves as a floodplain, since here is where the rivers’ deltas are.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "palm trees found in the Grand Chaco region of northern Argentina are a type of W",
+        "description": "The palm trees found in the Grand Chaco region of northern Argentina are a type of Wax Palm (Copernicia alba). Poplar trees are recognizable for their slim and tall shape. They are found mostly in the Mendoza, La Pampa and Rio Negro provinces, and serve as planted trees which line the road for decoration and wind erosion protection.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Specific Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "provinces of San Luis and Cordoba contain another chain of mountains called the ",
+        "description": "The provinces of San Luis and Cordoba contain another chain of mountains called the Sierras de Córdoba. This chain can be very closely compared to the Appalachians in North America – they are a much older range that has eroded over time, leaving less prominent and rugged mountains. Vegetation ranges from temperate forests in the foothills of the mountains, to sparse vegetation at higher altitudes. Santiago del Estero province marks the start of the “Grand Chaco,” a landscape region spanning eastern Bolivia, Paraguay, and northern Argentina, which is comprised of extremely flat scrub.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "some grassland in this area and quite a bit of agriculture",
+        "description": "There is some grassland in this area and quite a bit of agriculture. The Pampas is probably the region that most people think of when they think of Argentina. This area stretches the whole of Buenos Aires and Santa Fe provinces, and the eastern half of Cordoba and La Pampa provinces. It is flat and grassy as far as the eye can see, and is where the majority of Argentina’s farming and livestock occur.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "This area is still very hilly and with lots of green valleys",
+        "description": "This area is still very hilly and with lots of green valleys. As you head south into Catamarca, La Rioja, and San Juan provinces, the climate becomes extremely arid. This area is characterized by massive mountain ridges that have no vegetation at all. The flat areas between ridges are very sandy and only have small shrubs. To the south in Mendoza province, the climate ranges from arid to Mediterranean.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "transition zone between the Pampas and Patagonia is found in eastern Rio Negro p",
+        "description": "The transition zone between the Pampas and Patagonia is found in eastern Rio Negro province, as well as southern and western La Pampa province. Here, the primary vegetation changes from grasses to low shrubs and bushes, although grasses do still exist here. Yellow poplar trees line the mostly gravel roads of this fertile valley. Continuing south into the coastal area of Patagonia, grasses are practically nonexistent, and only small shrubs remain.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "Vegetation and biome traits",
+        "description": "Argentina has a lot of variation in landscape and vegetation due to its size. Here are some of the regions and their general looks. Beginning in the far northwest, specifically in Jujuy and Salta provinces, the landscape is very similar to that of Bolivia and Peru. Vegetation consists mostly of small shrubs and grasses, and the region is very rocky and mountainous. Argentina has a very drastic rain shadow effect. While the western halves of Jujuy and Salta provinces are very dry, the eastern halves, along with Tucuman province, are very green and lush. Depending on the altitude, the vegetation can range from tropical to temperate.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Argentina",
+        "indicator": "Vegetation and biome traits — Specific Plants",
+        "description": "The Parana Pine is very recognizable for the shape of its branches that only extend at the very top of the tree, resembling an umbrella. This species is only found in the Misiones Province of Argentina, as well as across the border in southern Brazil. A close relative of the Parana plant is the Monkey Puzzle Tree (yes that’s its name…). However, this species is found in western Neuquen province, at relatively high altitudes in the Andes. These trees are also sometimes planted in town plazas in many countries in South America.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Specific Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Australia",
+        "indicator": "Vegetation and biome traits",
+        "description": "Australia has a wide variety of landscapes, ranging from desert in the center, grasslands in the south, and tropics in the north.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Australia",
+        "indicator": "Vegetation and biome traits — Specific tree",
+        "description": "Eucalyptus. Paperbark. Strangler Fig.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Specific tree"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "area around Belém features oil palm plantations",
+        "description": "The area around Belém features oil palm plantations:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Specific Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "Coffee Plantations are common in Minas Gerais and Espirito Santo",
+        "description": "Coffee Plantations are common in Minas Gerais and Espirito Santo.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Regional Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "landscape should help you differentiate between the two types",
+        "description": "The landscape should help you differentiate between the two types. These are called Babassu Palms. They can be found throughout the country, however if you find large forests of them, aim for Maranhao. These low lying cacti are called Xiquexique and can be found in the northeast region of Brazil. Sugar cane can be found in multiple places. If there is a whiteish soil with coconut palms, aim for the northeast coast between Sergipe and Pernambuco. If you find the typical red soil, saim for the central area around the Parana river. Aim for the Sao Paulo, Minas Gerais, Goias, Mato Grosso Do Sul and Parana.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Regional Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "Vegetation and biome traits",
+        "description": "Brazil is very easy to recognize due to their reddish-orange soil. The northeastern part of Brazil can be very dry and have a very light orange soil:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "Vegetation and biome traits — Regional Plants 3",
+        "description": "These palms are known as Caranday Palms. They are found mostly near the Paraguay border in the Mato Grosso Do Sul region. (as well as Argentina). These palms, while they may look similar to the Caranday Palms, are called Carnauba Palms. They can be found in Ceara, Piaui and Rio Grande do Norte.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Regional Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Brazil",
+        "indicator": "Vegetation and biome traits — Specific Plants",
+        "description": "The Paraná pine is a very distinctive-looking tree which grows mostly in the Brazilian states of Paraná and Santa Catarina, but can also be found in Rio Grande do Sul and São Paulo, and thus is very useful for pinpointing your location within the country:. The Brazilian state of Espírito Santo and the neighboring mountainous regions can have a lot of these trees planted by the side of the road as artificial forests:. These forests can be found in other parts of Brazil too.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Specific Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Chile",
+        "indicator": "Vegetation and biome traits",
+        "description": "The north is more of a desert and gradually becomes more lush the further south you go.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Germany",
+        "indicator": "Vegetation and biome traits",
+        "description": "The further south you go in Germany, the more mountains you will find!.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "India",
+        "indicator": "Vegetation and biome traits",
+        "description": "India’s northern border is the Himalayan mountains. You will have VERY large mountains in some spots. These are known as the Palmyra palm, and found mostly on the eastern coast. You can find them anywhere from Sri Lanka all the way to Bangladesh. These palms are known as the Areca Palm and are usually found in eastern India surrounding Bangladesh, and specifically around Assam.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Vegetation / Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Indonesia",
+        "indicator": "Vegetation and biome traits",
+        "description": "Oil palms are very specific agricultural planted trees which are mostly found on the islands of Sumatra and Borneo in Indonesia:. Another agriculturally planted tree species is the rubber tree, which can be found here and there all over Indonesia:. It is characterised by thin whitish bark trunks and is planted in an arranged pattern, just like oil palms. Rice is also grown all around Indonesia:. Rice growing map of Indonesia:. Trees in Indonesia can sometimes be painted with the flag colours on the trunks:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Specific tree"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Italy",
+        "indicator": "Vegetation and biome traits",
+        "description": "While this is not all of Italy, you get this very dry feel towards the south. This is the general feel for ALL of the Mediterranean, so it isn’t great for just Italy.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Japan",
+        "indicator": "Vegetation and biome traits",
+        "description": "Often found in Hokkaido, this is the “Hokkaido Squash/Pumpkin” leaves:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Kenya",
+        "indicator": "Vegetation and biome traits",
+        "description": "You can find a lot of palm trees in the south of Kenya near the coast.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Malaysia",
+        "indicator": "Vegetation and biome traits",
+        "description": "Malaysia spans a peninsula and the northern part of Borneo, one of the most biodiverse regions on the planet. It is well forested with several mountains. Borneo is undergoing massive deforestation for palm oil plantations.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Mexico",
+        "indicator": "Vegetation and biome traits",
+        "description": "Mexico boasts the highest number of pine and oak species in the world. Other notable trees include mahogany, zapote and ceiba (also known as pochote), the sacred tree of the Maya. There are also a lot of Cacti, with this being a good sign you’re near or in Mexico.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Netherlands",
+        "indicator": "addition",
+        "description": "In addition, mankind has influenced landscape and plant growth for thousands of years, mainly through small-scale and varied agriculture.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Netherlands",
+        "indicator": "same applies to the Oostvaardersplassen in Flevoland created by land reclamation",
+        "description": "The same applies to the Oostvaardersplassen in Flevoland created by land reclamation. The moraines, moors, high moors, fens and deciduous forests, river valleys, brooks and springs located in the east and south each have their characteristic vegetation. In the extreme south one finds a plateau landscape with in the valleys a rich flora, partly bound by limestone, which differs greatly from that of the rest of the country.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Netherlands",
+        "indicator": "Vegetation and biome traits",
+        "description": "Many will be surprised, but the vegetation within the Netherlands is very diverse. The dune areas and overgrown beach plains are unique in Europe. The large low peat bogs (Nieuwkoop, Vechtstreek, Northwest Overijssel, Friesland) find no equivalent anywhere in Western and Southern Europe.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Netherlands",
+        "indicator": "Vegetation and biome traits — Specific tree",
+        "description": "There’s a lot of different trees in the Netherlands, but if we talk about specific ones, then 9 turn out to be very common. Most of these trees can be found in other countries, so seeing one of these trees is not a giveaway for being in The Netherlands. Beech. Birch. Oak. Scots Pine. Els. Ash. Maple. Elm. Poplar.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Specific tree"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "Atacama Desert",
+        "description": "The Atacama Desert, known for being the world’s driest desert, is found in the far south of Peru (as well as northern Chile). Vegetation in this area is practically nonexistent. If all you see is desert and rocks as far as the eye can see, then you are probably in the Atacama.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "coast of Peru is very dry and sandy",
+        "description": "The coast of Peru is very dry and sandy, with practically no vegetation. Peru has many rivers which come from high altitude areas, cut through the dry mountains and create fertile valleys. These valleys are used for agriculture such as grasses and corn. Between 2500 and 4000 meters elevation, the climate in these valleys is very habitable and temperate. This area has a lot of terrace farming and villages along the slopes. On the eastern side of the Andes, vegetation begins to appear as elevation descends. Finally, the eastern half of the country is flat or rolling hills, with tropical vegetation.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "Specific Areas",
+        "description": "Specific Areas:. The far northwest (Piura and Tumbes regions) has a climate similar to a dry savanna. Lots of low trees and shrubs, but fairly arid. The area around Lake Titicaca is part of the Altiplano, which extends into Bolivia. The altiplano is a relatively flat, high-altitude region, and which mostly consists of grassland.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "Vegetation and biome traits",
+        "description": "The variation in landscape in Peru is largely dictated by the Andes Mountains that run across the entire country, which results in drastic changes in climates due to altitude and the rain shadow effect. Here is an elevation map of Peru, which shows the Andes running through the western portion of the country. Purple is the lowest elevation while white is the highest. Now, a satellite of Peru showing the clear rain shadow effect where the Andes begin. Knowing the rain shadow and elevation differences of Peru can help to tell apart different areas.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "Vegetation and biome traits — Specific Plants",
+        "description": "Ichu, or Peruvian Feathergrass, is a small poofy grass found in the Peruvian and Bolivian altiplano and occasionally in other parts of the Peruvian Andes around 4000 m altitude. Although they are not native to South America, eucalyptus are extremely common in Peru because of planting. They are found throughout the country in the 2000 m – 3500 m elevation range.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Specific Plants"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Peru",
+        "indicator": "Vegetation and biome traits variant 2",
+        "description": "However, Peru is a country that stretches far from north to south, so locations at similar altitudes but different latitudes can look extremely similar. This guide will give general differences in landscape based on altitudes, as well as some specific recognizable areas.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Poland",
+        "indicator": "Vegetation and biome traits",
+        "description": "The European Larch grows around Poland too, in addition to the Alps and Carpathian mountain ranges:.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Specific tree"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Spain",
+        "indicator": "Vegetation and biome traits",
+        "description": "Spain has a variety of landscapes, from alpine mountains on the Andorran border, lush forests in the north, and dryer shrub and desert landscapes to the south.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Sweden",
+        "indicator": "Vegetation and biome traits",
+        "description": "Sweden is fairly flat, with some slight mountains closer to its Norwegian border or north. It is well forested.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Taiwan",
+        "indicator": "Vegetation and biome traits",
+        "description": "Taiwan is a very tropical and mountainous country.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "Thailand",
+        "indicator": "Vegetation and biome traits",
+        "description": "Thailand is a well forested country containing a fair few mountains often in the north. Thailand can often feature red dirt.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Vegetation/Landscape"
+      },
+      {
+        "family": "rural",
+        "category": "vegetation_biomes",
+        "country": "United States",
+        "indicator": "Vegetation and biome traits",
+        "description": "There are many differences, and its best to look towards the “General Look” section to get a good feel.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Vegetation/Landscape"
+      }
+    ]
+  },
+  "{\"category\": \"road_markings\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Argentina",
+        "indicator": "yellow and white road markings",
+        "description": "Double yellow solid lines are used where neither side can overtake. One single yellow solid line together with white dashed lines are used when one side can overtake, while the other side is not allowed. White dashes only are used when both sides can overtake.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Australia",
+        "indicator": "white and yellow road markings",
+        "description": "Australia normally uses all white lines. You can find rare instances of all yellow lines, typically in the mountains of New South Wales. Australia also will use the color yellow to inform it’s licensed drivers that you cannot park. While not a helpful tip, it can help with the confusion you may experience while seeing the yellow lines in Australia. You can occasionally find these rumble strips in desolate areas. You tend to be very far away from any civilization.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Brazil",
+        "indicator": "yellow and white road markings",
+        "description": "Brazil, like most of the Western Hemisphere, uses a yellow divider and white shoulder lines.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Canada",
+        "indicator": "yellow and white road markings",
+        "description": "Canada uses a yellow divider line with white shoulder lines. While Canada does use a lot of double yellow lines, you also find a bunch of single yellow dividers. These are more common in Canada than the USA, so its a good tell. However, a single yellow DOES NOT mean that it can only be Canada.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Chile",
+        "indicator": "white and yellow road markings",
+        "description": "Chile is very unique. It’s the only country in South America that uses a white divider line. However, this changes in the south where the centerline is yellow and in Tierra del Fuego, where all lines are yellow (for visibility during snow).",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Colombia",
+        "indicator": "white and yellow road markings",
+        "description": "Like most of the Western Hemisphere, the shoulder lines are white while the center divider is yellow.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Costa Rica",
+        "indicator": "yellow road markings",
+        "description": "They use a single yellow divider.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "France",
+        "indicator": "white road markings",
+        "description": "The right shoulder line is dashed, not solid. This is very unique and is a very good indicator. All of the lines will be white. These diamond dashes are used exclusively in France. The side dashes in France are longer than other countries in the area, like Spain.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Germany",
+        "indicator": "white road markings",
+        "description": "Germany uses all white lines. Shoulders will be solid, while the center line can be dashed. Smaller roads will be unmarked.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "India",
+        "indicator": "white and yellow and black road markings",
+        "description": "India uses white dividers and has these yellow and black striped curbs / barricades in some major cities.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Indonesia",
+        "indicator": "white road markings",
+        "description": "Usually all-white:. The double centreline in Indonesia is found only on highways, unlike Malaysia which often uses it on 2-lane roads.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Italy",
+        "indicator": "white and yellow road markings",
+        "description": "You tend to find the white lines throughout the country, yet the yellow lines are a bit rarer. They seem to be located towards the south of the country, opposite of what you would expect.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Kenya",
+        "indicator": "yellow road markings",
+        "description": "Kenya uses a yellow center divider line, often times dashed or solid.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Malaysia",
+        "indicator": "white and black and yellow road markings",
+        "description": "Malay roads uses all white lines with black and white curbs. They use yellow shoulders in some city locations.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Mexico",
+        "indicator": "yellow and white road markings",
+        "description": "Mexico, like the rest of North America, uses a Yellow divider and white shoulder lines. The yellow divider will be a double line on major roads, and a single line on smaller roads. A good thing to notice is that the white shoulder lines are dashed on most major highways in a passing zone. Outside of passing zones and side roads often use a solid white line.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Netherlands",
+        "indicator": "white and green and red road markings",
+        "description": "Double white stripes in the middle of the road, with a green line in between, means cars are allowed 100 km/h. Double white stripes in the middle without a green line, means cars are allowed 80 km/h. The Netherlands has a lot of red cycling lanes, either alongside the road or completely separate on the side.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "New Zealand",
+        "indicator": "yellow and white and green road markings",
+        "description": "New Zealand uses a yellow divider line and white shoulder lines. There are some cases where you can find just white dashed lines. This means that you can pass other drivers. You can also find these in cities. They tell you that there is no parking in this spot. You can also find Green bus lanes and red or green bicycle lanes in urban areas.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Peru",
+        "indicator": "yellow and white road markings",
+        "description": "American style yellow center lines and white outside lines are used on single lane roads. White center lines and outside lines are used on divided highways.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Poland",
+        "indicator": "white road markings",
+        "description": "White centreline with white or no sideline:. Double centreline appears only near junctions and with different overtaking rules for the lanes:.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "South Africa",
+        "indicator": "yellow and white road markings",
+        "description": "Much like the rest of this geographical region, you will see yellow shoulder lines and a white center divider line. Similarly to the other areas, you can also see the triple white line.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "South Korea",
+        "indicator": "yellow and white road markings",
+        "description": "Yellow centreline with a white sideline:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Spain",
+        "indicator": "white road markings",
+        "description": "Spain uses all white lines.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Sweden",
+        "indicator": "white road markings",
+        "description": "Sweden features short, white, dashed road sides, and white central lines.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Taiwan",
+        "indicator": "white and yellow road markings",
+        "description": "Taiwan uses white shoulder lines with yellow central.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Thailand",
+        "indicator": "white and yellow road markings",
+        "description": "Thailand uses a mix of tarmacked roads with white lines outside with a yellow central line, concrete, and dirt roads.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Tunisia",
+        "indicator": "Its either freshly painted or faded",
+        "description": "Its either freshly painted or faded.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "Tunisia",
+        "indicator": "white and yellow road markings",
+        "description": "Tunisia uses very French road markings. That includes a white divider, often dashed or solid, with white dashed shoulder lines. There is a rare chance to find a double yellow line. They seem to mainly be in some of the major cities.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "United Kingdom",
+        "indicator": "Distinctive road markings",
+        "description": "The UK often will have reflectors in between the center dashes on roadways. There are many different style of road lines that can ultimately be found. You will also find the famous “Zebra Crossing” nearly everywhere. You will even find that these crossings contain some lights for night time safety.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "United Kingdom",
+        "indicator": "Distinctive road markings — Road Layout",
+        "description": "Britain within the UK uses a system by which to number it’s roads. A roads are usually main roads, and B roads are usually smaller. The numbers seen on this map are always second in the naming, e. A380.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Layout"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "United Kingdom",
+        "indicator": "light poles actually nearly completely replace the cross walk sign seen in most ",
+        "description": "The light poles actually nearly completely replace the cross walk sign seen in most countries.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Lines"
+      },
+      {
+        "family": "universal",
+        "category": "road_markings",
+        "country": "United States",
+        "indicator": "yellow and white road markings",
+        "description": "The USA uses a yellow divider line and a white shoulder line. This yellow center will nearly always be a double yellow (Unlike Canada).",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Lines"
+      }
+    ]
+  },
+  "{\"category\": \"rural_roadside_features\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Argentina",
+        "indicator": "National routes will be in the five pointed pentagon",
+        "description": "National routes will be in the five pointed pentagon, the provincial routes in the squares / rectangles.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Argentina",
+        "indicator": "Rural roadside conventions",
+        "description": "There are no specific bollards in Argentina, but national highways have identifiable kilometer markers:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Bollard"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Australia",
+        "indicator": "national highways begin with the letter A and a number",
+        "description": "The national highways begin with the letter A and a number, most state highways begin with B and a number (although Queensland and Western Australia use blue shields), and some will use C.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "also these useless signs of the same type which only serve as kilometer markers ",
+        "description": "There are also these useless signs of the same type which only serve as kilometer markers and don’t show the road number:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Bollard"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "lower numbers like BR-010 go North towards Pará and after that the numbers incre",
+        "description": "The lower numbers like BR-010 go North towards Pará and after that the numbers increase as you go clock wise. BR-020 for Fortaleza, BR-040 to Rio, BR-070 to Mato Grosso. If they are a state road they go from the state capital, like SP-021 (not many states use this method). Longitudinal Roads – Start with 1. These go South to North, as the famous BR-116, BR-101, BR-153, etc. Transversal Roads – Start with 2. These go East to West. Like BR-290 or SP-230. Diagonal Roads – Start with 3. If they end with an even number they go Southeast-Northwest. If they end in an odd number they go Southwest-Northeast. Connection Roads. Start with 4.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Numbering System"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "Road signs on Brazilian highways can often be magnified and bigger than the usua",
+        "description": "Road signs on Brazilian highways can often be magnified and bigger than the usual signs:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "Rural roadside conventions",
+        "description": "They can easily be found when zoomed out on the map, in contrast to the state roads for which you need to zoom in a lot. The most notable of these national roads must be the BR-101 which follows the east coast of the country in its full length from north to south. More info about the Brazilian road numbering system (written by ed):. Radial Roads – Start with 0 These are the roads that leave Brasilia, in any direction.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Numbering System"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "This shows PR",
+        "description": "This shows PR, which stands for the State of Parana, 239 which indicated Parana road 239, and the KM marker 58.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Bollard"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "Those roads are mainly used to connect two other roads and are not so common",
+        "description": "Those roads are mainly used to connect two other roads and are not so common. There will probably be a national or state road junction not so far from your starting point. Other stuff I noticed myself driving in Brazil: – Road names can often end at one point and have it start again hundreds of km from there. This is usually because the construction didn’t go as the initial planning. Bellow I made a list of the ones I know and see it often:. Transbrasiliana – BR 153 Regis Bittencourt, Dutra – BR 116 Translitoranea, Mario Covas, Rio-Santos, Litoral-Sul – BR 101 Fernão Dias – BR 381/SP 010. For any other info: Brazil Road Numbering System.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Numbering System"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Brazil",
+        "indicator": "You’ll find the highway signs that point to a hotel or a restaurant in blue as w",
+        "description": "You’ll find the highway signs that point to a hotel or a restaurant in blue as well.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Canada",
+        "indicator": "few big differences comes from the KM sign (Each province has its own unique KM ",
+        "description": "A few big differences comes from the KM sign (Each province has its own unique KM sign) and the stop sign from Quebec (You will only find the French stop sign in Quebec!",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Canada",
+        "indicator": "Rural roadside conventions",
+        "description": "Like the USA, Canada uses Green signs for locations, Brown for National Parks and blue for “hospitalities”.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Highway Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Canada",
+        "indicator": "Rural roadside conventions — Road Signs",
+        "description": "This Route number sign has a unique shield for each Province. You can find signs like this on most major highways.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Chile",
+        "indicator": "Rural roadside conventions",
+        "description": "Chile has national and local roads. The local road numbers follow a pattern – the letters in front of the number go alphabetically from A-Y from the north to the south of the country. More info: Chile Road Numbering System.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Numbering System"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Colombia",
+        "indicator": "Rural roadside conventions",
+        "description": "You can also find these two styles of KM markers around.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Bollard"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "France",
+        "indicator": "If you follow the blue or green arrow",
+        "description": "If you follow the blue or green arrow, you will be lead to a major highway. The intent is that these signs bring you to the highway that will bring you to the city listed.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "France",
+        "indicator": "RT and T for their routes",
+        "description": "Corsica uses RT and T for their routes.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Indonesia",
+        "indicator": "Rural roadside conventions",
+        "description": "Usually you won’t see any road numbers on signs nor on the map:. Indonesia Road Numbering System.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Japan",
+        "indicator": "Here you can find the numbering mechanism of the national highways",
+        "description": "Here you can find the numbering mechanism of the national highways, so you can find them easier on the map:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Japan",
+        "indicator": "Rural roadside conventions",
+        "description": "Japan has prefectural roads which appear as a hexagon, and national highways which appears as a rounded triangle:. This is how they appear on a sign, where road #11 is a prefectural road and road #305 is a national highway:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Kenya",
+        "indicator": "Rural roadside conventions",
+        "description": "This is a KM marker.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Bollards"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Mexico",
+        "indicator": "Baja California having highway 1)",
+        "description": "Baja California having highway 1).",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Mexico",
+        "indicator": "Mexico also uses KM",
+        "description": "Mexico also uses KM, which can help you figure out whether its Mexico or the South West USA.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Mexico",
+        "indicator": "This is the highway map of Mexico",
+        "description": "This is the highway map of Mexico.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Netherlands",
+        "indicator": "number on the signs indicates the distance in kilometers from the start of the r",
+        "description": "The number on the signs indicates the distance in kilometers from the start of the road. Quite often the road number is clearly visible, giving you a great hint to figure out where you are.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Netherlands",
+        "indicator": "Road numbers are often visible",
+        "description": "Road numbers are often visible.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Netherlands",
+        "indicator": "These can be seen on highways and within cities",
+        "description": "These can be seen on highways and within cities.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Netherlands",
+        "indicator": "When exiting a highway",
+        "description": "When exiting a highway, you will often see this sign.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "New Zealand",
+        "indicator": "New Zealand’s speed limit signs do not have a KM/H under the number",
+        "description": "New Zealand’s speed limit signs do not have a KM/H under the number.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Poland",
+        "indicator": "Rural roadside conventions",
+        "description": "Green signs with white text, except on highways:. Highway signs are blue with white text, except when pointing towards non-highway roads:.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Poland",
+        "indicator": "Rural roadside conventions — Road numbering system",
+        "description": "3-digit national roads are grouped together and their first digit zones range from 1 in the northwest to 9 in the southeast. More info on the Polish road numbering system:. Poland Road Numbering System.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "South Africa",
+        "indicator": "Rural roadside conventions",
+        "description": "South Africa has national (N1 to N20), provincial (R21 to R99) and regional (R300 to R799) numbered routes. The regional route numbers follow a pattern depending on the province they are in. For more information see: Numbered routes in South Africa.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "South Africa",
+        "indicator": "These KM markers seem to be found on the major roads",
+        "description": "These KM markers seem to be found on the major roads.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Bollards"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "South Korea",
+        "indicator": "1-digit ones are a nice way to find out where you are as their numbers increase ",
+        "description": "The 1-digit ones are a nice way to find out where you are as their numbers increase regularly from west to east coast (1, 3, 5, 7 (north-south going roads)) and from south coast to NK border (2, 4,6 (east-west going roads)). They have blue oval highway shields. Provincial roads are 3- or 4-digit and their numbers follow a pattern according to the province they are in. They have orange rectangular highway shields. For any more info on the South Korean road numbering system: South Korea Road Numbering System.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "South Korea",
+        "indicator": "Rural roadside conventions",
+        "description": "South Korea has motorways, national roads and provincial roads. Motorways are numbered with a 0 or 5 at the end depending if they are going east-west or north-south respectively. The numbers increase from south to north and from west to east. The numbers go from 10 to 65, except the highway number 1 which goes from Seoul to Busan. National roads are 1- and 2-digit and the numbers are increasing in the same way as for the motorways, from south to north and from west to east.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Thailand",
+        "indicator": "province abbreviations are as follows",
+        "description": "The province abbreviations are as follows:. For reading them you would need to learn the Thai consonant letters, and this sheet is very useful for that (made by pastaMD): Thai Consonants. This video also explains reading Thai letters, as well as vowels: Learn ALL Thai Alphabet in 50 minutes/hour – How to Write and Read Thai.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Thailand",
+        "indicator": "province names in Thai can be found in many other places",
+        "description": "The province names in Thai can be found in many other places, like place name signs, boards in front of important buildings, etc, and the abbreviation for “province” is “จ. ”, so they are usually found after that:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Thailand",
+        "indicator": "Rural roadside conventions",
+        "description": "Thailand has national and provincial roads. National roads follow a numbering scheme depending on the region. The roads starting with 1 are in the northwest of the country, 2 in the northeast, 3 in the central region and 4 in the south. They are marked with a white bird (Garuda) on the bollard containing the road number:. Provincial roads are unique to each province and are marked with a black bird on the bollard.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road numbering system"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Tunisia",
+        "indicator": "116 is the KM you are currently at",
+        "description": "the 116 is the KM you are currently at, while A1 is the road you are on.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "Tunisia",
+        "indicator": "These KM markers can be found on the sides of the major roads",
+        "description": "These KM markers can be found on the sides of the major roads.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Bollard"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "United States",
+        "indicator": "most common one of these is a circle sign",
+        "description": "The most common one of these is a circle sign. You can find this sign in Delaware, Iowa, Kentucky, Mississippi and New Jersey. There are then Secondary highways, often used to supplement the state highways. There are then County Highways. Counties are small districts, not to be mistaken with the word Country. Please note, there are varieties between states. These are the most common (Often called the Standard).",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Highways"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "United States",
+        "indicator": "Rural roadside conventions",
+        "description": "The USA uses multiple highway roads. You have the Interstate which travels between states. Odd numbered interstates generally travel from North to South, while Even numbers go East to West. Some notable Interstates are I95 (East coast from Miami Florida up to the Canada border at New Brunswick), I80 (Eastern New Jersey to San Francisco California), I5 goes from the Mexico border to the Canada border on the West Coast (California, Oregon and Washington State). There are also the USA Route numbers (Not to be confused with individual state roads). Which look like a Shield. These roads almost imitate interstates. State highways are mostly unique.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Highways"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "United States",
+        "indicator": "Then you get your highway signs",
+        "description": "Then you get your highway signs.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "rural",
+        "category": "rural_roadside_features",
+        "country": "United States",
+        "indicator": "USA map will be more detailed with road signs",
+        "description": "The USA map will be more detailed with road signs.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Highways"
+      }
+    ]
+  },
+  "{\"category\": \"vehicles\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "vehicles",
+        "country": "Australia",
+        "indicator": "They can have blue",
+        "description": "They can have blue, green or yellow on them.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Unique Vehicles"
+      },
+      {
+        "family": "universal",
+        "category": "vehicles",
+        "country": "Kenya",
+        "indicator": "Distinctive vehicles",
+        "description": "These vans look very similar to the ones in Uganda, however the pattern on the sides is different. You can find the same style of van, and generally the same pattern on the sides. The colors can be anything and everything.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Unique Vehicles"
+      },
+      {
+        "family": "universal",
+        "category": "vehicles",
+        "country": "Peru",
+        "indicator": "Distinctive vehicles",
+        "description": "The vehicle is small and almost entirely blurred. A black truck was used to cover part of the Highway 120, near and within the Yauyos-Cochas nature reserve, east of Lima.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Rare Vehicle"
+      },
+      {
+        "family": "universal",
+        "category": "vehicles",
+        "country": "South Africa",
+        "indicator": "Distinctive vehicles",
+        "description": "You will see these vans everywhere. They have a South African flag on the side with a nice design.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Unique Vehicle"
+      },
+      {
+        "family": "universal",
+        "category": "vehicles",
+        "country": "United States",
+        "indicator": "them often around town",
+        "description": "You can find them often around town. You can also find Postal trucks around. There are different varieties, but they all contain the same logo on the side / back. All post offices will also tell you the name of the town and give you a zip code. The zip code may not be useful for Geoguessr.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Unique Vehicle"
+      }
+    ]
+  },
+  "{\"category\": \"soil_geology\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": []
+  },
+  "{\"category\": \"rural_architecture\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "rural_architecture",
+        "country": "Netherlands",
+        "indicator": "Other places are much more modern",
+        "description": "Other places are much more modern, both in the cities and in the countryside.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "rural",
+        "category": "rural_architecture",
+        "country": "Netherlands",
+        "indicator": "the countryside",
+        "description": "In the countryside, larger houses were built, though not as many.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "rural",
+        "category": "rural_architecture",
+        "country": "Peru",
+        "indicator": "Here is what a typical Peruvian house looks like in smaller towns and rural area",
+        "description": "Here is what a typical Peruvian house looks like in smaller towns and rural areas.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      }
+    ]
+  },
+  "{\"category\": \"urban_architecture\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Argentina",
+        "indicator": "Urban architectural traits",
+        "description": "Buildings in Argentina are generally rectangular in shape, made of stone or brick, with simple facades and minimal window decorations (except stonework on older buildings), and flat roofs. Here, the stonework around windows can be seen. Almost every town in Argentina follows a grid pattern, so buildings at 4-way intersections have a “chipped corner. Since the majority of buildings have flat roofs, it is very common for them to have balconies. Other times, the façade is simply extended at the top to make the building seem appear taller (as can be seen on the building on the right).",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Australia",
+        "indicator": "Urban architectural traits",
+        "description": "Most large cities in Australia do not have massive skyscrapers. There are some exceptions like Sydney Melbourne and Brisbane, but it looks like most cities have shorter buildings. There is also a clear western influence on the buildings, with a lot of English architecture common throughout the country.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Brazil",
+        "indicator": "second style has solid colored concrete walls (usually blue or green) with dark ",
+        "description": "The second style has solid colored concrete walls (usually blue or green) with dark brown tiled roofs. The common TV satellite dishes in Brazil are transparent, which can happen in Indonesia and Malaysia too:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Brazil",
+        "indicator": "some pastel colored houses with poor quality roofs as well",
+        "description": "There are some pastel colored houses with poor quality roofs as well, and occasionally some red brick buildings. Southern Brazil. Southern Brazil has two main house styles. The first style is white or pastel concrete walls with red or cream colored tiled roofs of a higher quality/well-kept. These are common especially in the region between Sao Paulo state and Rio Grande do Sul state.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Brazil",
+        "indicator": "Urban architectural traits",
+        "description": "Architecture in Brazil can most basically be split into three areas. The northeast, south, and west. Understand that this is a broad overview and sometimes you may find these types of architecture in the other regions of the country too. Western Brazil. Here, a lot of the houses are made out of wood, and can sometimes be raised on stilts. Many of the roofs are metal sheets. There are also a lot red brick houses and some pastel colored houses. Northeast Brazil. Houses typical of this area have white walls and orange/red tiled roofs which are often of a lower quality.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Germany",
+        "indicator": "Urban architectural traits",
+        "description": "City centers are usually built up with old multistory buildings from various historical eras. In combination with old historical buildings, you will also find modern architecture. Large windows are a distinct factor for them. Outskirts are usually reserved for residential buildings.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Indonesia",
+        "indicator": "Urban architectural traits",
+        "description": "Classic Indonesian houses:. Houses with brick tile roofs can most frequently be found on the main islands (e. Java, Bali), while the metal roof ones are more frequent on the other, less populated islands (Sumatra, Borneo, Sulawesi, Nusa Tenggaras). However, this is not always fool-proof and both house types can be found on all the islands. This type of roof is very specific to Indonesia:. Mosque:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Italy",
+        "indicator": "Urban architectural traits",
+        "description": "These roofs are very common in most Mediterranean areas. Its a good general location when you see these.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Kenya",
+        "indicator": "Urban architectural traits",
+        "description": "Kenya uses a lot of metal for their roofs. A lot of them are rusty and stand out from a distance. You can find a lot of these plaster / brick looking buildings around. They look like a style used in the old west USA.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Malaysia",
+        "indicator": "Urban architectural traits",
+        "description": "Malay has many houses that seem fairly run down.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Netherlands",
+        "indicator": "Rotterdam is a very modern city when it comes to architecture",
+        "description": "Rotterdam is a very modern city when it comes to architecture. The outskirts were partially unharmed during World War II, but the city center was totally destroyed. Instead of rebuilding like it was before, as they did in many other cities, Rotterdam chose to build a new city. Lots of skyscrapers and unique architecture can be found in the Manhattan of Europe, very different from the rest of the country.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Netherlands",
+        "indicator": "Some towns are still very traditional like Zaanse Schans for instance",
+        "description": "Some towns are still very traditional like Zaanse Schans for instance.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Netherlands",
+        "indicator": "Urban architectural traits",
+        "description": "The Dutch Golden Age roughly spanned the 17th century. Due to the thriving economy, cities expanded greatly. New town halls and storehouses were built, and many new canals were dug out for defense and transport purposes. Houses in cities were generally very narrow.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "New Zealand",
+        "indicator": "Urban architectural traits",
+        "description": "Some cities will have some taller skyscrapers, but they’re not too common of a sight. New Zealand has quite a few houses with this metal roof. Some are in better condition, while others are rusty.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "building has a brown bottom layer and the windows and doors are painted",
+        "description": "The building has a brown bottom layer and the windows and doors are painted. The balcony in this case extends across the entire building, but it is again the same color as the windows/window frames. The only difference is that the roof is not tiled. This is common for traditional Spanish buildings in Peru’s historic cities – they instead preferred to have flat roofs. Moving on from Peru’s classic style, many recently constructed buildings prefer a more modern look, with very cubic building shapes and large windows. These types of buildings are common in cities along Peru’s coast and desert areas.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "building has a tiled roof",
+        "description": "The building has a tiled roof, wooden door, and somewhat has a bottom painted layer. Another thing to mention here is the use of mud-brick, or adobe, for house construction. This is typical especially of Peru and Bolivia and is based on traditional indigenous building practices. On the opposite end of the spectrum, here is a historic building in Lima. However, the same principles are followed.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "poorer areas",
+        "description": "In poorer areas, especially the massive Lima urban area, houses are made of dark brown brick, most likely because of the pollution and sand in the environment. This color is pretty unique from other brick colors in Latin America. Finally, in the Amazonian region of Peru, roofs are usually made from metal sheets. It is also common to see wooden houses along with brick buildings.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "Roofs are nearly always tiled",
+        "description": "– Roofs are nearly always tiled, usually brown or occasionally red, and usually look weathered down. They tend to be overhanging.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "Urban architectural traits",
+        "description": "Peru’s architecture is fairly identifiable compared to other Latin American countries. Its traditional style is pretty uniform around the country. Learning the typical general style can be simple. A typical Peruvian building follows these general rules:. – Simple facades, one single color across the building. White is a very common choice for this color. – A layer of a dark or contrasting color at the bottom of the building. This is usually black, brown, or red. – Wooden doors, windows, and frames, usually painted brown or red. – In some cases, windows have wooden balconies, painted in the same color.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Peru",
+        "indicator": "Urban architectural traits variant 4",
+        "description": "Here, we can see the contrasting paint layer at the bottom, the wooden door, and brown tiled roof. Here is a house in a medium-sized town, which has a balcony. Again, the brown bottom layer, painted windows and doors, and tiled overhanging roof. However, a few of the same basic principles can still be seen.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Poland",
+        "indicator": "Urban architectural traits",
+        "description": "Northern Poland has this specific architectural style – tall slim houses with steep roofs (with or without ornamentation):.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "South Africa",
+        "indicator": "Urban architectural traits",
+        "description": "The Architecture is heavily inspired by the British. However, nearly all residential buildings are protected by fences. This can help you distinguish between similar looking places in Australia or New Zealand.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Sweden",
+        "indicator": "Urban architectural traits",
+        "description": "Sweden features some fairly recognizable architecture, often red painted wooden houses can be found.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "Thailand",
+        "indicator": "Urban architectural traits",
+        "description": "More regal Thai buildings have unique roofing.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "United Kingdom",
+        "indicator": "Urban architectural traits",
+        "description": "The UK seems to love these row houses. If it looks similar to the houses in Harry Potter, its a good tell.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Architecture"
+      },
+      {
+        "family": "urban",
+        "category": "urban_architecture",
+        "country": "United States",
+        "indicator": "Urban architectural traits",
+        "description": "The USA has massive cities with large skyscrapers. These are pretty important as you wont find tall skyscrapers in Europe. There are some building styles, but these can vary based on the builders preference. These kind of houses are often found in the North East. Its often pretty obvious and feels “Rich”. These houses, often called “Row Houses” are found in Suburbs outside of large cities. San Francisco is almost known for these houses. We’ll get into more detail with architecture in the USA specific map.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Architecture"
+      }
+    ]
+  },
+  "{\"category\": \"driving_side\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v2\"}": {
+    "response": []
+  },
+  "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": []
   }
 }

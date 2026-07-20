@@ -1,0 +1,326 @@
+{
+  "country": "Brazil",
+  "source_url": "https://geotips.net/south-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Brazil",
+      "indicator": "gray and white and blue license plates",
+      "description": "Brazil has a light grey plate that appears white when blurred:. However, from 2019 on, they changed the design to include this blue bar on the top (the Mercosul plate):. The service vehicle plates (buses, taxis, etc) in Brazil are red:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Brazil",
+      "indicator": "yellow and white road markings",
+      "description": "Brazil, like most of the Western Hemisphere, uses a yellow divider and white shoulder lines.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Brazil",
+      "indicator": "Language and script",
+      "description": "Brazil is the only country in South America that speaks Portuguese.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Alphabet/Script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Brazil",
+      "indicator": "Distinctive bollards",
+      "description": "There are not any bollards, however you will find these signs along most of the larger roads. You will be able to see which region the road is located in, as well as which road you are listed on.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Brazil",
+      "indicator": "the two letter codes if you zoom out in the Geoguessr map",
+      "description": "You can see the two letter codes if you zoom out in the Geoguessr map. The only two letter code that won’t help will be BR. That’s because it indicates a country road, one that goes through multiple states.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Brazil",
+      "indicator": "second style has solid colored concrete walls (usually blue or green) with dark ",
+      "description": "The second style has solid colored concrete walls (usually blue or green) with dark brown tiled roofs. The common TV satellite dishes in Brazil are transparent, which can happen in Indonesia and Malaysia too:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Brazil",
+      "indicator": "some pastel colored houses with poor quality roofs as well",
+      "description": "There are some pastel colored houses with poor quality roofs as well, and occasionally some red brick buildings. Southern Brazil. Southern Brazil has two main house styles. The first style is white or pastel concrete walls with red or cream colored tiled roofs of a higher quality/well-kept. These are common especially in the region between Sao Paulo state and Rio Grande do Sul state.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Brazil",
+      "indicator": "Urban architectural traits",
+      "description": "Architecture in Brazil can most basically be split into three areas. The northeast, south, and west. Understand that this is a broad overview and sometimes you may find these types of architecture in the other regions of the country too. Western Brazil. Here, a lot of the houses are made out of wood, and can sometimes be raised on stilts. Many of the roofs are metal sheets. There are also a lot red brick houses and some pastel colored houses. Northeast Brazil. Houses typical of this area have white walls and orange/red tiled roofs which are often of a lower quality.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Brazil",
+      "indicator": "Urban utility-pole traits",
+      "description": "Common Brazilian electricity poles have these slim indentations or steps, and sometimes can even have circular holes inside them:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Brazil",
+      "indicator": "also white signs that just carry general information on them",
+      "description": "There are also white signs that just carry general information on them. They wont tell you anything about towns, but you will be able to tell that the language is Portuguese. Warning signs in Brazil have the American yellow diamond-shaped style:. The stop signs in Brazil say PARE, just like in all other South American countries:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Brazil",
+      "indicator": "road sign poles can be black",
+      "description": "The road sign poles can be black, white, brown or metallic:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Brazil",
+      "indicator": "roadside turn warning arrows are either yellow with a black background or black ",
+      "description": "The roadside turn warning arrows are either yellow with a black background or black with a yellow background:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Brazil",
+      "indicator": "Urban sign conventions",
+      "description": "The green signs seem to point to towns and villages. The blue signs seem to point to administrative regions, politicians, or other important information about the region or town.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Brazil",
+      "indicator": "Urban sign conventions variant 6",
+      "description": "However, this is not the case in cities and towns. These overhanging signs with bent poles are very common in Brazil. They point the way either to the nearest cities and roads, or parts of cities if found in a city:. The backs of all types of official road signs in Brazil are black:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Brazil",
+      "indicator": "Business and number conventions",
+      "description": "It is super useful to learn phone numbers in Brazil. Each region has their own area code, and its very easy to find across the country. Even learning the general region of the numbers can change a score from 1000 to 4500+. When you do find a number, the (xx) will be the region assigned to the map.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone Numbers"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Brazil",
+      "indicator": "Business and number conventions variant 2",
+      "description": "In Brazil, Mobile numbers start with any 90 number (91, 92, 93 etc. ) and are 9 numbers long. All land lines will be 8 numbers long. That one number can be the difference between guessing the correct area or using a mobile number. Its also important to notice that the second number in the first two is important. If it ends with a 1, it is the largest city in that state/region. If its a 2, its the second largest.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone Numbers"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "area around Belém features oil palm plantations",
+      "description": "The area around Belém features oil palm plantations:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Specific Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "Coffee Plantations are common in Minas Gerais and Espirito Santo",
+      "description": "Coffee Plantations are common in Minas Gerais and Espirito Santo.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Regional Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "landscape should help you differentiate between the two types",
+      "description": "The landscape should help you differentiate between the two types. These are called Babassu Palms. They can be found throughout the country, however if you find large forests of them, aim for Maranhao. These low lying cacti are called Xiquexique and can be found in the northeast region of Brazil. Sugar cane can be found in multiple places. If there is a whiteish soil with coconut palms, aim for the northeast coast between Sergipe and Pernambuco. If you find the typical red soil, saim for the central area around the Parana river. Aim for the Sao Paulo, Minas Gerais, Goias, Mato Grosso Do Sul and Parana.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Regional Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "Vegetation and biome traits",
+      "description": "Brazil is very easy to recognize due to their reddish-orange soil. The northeastern part of Brazil can be very dry and have a very light orange soil:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "Vegetation and biome traits — Regional Plants 3",
+      "description": "These palms are known as Caranday Palms. They are found mostly near the Paraguay border in the Mato Grosso Do Sul region. (as well as Argentina). These palms, while they may look similar to the Caranday Palms, are called Carnauba Palms. They can be found in Ceara, Piaui and Rio Grande do Norte.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Regional Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Brazil",
+      "indicator": "Vegetation and biome traits — Specific Plants",
+      "description": "The Paraná pine is a very distinctive-looking tree which grows mostly in the Brazilian states of Paraná and Santa Catarina, but can also be found in Rio Grande do Sul and São Paulo, and thus is very useful for pinpointing your location within the country:. The Brazilian state of Espírito Santo and the neighboring mountainous regions can have a lot of these trees planted by the side of the road as artificial forests:. These forests can be found in other parts of Brazil too.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Specific Plants"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "also these useless signs of the same type which only serve as kilometer markers ",
+      "description": "There are also these useless signs of the same type which only serve as kilometer markers and don’t show the road number:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "lower numbers like BR-010 go North towards Pará and after that the numbers incre",
+      "description": "The lower numbers like BR-010 go North towards Pará and after that the numbers increase as you go clock wise. BR-020 for Fortaleza, BR-040 to Rio, BR-070 to Mato Grosso. If they are a state road they go from the state capital, like SP-021 (not many states use this method). Longitudinal Roads – Start with 1. These go South to North, as the famous BR-116, BR-101, BR-153, etc. Transversal Roads – Start with 2. These go East to West. Like BR-290 or SP-230. Diagonal Roads – Start with 3. If they end with an even number they go Southeast-Northwest. If they end in an odd number they go Southwest-Northeast. Connection Roads. Start with 4.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Numbering System"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "Road signs on Brazilian highways can often be magnified and bigger than the usua",
+      "description": "Road signs on Brazilian highways can often be magnified and bigger than the usual signs:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "Rural roadside conventions",
+      "description": "They can easily be found when zoomed out on the map, in contrast to the state roads for which you need to zoom in a lot. The most notable of these national roads must be the BR-101 which follows the east coast of the country in its full length from north to south. More info about the Brazilian road numbering system (written by ed):. Radial Roads – Start with 0 These are the roads that leave Brasilia, in any direction.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Numbering System"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "This shows PR",
+      "description": "This shows PR, which stands for the State of Parana, 239 which indicated Parana road 239, and the KM marker 58.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "Those roads are mainly used to connect two other roads and are not so common",
+      "description": "Those roads are mainly used to connect two other roads and are not so common. There will probably be a national or state road junction not so far from your starting point. Other stuff I noticed myself driving in Brazil: – Road names can often end at one point and have it start again hundreds of km from there. This is usually because the construction didn’t go as the initial planning. Bellow I made a list of the ones I know and see it often:. Transbrasiliana – BR 153 Regis Bittencourt, Dutra – BR 116 Translitoranea, Mario Covas, Rio-Santos, Litoral-Sul – BR 101 Fernão Dias – BR 381/SP 010. For any other info: Brazil Road Numbering System.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Numbering System"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Brazil",
+      "indicator": "You’ll find the highway signs that point to a hotel or a restaurant in blue as w",
+      "description": "You’ll find the highway signs that point to a hotel or a restaurant in blue as well.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road Numbering System",
+      "Electricity poles",
+      "License plates",
+      "Phone Numbers",
+      "Vegetation/Landscape",
+      "Specific Plants",
+      "Regional Plants",
+      "Architecture",
+      "Alphabet/Script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Internet domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 12,
+    "row_count": 29,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

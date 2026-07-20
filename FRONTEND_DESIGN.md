@@ -94,15 +94,21 @@ country, submits a guess, and learns whether the country was correct.
 - Pre-guess API responses must not include the correct country, country code, coordinates,
   filenames, or other metadata that reveals the answer.
 - The server is authoritative for the correct country and guess evaluation.
-- The current training set contains 45 locally stored Mapillary panoramas. All 45 are valid
-  equirectangular images, and the current source dimensions satisfy the 2:1 panorama format.
+- The training set combines the 45 frozen pilot panoramas with eligible `worldwide_v2` panoramas
+  registered in MongoDB. The two sources are additive and are deduplicated by Mapillary source
+  identity, with the frozen pilot manifest winning any collision.
+- A `worldwide_v2` MongoDB record is playable only when it is explicitly tagged with that dataset
+  version, belongs to one of the versioned dataset's countries, has `quality.automatic_pass` set,
+  is in `quality_review` or `rendered` state, has an exact 2:1 original panorama, has exactly one
+  local cardinal view for each required heading, and every referenced local media object exists.
+  Records that fail any eligibility check are excluded rather than repaired or approximated.
 - New Mapillary content may be acquired using `MAPILLARY_ACCESS_TOKEN`, but playing existing rounds
   must use local panorama files and must not require a live Mapillary request.
-- The frozen pilot CSVs remain the authoritative round/label manifests, but media resolution may
-  use a validated local storage-migration overlay keyed by source identity. When that overlay is
-  marked complete, the server loads panorama and cardinal-view bytes from country-scoped,
-  content-addressed object-store paths instead of the legacy manifest paths. The overlay and
-  resolved filesystem paths remain server-only and must never appear in pre-guess responses.
+- The frozen pilot CSVs remain authoritative for pilot round labels and split membership. MongoDB
+  is authoritative for `worldwide_v2` round labels, quality state, split membership, and portable
+  object-store references. Pilot media resolution may use a validated local storage-migration
+  overlay keyed by source identity. The overlay, MongoDB records, object keys, and resolved
+  filesystem paths remain server-only and must never appear in pre-guess responses.
 - A completed storage migration may remove the legacy media files only after every replacement
   object passes its frozen-manifest checksum and the frontend can load all 45 rounds through the
   overlay. The frozen CSV bytes, labels, split membership, and review decisions remain unchanged.
@@ -185,8 +191,9 @@ The Vision MAS screenshot is the structural reference. The screen contains:
 - A compact overlay-controls box with independent switch controls labeled `What the agent sees`
   and `What the agent informs`.
 - When informed evidence exists, a one-at-a-time evidence selector beneath the controls.
-- A clearly labeled agent-prediction card that shows the single country selected by the MAS and
-  distinguishes it from the hidden ground-truth answer.
+- A clearly labeled agent-prediction card that shows the country selected by the MAS, up to three
+  other candidates considered by the MAS, and an explicit explanation that the agent is not shown
+  the answer beforehand and may be wrong.
 - An action to return to the active world-training round.
 - Clear indication that this screen is an optional Vision Agent Guide.
 
@@ -215,15 +222,21 @@ The Vision MAS screenshot is the structural reference. The screen contains:
   enabled by default; the complete extraction overlay is disabled by default. If no final evidence
   can be associated with a bounded extracted object, the guide explains that no highlightable
   informed evidence is available instead of inventing a location.
-- The browser receives the final prediction evidence and the MAS's single chosen country needed by
-  the guide. The country is presented explicitly as an agent prediction that may be wrong, not as
-  the hidden answer. Alternatives and all other answer-like or evaluation output remain server-side.
+- The browser receives the final prediction evidence, the MAS's chosen country, and up to three
+  alternative candidates needed by the guide. These countries are presented only as agent
+  predictions: the guide explicitly states that the agent is not shown the answer beforehand and
+  that its prediction may be wrong. Ground truth, confidence details, and evaluation output remain
+  server-side.
 - Vision analysis normally runs once per panorama and is persisted in a server-controlled website
   cache for later visits, including visits after the website server restarts. If that initial MAS
   run fails with a transient transport or Gemini capacity error, the website may start exactly one
   fresh production MAS run with the same server-side image references. The failed run is never
   resumed or cached, and validation, policy, and other deterministic failures are not retried.
 - The first guide visit may show a loading state while the analysis runs.
+- The loading state ends as soon as the MAS emits its complete browser-safe prediction JSON. The
+  website must not wait for the subsequent mandatory LangSmith trace flush or Python process exit
+  before presenting and caching that completed result. Trace delivery continues server-side; a
+  later observability failure is logged clearly and does not rerun or retract the MAS prediction.
 - Later visits reuse the cached website payload rather than starting the MAS process again. Cache
   lookup happens entirely in the website layer: cached data is never supplied to MAS state,
   prompts, tools, specialists, or runtime context.
@@ -278,8 +291,9 @@ Before the World training redesign is complete, focused validation must demonstr
 12. The Vision Guide switches independently control complete extraction and informed overlays;
     informed items can be selected individually and expose their short descriptions by hover,
     keyboard focus, and touch-accessible persistent text.
-13. Pre-guess Vision Guide payloads expose evidence text and the single predicted country, but not
-    alternatives, ground truth, or other hidden answer metadata.
+13. Pre-guess Vision Guide payloads expose evidence text, the predicted country, and up to three
+    alternative agent candidates, but not ground truth, confidence details, or other hidden answer
+    metadata.
 14. Desktop and mobile visual checks conform to the approved references.
 15. The production frontend build and `git diff --check` pass.
 
@@ -351,3 +365,31 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
   that may differ from the hidden answer.
 - Continued to keep prediction alternatives, ground truth, confidence details, and evaluation
   metadata out of the browser payload.
+
+### 2026-07-20: Additive worldwide MongoDB training pool
+
+- Expanded World training additively from the 45 frozen pilot rounds to eligible panoramas tagged
+  for `worldwide_v2` in MongoDB, while preserving pilot manifest authority and deduplicating source
+  identities.
+- Required automatic quality approval, exact equirectangular dimensions, all four local cardinal
+  views, dataset-country membership, and existing country-scoped object-store files before a Mongo
+  record can enter the playable pool.
+- Kept dataset labels, source identities, object keys, and filesystem paths behind opaque server
+  round IDs so the larger pool preserves the existing pre-guess answer boundary.
+
+### 2026-07-20: Prediction alternatives and uncertainty disclosure
+
+- Expanded the Vision Agent prediction card to show up to three alternative country candidates
+  returned by the MAS.
+- Added an explicit disclosure that the agent is not shown the answer beforehand and that its
+  prediction may be wrong.
+- Continued to keep ground truth, confidence details, and evaluation metadata out of the pre-guess
+  browser payload.
+
+### 2026-07-20: Prediction-first Vision Guide delivery
+
+- Ended the Vision Guide loading state when the MAS emits its completed browser-safe JSON instead
+  of waiting for the Python child process to exit.
+- Kept the mandatory LangSmith flush running server-side after prediction delivery and required
+  any later trace failure to remain a clearly logged observability failure.
+- Prohibited a late trace failure from rerunning or retracting the already completed MAS result.

@@ -152,12 +152,14 @@ footer span:first-child { color: #8da3ad; font-family: Manrope, sans-serif; font
 .vision-intro > div { max-width: 650px; }
 .vision-intro .eyebrow { justify-content: flex-start; }
 .vision-intro h2 { font-size: 37px; }
-.agent-prediction { width: fit-content; min-width: 230px; margin-top: 18px; display: flex; align-items: center; gap: 12px; border: 1px solid #6ee7bd66; border-radius: 14px; background: linear-gradient(135deg, #173a35, #102b31); padding: 11px 14px; box-shadow: 0 12px 30px #0003; }
+.agent-prediction { width: min(440px, 100%); min-width: 230px; margin-top: 18px; display: flex; align-items: flex-start; gap: 12px; border: 1px solid #6ee7bd66; border-radius: 14px; background: linear-gradient(135deg, #173a35, #102b31); padding: 13px 14px; box-shadow: 0 12px 30px #0003; }
 .agent-prediction > span { width: 35px; height: 35px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 10px; background: #6ee7bd1f; color: var(--mint); }
-.agent-prediction > div { display: flex; flex-direction: column; gap: 1px; }
+.agent-prediction > div { display: flex; flex-direction: column; gap: 3px; }
 .agent-prediction small { color: var(--mint); font-size: 8px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .agent-prediction strong { color: #f4fbf8; font-family: Manrope, sans-serif; font-size: 18px; line-height: 1.2; }
-.agent-prediction em { color: #819ba4; font-size: 8px; font-style: normal; }
+.agent-prediction em { max-width: 350px; color: #91a8b0; font-size: 9px; font-style: normal; line-height: 1.45; }
+.prediction-alternatives { display: flex; flex-wrap: wrap; gap: 3px 7px; margin: 3px 0 2px !important; color: #c5d6da !important; font-size: 10px; line-height: 1.4 !important; }
+.prediction-alternatives span { width: 100%; color: #7897a1; font-size: 8px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 .vision-controls { width: min(370px, 100%); flex: 0 0 auto; border: 1px solid #315166; border-radius: 16px; background: linear-gradient(145deg, #102a39, #0a1d2b); padding: 14px; box-shadow: 0 15px 36px #0004; }
 .controls-title { min-height: 25px; display: flex; align-items: center; justify-content: space-between; color: #86a0ad; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .controls-title .spinner { width: 14px; height: 14px; }

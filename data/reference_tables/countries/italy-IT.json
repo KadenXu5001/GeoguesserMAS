@@ -1,0 +1,139 @@
+{
+  "country": "Italy",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Italy",
+      "indicator": "blue license plates",
+      "description": "Italy has two blue bars, one on the left and one on the right of the plate. This is only seen on Italy and Albania.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Italy",
+      "indicator": "white and yellow road markings",
+      "description": "You tend to find the white lines throughout the country, yet the yellow lines are a bit rarer. They seem to be located towards the south of the country, opposite of what you would expect.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Italy",
+      "indicator": "Language and script",
+      "description": "Italy uses Italian, however there are chances to see other languages near the borders like Swiss, Austrian, French, Slovenian and Croatian.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Italy",
+      "indicator": "orange bollards",
+      "description": "The front of the bollard is to the left, while the back is on the right. These bollards are exclusive to the island of Sardinia. They have an Orange square clearly visible. That does not mean you cant find the other bollards here as well however.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Italy",
+      "indicator": "Urban architectural traits",
+      "description": "These roofs are very common in most Mediterranean areas. Its a good general location when you see these.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Italy",
+      "indicator": "Urban sign conventions",
+      "description": "Italy uses the word “Via” on MOST of their street signs. You can clearly see them on nearly every building (at a cross road). SS roads are unique to Italy, while E roads are European roads and are shared between countries.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Italy",
+      "indicator": "Business and number conventions",
+      "description": "Italy has a pretty structured area code layout. While they do extend to 3 digits, the general area numbers are a better bet to learn. Most phone numbers in Italy will be presented as 0X-XXXXXX (Up to 11 digits) while mobile numbers will start with the number 3 and be 10 digits.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Italy",
+      "indicator": "Vegetation and biome traits",
+      "description": "While this is not all of Italy, you get this very dry feel towards the south. This is the general feel for ALL of the Mediterranean, so it isn’t great for just Italy.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Italy",
+      "indicator": "Terrain and scenery",
+      "description": "As Italy is near the Mediterranean sea, you will find landscapes that look similar to this. This is taken from Sicily. This is from the Island of Sardinia. However, this isn’t the only type of shot you will see. The north of the country is very different. The valleys of the mountains create a totally different feel.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "General look"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Electricity poles",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 9,
+    "row_count": 9,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

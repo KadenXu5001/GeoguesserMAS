@@ -1,0 +1,153 @@
+{
+  "country": "Chile",
+  "source_url": "https://geotips.net/south-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Chile",
+      "indicator": "Distinctive license plates",
+      "description": "Its clear that these plates are generally different from the surrounding countries.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "License Plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Chile",
+      "indicator": "white and yellow road markings",
+      "description": "Chile is very unique. It’s the only country in South America that uses a white divider line. However, this changes in the south where the centerline is yellow and in Tierra del Fuego, where all lines are yellow (for visibility during snow).",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Chile",
+      "indicator": "Language and script",
+      "description": "Chile uses the Spanish language.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Language"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Chile",
+      "indicator": "Distinctive bollards",
+      "description": "(Front). (Back). The bollards are very similar to the type seen in Spain.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Chile",
+      "indicator": "Urban sign conventions",
+      "description": "Most signs use a blue background with white text. Its also clearly in Spanish. The other version of this is the Green sign with white text. These do exist and can be right next to some of the blue signs!.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Chile",
+      "indicator": "Business and number conventions",
+      "description": "Chile phone numbers are weird. There are no area codes or differences between a landline or mobile numbers. They all will be 8 or 9 digits long, like XXX-XXX-XX or XXX-XXX-XXX.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone Number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Chile",
+      "indicator": "Vegetation and biome traits",
+      "description": "The north is more of a desert and gradually becomes more lush the further south you go.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Chile",
+      "indicator": "Terrain and scenery",
+      "description": "Its pretty unique and easy to tell where you are. This general look is from the North of the Country. The Further north, the more of a desert feel. The further south you go, the greener the area becomes. Also notice the line colors as this is really important!.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "General Look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Chile",
+      "indicator": "Rural utility-pole traits",
+      "description": "These poles are larger at the base and taper to a point at the top of the pole. It feels like the light itself is barely attached to the top of the pole. Its important to note that these are not the only one, but this tapered pole is very common. Keep an eye out for it!.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Chile",
+      "indicator": "Rural roadside conventions",
+      "description": "Chile has national and local roads. The local road numbers follow a pattern – the letters in front of the number go alphabetically from A-Y from the north to the south of the country. More info: Chile Road Numbering System.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Numbering System"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road Numbering System",
+      "Electricity poles",
+      "License Plates",
+      "Phone Number",
+      "Vegetation/Landscape",
+      "General Look",
+      "Language"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Internet Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 10,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

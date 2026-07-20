@@ -1,0 +1,268 @@
+{
+  "country": "Peru",
+  "source_url": "https://geotips.net/south-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Peru",
+      "indicator": "white and yellow license plates",
+      "description": "Standard license plates are white. Commercial vehicles are often yellow.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Peru",
+      "indicator": "yellow and white road markings",
+      "description": "American style yellow center lines and white outside lines are used on single lane roads. White center lines and outside lines are used on divided highways.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Peru",
+      "indicator": "Language and script",
+      "description": "Peru uses the Spanish language.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Alphabet/Script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Peru",
+      "indicator": "Distinctive bollards",
+      "description": "Peru has several different bollards which appear fairly often.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "vehicles",
+      "country": "Peru",
+      "indicator": "Distinctive vehicles",
+      "description": "The vehicle is small and almost entirely blurred. A black truck was used to cover part of the Highway 120, near and within the Yauyos-Cochas nature reserve, east of Lima.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Rare Vehicle"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "building has a brown bottom layer and the windows and doors are painted",
+      "description": "The building has a brown bottom layer and the windows and doors are painted. The balcony in this case extends across the entire building, but it is again the same color as the windows/window frames. The only difference is that the roof is not tiled. This is common for traditional Spanish buildings in Peru’s historic cities – they instead preferred to have flat roofs. Moving on from Peru’s classic style, many recently constructed buildings prefer a more modern look, with very cubic building shapes and large windows. These types of buildings are common in cities along Peru’s coast and desert areas.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "building has a tiled roof",
+      "description": "The building has a tiled roof, wooden door, and somewhat has a bottom painted layer. Another thing to mention here is the use of mud-brick, or adobe, for house construction. This is typical especially of Peru and Bolivia and is based on traditional indigenous building practices. On the opposite end of the spectrum, here is a historic building in Lima. However, the same principles are followed.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "poorer areas",
+      "description": "In poorer areas, especially the massive Lima urban area, houses are made of dark brown brick, most likely because of the pollution and sand in the environment. This color is pretty unique from other brick colors in Latin America. Finally, in the Amazonian region of Peru, roofs are usually made from metal sheets. It is also common to see wooden houses along with brick buildings.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "Roofs are nearly always tiled",
+      "description": "– Roofs are nearly always tiled, usually brown or occasionally red, and usually look weathered down. They tend to be overhanging.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "Urban architectural traits",
+      "description": "Peru’s architecture is fairly identifiable compared to other Latin American countries. Its traditional style is pretty uniform around the country. Learning the typical general style can be simple. A typical Peruvian building follows these general rules:. – Simple facades, one single color across the building. White is a very common choice for this color. – A layer of a dark or contrasting color at the bottom of the building. This is usually black, brown, or red. – Wooden doors, windows, and frames, usually painted brown or red. – In some cases, windows have wooden balconies, painted in the same color.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Peru",
+      "indicator": "Urban architectural traits variant 4",
+      "description": "Here, we can see the contrasting paint layer at the bottom, the wooden door, and brown tiled roof. Here is a house in a medium-sized town, which has a balcony. Again, the brown bottom layer, painted windows and doors, and tiled overhanging roof. However, a few of the same basic principles can still be seen.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Peru",
+      "indicator": "Urban utility-pole traits",
+      "description": "The majority of electricity poles are painted on the bottom, most common color being black.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Peru",
+      "indicator": "department",
+      "description": "The department, or region, is Ayacucho, which is also the name of a large city. The province is called Huanta. The town of Huanta is visible at a relatively zoomed-out level, near Ayacucho, which has narrowed down where to look for our district. Finally, finding the district of Huamanguilla was relatively difficult but not impossible, given that knowing the province narrowed down the area in which the district could be. Therefore, sometimes district and town names do not immediately come up and take some more searching.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "A Guide to Understanding Signs in Peru"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Peru",
+      "indicator": "Urban sign conventions",
+      "description": "Road signs are usually painted in black white pattern:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Peru",
+      "indicator": "Urban sign conventions — A Guide to Understanding Signs in Peru",
+      "description": "Peruvian addresses on signs or posters usually include the names of administrative divisions. Peru has 3 levels of Administrative Divisions:. Regions. Regions are sometimes called Departments and are the largest political divisions of Peru. There are 25 regions:. Provinces. Regions are subdivided into provinces. There are 196 provinces. Districts. Regions are subdivided into districts. There are 1838 districts. Here we have a ton of words, but we only need to focus on the words “distrito,” “provincia,” and “departamento.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "A Guide to Understanding Signs in Peru"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Peru",
+      "indicator": "Business and number conventions",
+      "description": "Mobile Numbers: nine digits for mobile numbers across the country. The first digit is always the number nine: 9xx xxx xxx. Fixed (land) lines:. -seven digits in the Metropolitan Area of Lima and Callao. -six digits in the rest of the country.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "Atacama Desert",
+      "description": "The Atacama Desert, known for being the world’s driest desert, is found in the far south of Peru (as well as northern Chile). Vegetation in this area is practically nonexistent. If all you see is desert and rocks as far as the eye can see, then you are probably in the Atacama.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "coast of Peru is very dry and sandy",
+      "description": "The coast of Peru is very dry and sandy, with practically no vegetation. Peru has many rivers which come from high altitude areas, cut through the dry mountains and create fertile valleys. These valleys are used for agriculture such as grasses and corn. Between 2500 and 4000 meters elevation, the climate in these valleys is very habitable and temperate. This area has a lot of terrace farming and villages along the slopes. On the eastern side of the Andes, vegetation begins to appear as elevation descends. Finally, the eastern half of the country is flat or rolling hills, with tropical vegetation.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "Specific Areas",
+      "description": "Specific Areas:. The far northwest (Piura and Tumbes regions) has a climate similar to a dry savanna. Lots of low trees and shrubs, but fairly arid. The area around Lake Titicaca is part of the Altiplano, which extends into Bolivia. The altiplano is a relatively flat, high-altitude region, and which mostly consists of grassland.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "Vegetation and biome traits",
+      "description": "The variation in landscape in Peru is largely dictated by the Andes Mountains that run across the entire country, which results in drastic changes in climates due to altitude and the rain shadow effect. Here is an elevation map of Peru, which shows the Andes running through the western portion of the country. Purple is the lowest elevation while white is the highest. Now, a satellite of Peru showing the clear rain shadow effect where the Andes begin. Knowing the rain shadow and elevation differences of Peru can help to tell apart different areas.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "Vegetation and biome traits — Specific Plants",
+      "description": "Ichu, or Peruvian Feathergrass, is a small poofy grass found in the Peruvian and Bolivian altiplano and occasionally in other parts of the Peruvian Andes around 4000 m altitude. Although they are not native to South America, eucalyptus are extremely common in Peru because of planting. They are found throughout the country in the 2000 m – 3500 m elevation range.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Specific Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Peru",
+      "indicator": "Vegetation and biome traits variant 2",
+      "description": "However, Peru is a country that stretches far from north to south, so locations at similar altitudes but different latitudes can look extremely similar. This guide will give general differences in landscape based on altitudes, as well as some specific recognizable areas.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_architecture",
+      "country": "Peru",
+      "indicator": "Here is what a typical Peruvian house looks like in smaller towns and rural area",
+      "description": "Here is what a typical Peruvian house looks like in smaller towns and rural areas.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Rare Vehicle",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Specific Plants",
+      "Architecture",
+      "A Guide to Understanding Signs in Peru",
+      "Alphabet/Script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Commonly Found Things",
+        "reason": "No reliable allowed-category mapping."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 12,
+    "row_count": 23,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

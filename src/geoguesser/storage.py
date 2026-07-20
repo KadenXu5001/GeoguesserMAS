@@ -70,6 +70,14 @@ REFERENCE_VALIDATOR = {
     }
 }
 
+REFERENCE_UNIQUE_INDEX = [
+    ("version", ASCENDING),
+    ("category", ASCENDING),
+    ("country", ASCENDING),
+    ("indicator", ASCENDING),
+    ("source_url", ASCENDING),
+]
+
 VISION_ANALYSIS_CACHE_VALIDATOR = {
     "$jsonSchema": {
         "bsonType": "object",
@@ -163,10 +171,16 @@ class MongoRepository:
             [("version", ASCENDING), ("category", ASCENDING), ("country", ASCENDING)],
             name="reference_category_country",
         )
+        reference_indexes = self.database.reference_rows.index_information()
+        existing_unique = (
+            reference_indexes.get("uq_reference_row")
+            if isinstance(reference_indexes, Mapping)
+            else None
+        )
+        if existing_unique and list(existing_unique.get("key", [])) != REFERENCE_UNIQUE_INDEX:
+            self.database.reference_rows.drop_index("uq_reference_row")
         self.database.reference_rows.create_index(
-            [("version", ASCENDING), ("category", ASCENDING), ("indicator", ASCENDING), ("source_url", ASCENDING)],
-            unique=True,
-            name="uq_reference_row",
+            REFERENCE_UNIQUE_INDEX, unique=True, name="uq_reference_row"
         )
         self.database.vision_analysis_cache.create_index(
             [("source_id", ASCENDING), ("cache_version", ASCENDING)],
@@ -511,6 +525,7 @@ class MongoRepository:
         rows = snapshot.get("rows", [])
         if not version or not retrieved_at or not isinstance(rows, list):
             raise ValueError("reference snapshot must include version, retrieved_at, and rows")
+        self.database.reference_rows.delete_many({"version": version})
         seeded = 0
         for row in rows:
             document = {
@@ -521,13 +536,21 @@ class MongoRepository:
                 "source_url": str(row["source_url"]),
                 "retrieved_at": retrieved_at,
             }
-            for optional in ("family", "description", "source_name", "confidence"):
+            for optional in (
+                "family",
+                "description",
+                "source_name",
+                "source_section",
+                "image_evidence",
+                "confidence",
+            ):
                 if optional in row:
                     document[optional] = row[optional]
             self.database.reference_rows.update_one(
                 {
                     "version": version,
                     "category": document["category"],
+                    "country": document["country"],
                     "indicator": document["indicator"],
                     "source_url": document["source_url"],
                 },

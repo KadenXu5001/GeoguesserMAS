@@ -1,0 +1,167 @@
+{
+  "country": "Thailand",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Thailand",
+      "indicator": "white and yellow license plates",
+      "description": "Thailand uses a wide variety of number plates however the most common are white, with yellow commercial plates.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Thailand",
+      "indicator": "white and yellow road markings",
+      "description": "Thailand uses a mix of tarmacked roads with white lines outside with a yellow central line, concrete, and dirt roads.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Thailand",
+      "indicator": "Language and script",
+      "description": "The Thai script is incredibly complex consisting of many symbols as well as being tonal featuring 5 tones.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Thailand",
+      "indicator": "black and white bollards",
+      "description": "Thai bollards use black and white stripes.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Thailand",
+      "indicator": "Urban architectural traits",
+      "description": "More regal Thai buildings have unique roofing.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Thailand",
+      "indicator": "Urban sign conventions",
+      "description": "Thailand uses blue/green backed location signs. Thai signs use white poles, with black bases. Thailand uses yellow diamond warning signs.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Thailand",
+      "indicator": "Business and number conventions",
+      "description": "Thailand uses an are code system.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Thailand",
+      "indicator": "Vegetation and biome traits",
+      "description": "Thailand is a well forested country containing a fair few mountains often in the north. Thailand can often feature red dirt.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Thailand",
+      "indicator": "Rural utility-pole traits",
+      "description": "Thai poles are concrete and feature these small holes.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Thailand",
+      "indicator": "province abbreviations are as follows",
+      "description": "The province abbreviations are as follows:. For reading them you would need to learn the Thai consonant letters, and this sheet is very useful for that (made by pastaMD): Thai Consonants. This video also explains reading Thai letters, as well as vowels: Learn ALL Thai Alphabet in 50 minutes/hour – How to Write and Read Thai.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Thailand",
+      "indicator": "province names in Thai can be found in many other places",
+      "description": "The province names in Thai can be found in many other places, like place name signs, boards in front of important buildings, etc, and the abbreviation for “province” is “จ. ”, so they are usually found after that:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Thailand",
+      "indicator": "Rural roadside conventions",
+      "description": "Thailand has national and provincial roads. National roads follow a numbering scheme depending on the region. The roads starting with 1 are in the northwest of the country, 2 in the northeast, 3 in the central region and 4 in the south. They are marked with a white bird (Garuda) on the bollard containing the road number:. Provincial roads are unique to each province and are marked with a black bird on the bollard.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road numbering system",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Architecture",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Specific tree",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Regions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 12,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

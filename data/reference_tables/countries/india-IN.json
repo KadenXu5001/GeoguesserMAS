@@ -1,0 +1,160 @@
+{
+  "country": "India",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "India",
+      "indicator": "Distinctive license plates",
+      "description": "The first two letters on the License Plates indicate the region the plate was issued. Unlike Brazil, if you zoom out on the map, you cant find the two letter region code.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "India",
+      "indicator": "white and yellow and black road markings",
+      "description": "India uses white dividers and has these yellow and black striped curbs / barricades in some major cities.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "India",
+      "indicator": "Language and script",
+      "description": "You can check out this Indian Language Comparison. page to get a better understanding of what the characters look like.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "India",
+      "indicator": "Urban utility-pole traits",
+      "description": "There is an entire established meta for regions in India based loosely around the shape / style of electricity pole you can find in the region.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "India",
+      "indicator": "Business and number conventions",
+      "description": "Like most countries, you will find a lot of mobile numbers. There are still some cases where a landline number will be found and that can help you pinpoint a region.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "public_transit",
+      "country": "India",
+      "indicator": "Distinctive public transit",
+      "description": "These vehicles are essentially Taxi’s.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Unique Vehicles"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "India",
+      "indicator": "Vegetation and biome traits",
+      "description": "India’s northern border is the Himalayan mountains. You will have VERY large mountains in some spots. These are known as the Palmyra palm, and found mostly on the eastern coast. You can find them anywhere from Sri Lanka all the way to Bangladesh. These palms are known as the Areca Palm and are usually found in eastern India surrounding Bangladesh, and specifically around Assam.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Vegetation / Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "India",
+      "indicator": "Terrain and scenery",
+      "description": "Its the pinpointing that may be a bit more difficult.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "India",
+      "indicator": "pole topper in Punjab has a window shape under the central insulator",
+      "description": "The pole topper in Punjab has a window shape under the central insulator. This pole is located in Sikkim and is a mesh design. The poles in Karnataka have this trident design. It is not exclusive to this region, but it very common here. The poles in Tamil Nadu often have poles where the middle insulator is the same height as the two side insulators. Tamil Nadu also will have poles with this black and white painted pattern.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "India",
+      "indicator": "poles in Kerala will have this round yellow sticker",
+      "description": "The poles in Kerala will have this round yellow sticker.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "India",
+      "indicator": "This is the “Regular” India pole and the most common in the country",
+      "description": "This is the “Regular” India pole and the most common in the country. This pole is located mostly in Gujarat. It has holes in the side like Poland or Hungary. This pole is located in Telangana and Andhra Pradesh. It has indents in the concrete like Brazil and Chile. This pole can be found in Chattisgarh and has an additional bar making a trapezoid shape near the top.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Unique Vehicles",
+      "Road Lines",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation / Landscape",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Bollards",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Road Signs",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 8,
+    "row_count": 11,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

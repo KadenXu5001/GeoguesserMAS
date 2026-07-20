@@ -1,0 +1,183 @@
+{
+  "country": "France",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "France",
+      "indicator": "yellow license plates",
+      "description": "Those would be the Yellow plates.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "France",
+      "indicator": "white road markings",
+      "description": "The right shoulder line is dashed, not solid. This is very unique and is a very good indicator. All of the lines will be white. These diamond dashes are used exclusively in France. The side dashes in France are longer than other countries in the area, like Spain.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "France",
+      "indicator": "Language and script",
+      "description": "France uses a typical French Alphabet.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "France",
+      "indicator": "white and red bollards",
+      "description": "French Bollards are super easy to recognize. It very large. Some of them are all white, while others have a red reflector. Both have the same design however. These are a little more rare. Its the same general design but with a weird top red cap. These are found mostly where you would expect there to be snow.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "France",
+      "indicator": "one road lettering system you don’t want to look for would be the C or D roads",
+      "description": "The one road lettering system you don’t want to look for would be the C or D roads. C roads are unique for each Town while the D roads are a bit different. These are Department roads, and each of the 96 mainland French departments have their own numbers. THEY CAN REPEAT!.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "France",
+      "indicator": "Urban sign conventions",
+      "description": "These are scattered across the major roads, telling you not only the road you’re on, but also how far along you are. You can also see these road signs, pointing to local towns and cities. The A roads are across all of France while most of the E roads are shared between European Countries, with E3 being located solely in France.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "France",
+      "indicator": "You can often find signs with multiple languages on them",
+      "description": "You can often find signs with multiple languages on them. These can be from Bretagne (on the western half of the country) with a language that contains many words ending in “c’h”, Biscay in the south west which contains a lot of the letter X, or Corsica with a language that looks Italian.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "France",
+      "indicator": "Street-name and address conventions",
+      "description": "France uses the word “Rue” on most of their signs.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Signs"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "France",
+      "indicator": "Street-name and address conventions — Town Names",
+      "description": "Towns in Corsica sound very Italian. They tend to end in the letter -a, -o and -i. Alsace, the region that borders Germany, will have towns the end with -heim or -ach. Towns that end in -ac are typically in the south east, while -y, -ay and -oy are in the north. -é tends to be the west while -ey will be the east. These are generic and there will always be exceptions.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Town Names"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "France",
+      "indicator": "Business and number conventions",
+      "description": "Regions in France have their own area code, and there are only 5. Its very easy to learn these areas, and can help get you into the right area.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "France",
+      "indicator": "Rural utility-pole traits",
+      "description": "Any wooden pole in France SHOULD contain a blue square sticker on it. There are always exceptions.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "France",
+      "indicator": "If you follow the blue or green arrow",
+      "description": "If you follow the blue or green arrow, you will be lead to a major highway. The intent is that these signs bring you to the highway that will bring you to the city listed.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "France",
+      "indicator": "RT and T for their routes",
+      "description": "Corsica uses RT and T for their routes.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Street Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Town Names",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 9,
+    "row_count": 13,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

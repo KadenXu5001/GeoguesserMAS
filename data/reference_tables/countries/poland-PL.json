@@ -1,0 +1,143 @@
+{
+  "country": "Poland",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Poland",
+      "indicator": "Distinctive license plates",
+      "description": "The usual European Union plates with PL written on them:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Poland",
+      "indicator": "white road markings",
+      "description": "White centreline with white or no sideline:. Double centreline appears only near junctions and with different overtaking rules for the lanes:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Poland",
+      "indicator": "white and red bollards",
+      "description": "Only one bollard type, the white bollard with a red stripe going all around:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Poland",
+      "indicator": "Urban architectural traits",
+      "description": "Northern Poland has this specific architectural style – tall slim houses with steep roofs (with or without ornamentation):.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Poland",
+      "indicator": "speed limit signs have a characteristic font to them",
+      "description": "The speed limit signs have a characteristic font to them:. Large crosses like this by the side of the road can be found in Poland, Czechia, Slovakia and Romania and serve as a memorial to a person who lost their life there:. Similar memorials can be found in other countries around too, but usually not with crosses this large.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Poland",
+      "indicator": "Warning signs in Poland have a yellow background",
+      "description": "Warning signs in Poland have a yellow background, which is a feature of only a few countries in Europe, and a thin frame line:. Poland has these distinctive settlement entrance and exit signs with a town outline depicted on them:. The turn arrows are red with a white background:. These signs are quite common on Polish roads:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Poland",
+      "indicator": "Vegetation and biome traits",
+      "description": "The European Larch grows around Poland too, in addition to the Alps and Carpathian mountain ranges:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Specific tree"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Poland",
+      "indicator": "Rural utility-pole traits",
+      "description": "Poland has these characteristic slim holed poles:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Poland",
+      "indicator": "Rural roadside conventions",
+      "description": "Green signs with white text, except on highways:. Highway signs are blue with white text, except when pointing towards non-highway roads:.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Poland",
+      "indicator": "Rural roadside conventions — Road numbering system",
+      "description": "3-digit national roads are grouped together and their first digit zones range from 1 in the northwest to 9 in the southeast. More info on the Polish road numbering system:. Poland Road Numbering System.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road numbering system"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road numbering system",
+      "Electricity poles",
+      "License plates",
+      "Specific tree",
+      "Architecture"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Phone number",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 8,
+    "row_count": 10,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

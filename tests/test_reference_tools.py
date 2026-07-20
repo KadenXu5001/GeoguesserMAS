@@ -1,6 +1,8 @@
 from types import SimpleNamespace
+from pathlib import Path
 
-from geoguesser.reference_tools import lookup_rural_clues, lookup_universal_clues
+from geoguesser.reference_data import load_reference_snapshot, lookup_references
+from geoguesser.reference_tools import lookup_rural_clues, lookup_universal_clues, lookup_urban_clues
 
 
 def runtime() -> SimpleNamespace:
@@ -74,3 +76,34 @@ def test_specialist_lookup_cap_is_three_tools() -> None:
         lookup_rural_clues.func("soil_geology" if observation == "visible soil" else "vegetation_biomes" if observation == "palms and dry grassland" else "rural_architecture", "specific evidence supports this lookup", observation, context)
     result = lookup_rural_clues.func("soil_geology", "specific evidence supports this lookup", "visible soil", context)
     assert "cap reached" in result[0]["warning"]
+
+
+def test_light_pole_lookup_returns_every_country_row_in_selected_category() -> None:
+    snapshot = load_reference_snapshot(Path("data/reference_tables/reference_v2.json"))
+
+    class SnapshotRepository:
+        def lookup_references(self, *, version, category, country=None):
+            assert version == "reference-v2"
+            return lookup_references(snapshot, category=category, country=country)
+
+    observation = "concrete light pole with horizontal crossarms"
+    context = SimpleNamespace(context={
+        "reference_repository": SnapshotRepository(),
+        "reference_version": "reference-v2",
+        "scan_objects": {"urban_utility_poles": {observation}},
+        "scan_allowed_categories": {"urban_utility_poles"},
+        "active_specialist": "urban-specialist",
+        "specialist_tool_calls": {},
+    })
+
+    result = lookup_urban_clues.func(
+        "urban_utility_poles",
+        f"{observation} is the strongest visible infrastructure clue",
+        observation,
+        context,
+    )
+
+    expected = lookup_references(snapshot, category="urban_utility_poles")
+    assert result == expected
+    assert len(result) == 9
+    assert len({row["country"] for row in result}) == 9

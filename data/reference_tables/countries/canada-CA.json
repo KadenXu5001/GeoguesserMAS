@@ -1,0 +1,174 @@
+{
+  "country": "Canada",
+  "source_url": "https://geotips.net/north-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Canada",
+      "indicator": "green license plates",
+      "description": "Each Province has its own Unique License Plate. It’s important to remember that most of these license plates are going to look identical when blurred. You can however make out the Green of the Saskatchewan plate (most of the time). What we can mention is that 4 Provinces require the use of a Front Plate.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Canada",
+      "indicator": "other 9 do not require it!",
+      "description": "The other 9 do not require it!.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Canada",
+      "indicator": "yellow and white road markings",
+      "description": "Canada uses a yellow divider line with white shoulder lines. While Canada does use a lot of double yellow lines, you also find a bunch of single yellow dividers. These are more common in Canada than the USA, so its a good tell. However, a single yellow DOES NOT mean that it can only be Canada.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Canada",
+      "indicator": "Language and script",
+      "description": "Canada uses English as well as French. The French is a little more prominent in the East and can draw a line from Quebec. From Quebec east is Both French and English, and Ontario west is more English heavy.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Canada",
+      "indicator": "Distinctive bollards",
+      "description": "A more in-depth guide will be created soon with specifics.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Canada",
+      "indicator": "They will let you know what province you are in 99% of the time",
+      "description": "They will let you know what province you are in 99% of the time. Road signs are very similar to the USA.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Canada",
+      "indicator": "Business and number conventions",
+      "description": "Canada uses a 10 digit phone number, set up in the same way as the USA. You will see a 3 digit area code followed by the 7 digit phone number. It will be set up like (xxx) xxx – xxxx. Its Estimated that by 2042, Canada will run out of phone numbers to assign. When there is a plan to expand these area codes, we will let you know.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Canada",
+      "indicator": "Terrain and scenery",
+      "description": "Each Province can have its own feel, but due to other factors we wont talk about too many different areas. This is the general feel of the East. That includes Prince Edward Island, Nova Scotia, Newfoundland and New Brunswick. This is the General feel of Ontario and Quebec. Manitoba has its own feel. You can tell its Saskatchewan or Eastern Alberta because they don’t have many trees. This is the West. It covers the Western part of Alberta and British Columbia. This is the general feel of the North. That included Yukon, the Northwest Territories and Nunavut.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Canada",
+      "indicator": "Rural utility-pole traits",
+      "description": "A more in-depth guide will be created soon with specifics.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Canada",
+      "indicator": "few big differences comes from the KM sign (Each province has its own unique KM ",
+      "description": "A few big differences comes from the KM sign (Each province has its own unique KM sign) and the stop sign from Quebec (You will only find the French stop sign in Quebec!",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Canada",
+      "indicator": "Rural roadside conventions",
+      "description": "Like the USA, Canada uses Green signs for locations, Brown for National Parks and blue for “hospitalities”.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Highway Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Canada",
+      "indicator": "Rural roadside conventions — Road Signs",
+      "description": "This Route number sign has a unique shield for each Province. You can find signs like this on most major highways.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Highway Signs",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Disclaimer",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 9,
+    "row_count": 12,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

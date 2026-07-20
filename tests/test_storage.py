@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from geoguesser.storage import MongoRepository, geojson_point
+from geoguesser.storage import REFERENCE_UNIQUE_INDEX, MongoRepository, geojson_point
 
 
 def test_geojson_point_uses_longitude_latitude_order() -> None:
@@ -38,6 +38,9 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
         [("source_id", 1), ("cache_version", 1)],
         name="source_cache_version",
     )
+    database.reference_rows.create_index.assert_any_call(
+        REFERENCE_UNIQUE_INDEX, unique=True, name="uq_reference_row"
+    )
     update = database.dataset_versions.update_one.call_args
     assert update.args[0] == {"version": "pilot_v1"}
     assert update.kwargs["upsert"] is True
@@ -60,11 +63,36 @@ def test_seed_and_lookup_reference_rows() -> None:
     }
 
     assert repository.seed_reference_snapshot(snapshot) == 1
+    database.reference_rows.delete_many.assert_called_once_with({"version": "reference-v1"})
     database.reference_rows.update_one.assert_called_once()
+    selector = database.reference_rows.update_one.call_args.args[0]
+    assert selector["country"] == "France"
     database.reference_rows.find.return_value = [{"category": "bollards"}]
     assert repository.lookup_references(version="reference-v1", category="bollards") == [
         {"category": "bollards"}
     ]
+
+
+def test_initialize_replaces_legacy_reference_unique_index() -> None:
+    database = MagicMock()
+    database.list_collection_names.return_value = [
+        "panoramas", "dataset_versions", "ingestion_attempts", "reference_rows",
+        "vision_analysis_cache",
+    ]
+    database.reference_rows.index_information.return_value = {
+        "uq_reference_row": {
+            "key": [
+                ("version", 1), ("category", 1), ("indicator", 1), ("source_url", 1),
+            ]
+        }
+    }
+
+    MongoRepository(database).initialize()
+
+    database.reference_rows.drop_index.assert_called_once_with("uq_reference_row")
+    database.reference_rows.create_index.assert_any_call(
+        REFERENCE_UNIQUE_INDEX, unique=True, name="uq_reference_row"
+    )
 
 
 def test_assign_validated_rejects_cross_split_sequence() -> None:

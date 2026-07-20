@@ -21,7 +21,10 @@ os.environ["LANGCHAIN_CALLBACKS_BACKGROUND"] = "false"
 sys.path.insert(0, str(ROOT / "src"))
 
 from geoguesser.gemini_client import create_gemini_client  # noqa: E402
-from geoguesser.langsmith_tracing import create_langsmith_tracer  # noqa: E402
+from geoguesser.langsmith_tracing import (  # noqa: E402
+    create_langsmith_tracer,
+    flush_langsmith_traces,
+)
 from geoguesser.mas_runner import run_mas_row  # noqa: E402
 from geoguesser.reference_data import load_reference_snapshot, lookup_references  # noqa: E402
 
@@ -38,12 +41,6 @@ class SnapshotRepository:
         if version != self.snapshot["version"]:
             raise ValueError(f"reference version {version} is unavailable")
         return lookup_references(self.snapshot, category=category, country=country)
-
-
-def flush_langsmith() -> None:
-    from langchain_core.tracers.langchain import wait_for_all_tracers
-
-    wait_for_all_tracers()
 
 
 def build_mas_row(request: dict[str, Any]) -> dict[str, str]:
@@ -71,7 +68,7 @@ def build_mas_row(request: dict[str, Any]) -> dict[str, str]:
 
 def main() -> None:
     request = json.load(sys.stdin)
-    snapshot = load_reference_snapshot(ROOT / "data" / "reference_tables" / "reference_v1.json")
+    snapshot = load_reference_snapshot(ROOT / "data" / "reference_tables" / "reference_v2.json")
     row = build_mas_row(request)
     tracer = create_langsmith_tracer()
     try:
@@ -92,9 +89,16 @@ def main() -> None:
             "analysis": result["extraction"],
             "informedEvidence": result["informed_evidence"],
             "predictedCountry": result["prediction"]["country"],
+            "alternativeCountries": result["prediction"]["alternatives"][:3],
         }, ensure_ascii=False))
     finally:
-        flush_langsmith()
+        print("[vision-mas] flushing mandatory LangSmith traces", file=sys.stderr, flush=True)
+        try:
+            flush_langsmith_traces(tracer=tracer)
+        except Exception as exc:
+            print(f"[vision-mas] {exc}", file=sys.stderr, flush=True)
+            raise
+        print("[vision-mas] LangSmith trace flush completed", file=sys.stderr, flush=True)
 
 
 if __name__ == "__main__":

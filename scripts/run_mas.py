@@ -27,7 +27,10 @@ from geoguesser.agent_factory import create_geoguesser_agent  # noqa: E402
 from geoguesser.reference_data import load_reference_snapshot  # noqa: E402
 from geoguesser.storage import MongoRepository, connect_database  # noqa: E402
 from geoguesser.gemini_client import create_gemini_client  # noqa: E402
-from geoguesser.langsmith_tracing import create_langsmith_tracer  # noqa: E402
+from geoguesser.langsmith_tracing import (  # noqa: E402
+    create_langsmith_tracer,
+    flush_langsmith_traces,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -36,18 +39,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--limit", type=int, default=1, help="rows to run; 0 means all")
     parser.add_argument("--output", type=Path, default=ROOT / ".artifacts/mas-results.jsonl")
     parser.add_argument(
-        "--snapshot", type=Path, default=ROOT / "data/reference_tables/reference_v1.json"
+        "--snapshot", type=Path, default=ROOT / "data/reference_tables/reference_v2.json"
     )
     return parser
-
-
-def flush_langsmith() -> None:
-    """Wait for all synchronous LangSmith callbacks before declaring success."""
-    try:
-        from langchain_core.tracers.langchain import wait_for_all_tracers
-    except ImportError as exc:
-        raise RuntimeError("LangSmith flush support is unavailable in the installed LangChain") from exc
-    wait_for_all_tracers()
 
 
 def main() -> int:
@@ -117,7 +111,7 @@ def main() -> int:
                 handle.write(json.dumps(result, ensure_ascii=False) + "\n")
                 print(json.dumps({"index": index, **result}, ensure_ascii=False))
         print("[LangSmith] flushing mandatory trace uploads", flush=True)
-        flush_langsmith()
+        flush_langsmith_traces(tracer=langsmith_tracer)
         print("[LangSmith] trace upload flush completed", flush=True)
         print(f"wrote {len(rows)} results to {args.output}")
         return 0

@@ -1,0 +1,249 @@
+{
+  "country": "Germany",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Germany",
+      "indicator": "Distinctive license plates",
+      "description": "License plates in Germany are super important. They use a traditional European-style license plate, where the first few letters tell you where the car was registered. The F on this plate stands for Frankfurt am Main. A full list of area codes and a map in higher resolution can be found here.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Germany",
+      "indicator": "white road markings",
+      "description": "Germany uses all white lines. Shoulders will be solid, while the center line can be dashed. Smaller roads will be unmarked.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Germany",
+      "indicator": "Language and script",
+      "description": "Germany uses a Latin based script with few unique characters.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "country_domains",
+      "country": "Germany",
+      "indicator": "Country internet domain",
+      "description": "de. Germany uses. de, which stands for Deutschland.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Domain"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Germany",
+      "indicator": "Distinctive bollards",
+      "description": "The left is the front of the bollard, while the right is the back if it.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "chevrons_guardrails",
+      "country": "Germany",
+      "indicator": "Chevrons are red on a white background",
+      "description": "Chevrons are red on a white background.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Germany",
+      "indicator": "Urban architectural traits",
+      "description": "City centers are usually built up with old multistory buildings from various historical eras. In combination with old historical buildings, you will also find modern architecture. Large windows are a distinct factor for them. Outskirts are usually reserved for residential buildings.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Germany",
+      "indicator": "Urban utility-pole traits",
+      "description": "Electricity poles don’t follow any pattern.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Germany",
+      "indicator": "Urban sign conventions",
+      "description": "German road signs are written with black characters on yellow background. A black border also surrounds signs.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "addition to the regular street signs",
+      "description": "In addition to the regular street signs, you will find house numbers that will tell you a street name under them. These are specific to München. Nürnberg (Nuremberg). Street signs in Nürnberg will feature a frame surrounding a blue sign without any white border. Oberstaufen. Oberstaufen will have either green or regular white street signs. Stuttgart.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "blue signs that can be also framed",
+      "description": "Hamburg uses blue signs that can be also framed. If they are, you will see the frame only on three sides giving it a unique design. Hannover (Hanover). Hannover signs will also feature a specific frame. White signs seem to be mounted further away from the frame as usual. Joints connecting them will be on the vertical side of a sign. Köln (Cologne).",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "Düsseldorf",
+      "description": "In Düsseldorf, you will find black street signs with white text and a thin white border. The sign will be also framed in a metal frame. There are some instances of regular white signs, but they are rarer. Street signs that are mounted on walls will also feature white characters on black background. Essen. Essen will feature blue signs mounted in a thick metal frame. There will be no gaps between the sign and the frame giving it a unique design. Frankfurt am Main. Frankfurt also has a unique frame. There are joints that are connecting the blue sign to the frame. These are specific to Frankfurt am Main. Hamburg.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "regular blue street signs",
+      "description": "Bochum uses regular blue street signs. They can be either found mounted on the wall or the signpost. The text is white. Bonn. As said in the Berlin section, Bonn’s street signs look very similar. However, Bonn’s frame is colored in white, which makes it stand out from the Berlin one. Street signs on the wall are blue. Bremen. Bremen uses basic white street signs. Those mounted on the wall will be blue without any white borders or other ornaments. Dortmund. Dortmund uses blue signs that are framed in a very unique metal frame. Dresden. Dresden uses blue street signs with white text on them.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "Street-name and address conventions",
+      "description": "Berlin. Bielefeld. Bochum. Bonn. Bremen. Dortmund. Dresden. Duisburg. Düsseldorf. Essen. Frankfurt am Main. Hamburg. Hannover (Hanover). Köln (Cologne). Leipzig. Mannheim. München (Munich). Nürnberg (Nuremberg). Oberstaufen. Stuttgart. Wuppertal.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "Street-name and address conventions — Street Sign Meta",
+      "description": "Berlin. Berlin street signs are written with black text on a white background. They are surrounded by a metal frame not directly attached to the post (There is a gap between the post and the sign). Bonn uses a similar design, but they color the frame white. Bielefeld. Bielefeld uses generic white signs, without any special features. You can also spot the Berlin-type street sign, but they are rarer. A white street sign on the wall is a better clue as they can not be found in other cities (except in some rare cases in Wuppertal). Text is generally black, but it can also be red in some rare instances. Bochum.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "Street-name and address conventions variant 6",
+      "description": "In Köln, you will find generic white signs. Wall-mounted signs will be blue with a thin white border. There is also a rarer design similar to a Hannover one. Here the corners of the frame will be sharper and the sign will be blue. Leipzig. Leipzig will feature blue street signs. Sometimes there will be a white border surrounding it, but not always. Mannheim. Outside the central district, there is another design where a frame is surrounding it. All the signs will be blue even those mounted on the walls. München (Munich). Street signs in München will be blue.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "Stuttgart",
+      "description": "In Stuttgart, you will find unique black signs. They won’t be mounted to the side of a post, but rather onto a post. Wuppertal. Wuppertal uses generic white signs, that will be framed. The frame can be either metal or white. Wall-mounted signs will also be white.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "street_names_addresses",
+      "country": "Germany",
+      "indicator": "They are not special when it comes to the style",
+      "description": "They are not special when it comes to the style, but to how are they mounted. At the T intersection, they will be mounted centrally and on a four-way intersection, they will be mounted directly on the post and not to the side of it. Duisburg. Street signs found in Duisburg are not that useful. Those mounted on poles will be white or blue and those on the wall blue. Düsseldorf.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Street Sign Meta"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Germany",
+      "indicator": "Business and number conventions",
+      "description": "Phone numbers are super complicated in Germany as there is no limit to the number of digits for a number. You can have a two-digit number or a ten-digit.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Germany",
+      "indicator": "Vegetation and biome traits",
+      "description": "The further south you go in Germany, the more mountains you will find!.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Germany",
+      "indicator": "They can be any shape and size",
+      "description": "They can be any shape and size. Wooden, concrete, and metal poles can be found in all cities.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Street Sign Meta",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Architecture",
+      "Alphabet/script",
+      "Domain"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "General look",
+        "reason": "Only prohibited, duplicative, or image-dependent text remained."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      }
+    ],
+    "section_count": 11,
+    "row_count": 21,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "country": "Sweden",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Sweden",
+      "indicator": "yellow license plates",
+      "description": "Sweden uses the standard European style plate. Taxi’s will feature a yellow plate, and often the vehicle will have a town name on it.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Sweden",
+      "indicator": "white road markings",
+      "description": "Sweden features short, white, dashed road sides, and white central lines.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Sweden",
+      "indicator": "Language and script",
+      "description": "Sweden uses Swedish, an alphabet based in the Latin script.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Sweden",
+      "indicator": "white and black bollards",
+      "description": "Sweden features a bollard style which are white, with a black rectangle around 1/3 from the top which contains a white rectangle inside of it. A common sight also are these snow poles.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "chevrons_guardrails",
+      "country": "Sweden",
+      "indicator": "While it may look like a traditional guardrail",
+      "description": "While it may look like a traditional guardrail, its actually smaller than normal.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Sweden",
+      "indicator": "Urban architectural traits",
+      "description": "Sweden features some fairly recognizable architecture, often red painted wooden houses can be found.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Sweden",
+      "indicator": "Urban utility-pole traits",
+      "description": "Sweden features wooden electricity poles.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Sweden",
+      "indicator": "It also seems to be a bit more square",
+      "description": "It also seems to be a bit more square, and will have a white reflector inside. Most streets in Sweden will end in “vägen”, or “gatan”. Due to Sweden’s tendency to have long names, they may be shortened to v. and g. respectively.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Sweden",
+      "indicator": "Urban sign conventions",
+      "description": "Sweden features, green, blue, and yellow road signs. Yellow signs are often used for important information such as speed limits etc. These signs will differ from Finland. Swededn will have the red extend to the edge of the sign while Finland will have a yellow border on the edge.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Sweden",
+      "indicator": "Business and number conventions",
+      "description": "Swedish phone numbers all begin with a 0, Mobiles beginning with 07.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Sweden",
+      "indicator": "Vegetation and biome traits",
+      "description": "Sweden is fairly flat, with some slight mountains closer to its Norwegian border or north. It is well forested.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Architecture",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 9,
+    "row_count": 11,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

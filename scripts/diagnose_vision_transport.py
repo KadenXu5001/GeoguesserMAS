@@ -75,7 +75,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--snapshot",
         type=Path,
-        default=ROOT / "data/reference_tables/reference_v1.json",
+        default=ROOT / "data/reference_tables/reference_v2.json",
     )
     return parser
 
@@ -234,7 +234,7 @@ def extraction_probe(client: Any, views: dict[int, Path], model: str) -> dict[st
 
 
 def mas_probe(client: Any, views: dict[int, Path], snapshot_path: Path) -> dict[str, Any]:
-    from geoguesser.langsmith_tracing import create_langsmith_tracer
+    from geoguesser.langsmith_tracing import create_langsmith_tracer, flush_langsmith_traces
     from geoguesser.mas_runner import run_mas_row
     from geoguesser.reference_data import load_reference_snapshot
 
@@ -256,9 +256,7 @@ def mas_probe(client: Any, views: dict[int, Path], snapshot_path: Path) -> dict[
             trace_callbacks=[tracer],
         )
     finally:
-        from langchain_core.tracers.langchain import wait_for_all_tracers
-
-        wait_for_all_tracers()
+        flush_langsmith_traces(tracer=tracer)
     return {
         "workflow_progress": progress,
         "usage": result.get("usage", []),

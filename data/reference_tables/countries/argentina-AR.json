@@ -1,0 +1,268 @@
+{
+  "country": "Argentina",
+  "source_url": "https://geotips.net/south-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Argentina",
+      "indicator": "white and black license plates",
+      "description": "Since 1995+ Argentina has white on black license plates with 3 letters followed by 3 digits:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Argentina",
+      "indicator": "yellow and white road markings",
+      "description": "Double yellow solid lines are used where neither side can overtake. One single yellow solid line together with white dashed lines are used when one side can overtake, while the other side is not allowed. White dashes only are used when both sides can overtake.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Argentina",
+      "indicator": "Or you might see this one on Provincial Roads (RP = Ruta Provincial)",
+      "description": "Or you might see this one on Provincial Roads (RP = Ruta Provincial):. On the map RN = White symbol | RP = Green symbol.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Argentina",
+      "indicator": "Urban architectural traits",
+      "description": "Buildings in Argentina are generally rectangular in shape, made of stone or brick, with simple facades and minimal window decorations (except stonework on older buildings), and flat roofs. Here, the stonework around windows can be seen. Almost every town in Argentina follows a grid pattern, so buildings at 4-way intersections have a “chipped corner. Since the majority of buildings have flat roofs, it is very common for them to have balconies. Other times, the façade is simply extended at the top to make the building seem appear taller (as can be seen on the building on the right).",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Argentina",
+      "indicator": "RN numbers generally increase the further south you go after you hit #51",
+      "description": "RN numbers generally increase the further south you go after you hit #51. Do not confuse this type of street sign with Peru because of the black-white pattern:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Argentina",
+      "indicator": "Urban sign conventions",
+      "description": "Specific to Argentina are the street signs that you find in different cities. Those can be black, blue and green:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Argentina",
+      "indicator": "Business and number conventions",
+      "description": "Mobile Numbers in Argentina start with 15, followed by 6, 7 or 8 digits:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "area around the city of Mendoza is particularly pleasant – it is an area with lo",
+      "description": "The area around the city of Mendoza is particularly pleasant – it is an area with lots of vineyards and farms. Poplar trees line the farm roads and big mountains can sometimes be seen in the far distance to the west. Finally, in the far west of Neuquén and Rio Negro provinces are the temperate forests and rising peaks of the Andes. This area has a lot of lakes and some alpine resort towns such as San Carlos de Bariloche and San Martin de los Andes.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "climate is both dry and tropical",
+      "description": "The climate is both dry and tropical, but generally, the west is drier, similar to a Savanna, while the east (in Chaco and Formosa provinces) is very wet. Here is the Grand Chaco of the Formosa and Chaco provinces, mentioned before. Here, a lot of the landscape is marshy, while the vegetation is tropical, including many natural palm trees. Corrientes province in the northeast is also extremely flat, sometimes marshy and sometimes grassland.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "coastal area is mostly flat except for near Comodoro Rivadavia",
+      "description": "The coastal area is mostly flat except for near Comodoro Rivadavia, where rocky plateaus reach the ocean. Inland in Patagonia, the landscape becomes a barren wasteland which looks as if it were an entirely different planet. Here, there are some ridges and plateaus, otherwise it is relatively flat until reaching the Andes near the border.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "furthest south province and its own island is Tierra del Fuego",
+      "description": "The furthest south province and its own island is Tierra del Fuego. Here the climate is very cold. Vegetation consists mostly of evergreens and dead-looking trees. The north of the island is flat, while the south is extremely mountainous. At the southern tip of Tierra del Fuego is Ushuaia, which in itself is recognizable in terms of landscape. Prominent snowcapped peaks with green foothills come straight down to the shores of the Beagle Channel, where the city lies on a slope.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "only clue to watch out for in this region is the large amount of planted pine or",
+      "description": "The only clue to watch out for in this region is the large amount of planted pine or eucalyptus forests. In the far northeast panhandle lies Misiones Province, a very unique and distinguishable region of Argentina. The landscape is mostly rolling hills, and the soil is a very recognizable dark red color. Pine trees are prevalent here, including the noteworthy Parana Pine (See: Specific Plants). As the name implies, Entre Rios is a province between the Parana and Uruguay Rivers. As a result, this area is extremely flat and serves as a floodplain, since here is where the rivers’ deltas are.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "palm trees found in the Grand Chaco region of northern Argentina are a type of W",
+      "description": "The palm trees found in the Grand Chaco region of northern Argentina are a type of Wax Palm (Copernicia alba). Poplar trees are recognizable for their slim and tall shape. They are found mostly in the Mendoza, La Pampa and Rio Negro provinces, and serve as planted trees which line the road for decoration and wind erosion protection.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Specific Plants"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "provinces of San Luis and Cordoba contain another chain of mountains called the ",
+      "description": "The provinces of San Luis and Cordoba contain another chain of mountains called the Sierras de Córdoba. This chain can be very closely compared to the Appalachians in North America – they are a much older range that has eroded over time, leaving less prominent and rugged mountains. Vegetation ranges from temperate forests in the foothills of the mountains, to sparse vegetation at higher altitudes. Santiago del Estero province marks the start of the “Grand Chaco,” a landscape region spanning eastern Bolivia, Paraguay, and northern Argentina, which is comprised of extremely flat scrub.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "some grassland in this area and quite a bit of agriculture",
+      "description": "There is some grassland in this area and quite a bit of agriculture. The Pampas is probably the region that most people think of when they think of Argentina. This area stretches the whole of Buenos Aires and Santa Fe provinces, and the eastern half of Cordoba and La Pampa provinces. It is flat and grassy as far as the eye can see, and is where the majority of Argentina’s farming and livestock occur.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "This area is still very hilly and with lots of green valleys",
+      "description": "This area is still very hilly and with lots of green valleys. As you head south into Catamarca, La Rioja, and San Juan provinces, the climate becomes extremely arid. This area is characterized by massive mountain ridges that have no vegetation at all. The flat areas between ridges are very sandy and only have small shrubs. To the south in Mendoza province, the climate ranges from arid to Mediterranean.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "transition zone between the Pampas and Patagonia is found in eastern Rio Negro p",
+      "description": "The transition zone between the Pampas and Patagonia is found in eastern Rio Negro province, as well as southern and western La Pampa province. Here, the primary vegetation changes from grasses to low shrubs and bushes, although grasses do still exist here. Yellow poplar trees line the mostly gravel roads of this fertile valley. Continuing south into the coastal area of Patagonia, grasses are practically nonexistent, and only small shrubs remain.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "Vegetation and biome traits",
+      "description": "Argentina has a lot of variation in landscape and vegetation due to its size. Here are some of the regions and their general looks. Beginning in the far northwest, specifically in Jujuy and Salta provinces, the landscape is very similar to that of Bolivia and Peru. Vegetation consists mostly of small shrubs and grasses, and the region is very rocky and mountainous. Argentina has a very drastic rain shadow effect. While the western halves of Jujuy and Salta provinces are very dry, the eastern halves, along with Tucuman province, are very green and lush. Depending on the altitude, the vegetation can range from tropical to temperate.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Argentina",
+      "indicator": "Vegetation and biome traits — Specific Plants",
+      "description": "The Parana Pine is very recognizable for the shape of its branches that only extend at the very top of the tree, resembling an umbrella. This species is only found in the Misiones Province of Argentina, as well as across the border in southern Brazil. A close relative of the Parana plant is the Monkey Puzzle Tree (yes that’s its name…). However, this species is found in western Neuquen province, at relatively high altitudes in the Andes. These trees are also sometimes planted in town plazas in many countries in South America.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Specific Plants"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Argentina",
+      "indicator": "Terrain and scenery",
+      "description": "A general rule of thumb is as follows: Mountains are to the west, plains are to the east. The further north you go, the higher the mountains get.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Topography"
+    },
+    {
+      "family": "rural",
+      "category": "climate",
+      "country": "Argentina",
+      "indicator": "Climate pattern",
+      "description": "Generally, the further east you go, the wetter it gets. (Cold Desert). (Hot Steppe). (Cold Steppe). (Humid Subtropical). This map shows general land usage. Forests (in shades of green) are mainly found in the north. If you are placed near a pasture/grazing ground, you are probably in the center or south of the country (areas of red and pink). A field of crops is likely in the east (areas in light blue and gray). Black areas are small but important to keep in mind as they show urban areas.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Climate"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Argentina",
+      "indicator": "Rural utility-pole traits",
+      "description": "The typical Argentinian pole is made of concrete and split into two, forming an ‘A’ shape with horizontal segments connecting the two sides.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Argentina",
+      "indicator": "National routes will be in the five pointed pentagon",
+      "description": "National routes will be in the five pointed pentagon, the provincial routes in the squares / rectangles.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Argentina",
+      "indicator": "Rural roadside conventions",
+      "description": "There are no specific bollards in Argentina, but national highways have identifiable kilometer markers:.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Topography",
+      "Climate",
+      "Specific Plants",
+      "Architecture"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Largest Cities",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      }
+    ],
+    "section_count": 11,
+    "row_count": 24,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

@@ -79,7 +79,7 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 
 ## Later
 
-- [ ] Expand the worldwide `reference-v1` bootstrap rows from GeoTips and GeoHints into the complete frozen reference table before evaluation.
+- [x] Expand the worldwide `reference-v1` rural rows from the GeoTips normalization pipeline so every frozen `worldwide_v2` country is represented before evaluation.
 - [ ] Run the MAS without re-examination as an ablation.
 - [ ] Run a Gemini Pro orchestrator ablation only if the Flash orchestrator misses the accuracy gate.
 - [ ] Add a CLI showing todolist, selected specialist, re-examination count, country, confidence, cost, and LangSmith trace URL.

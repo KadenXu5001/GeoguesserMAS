@@ -11,6 +11,14 @@
     "qualified_at": "2026-07-19T23:52:33Z"
   },
   "providers": ["mapillary"],
+  "temporary_exclusions": [
+    {
+      "iso2": "MA",
+      "scopes": ["play", "reference_generation", "evaluation"],
+      "reason": "reference_enrichment_pending",
+      "recorded_on": "2026-07-20"
+    }
+  ],
   "countries": [
     {"iso2": "FR", "country": "France", "continent": "Europe"},
     {"iso2": "DE", "country": "Germany", "continent": "Europe"},

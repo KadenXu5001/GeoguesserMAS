@@ -1,0 +1,149 @@
+{
+  "country": "Malaysia",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Malaysia",
+      "indicator": "black and white license plates",
+      "description": "Malaysia uses black backed plates with white text.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Malaysia",
+      "indicator": "white and black and yellow road markings",
+      "description": "Malay roads uses all white lines with black and white curbs. They use yellow shoulders in some city locations.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Malaysia",
+      "indicator": "Language and script",
+      "description": "Malay is written in a Latin script.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Malaysia",
+      "indicator": "white and red bollards",
+      "description": "Malay bollards are white with red rectangles.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Malaysia",
+      "indicator": "Urban architectural traits",
+      "description": "Malay has many houses that seem fairly run down.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Malaysia",
+      "indicator": "Urban sign conventions",
+      "description": "Malaysia uses blue backed signs for locations, and red for important info. Malaysian stop signs say berhenti. It uses yellow diamond warning signs. Malaysia uses black and white poles for its signs.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Malaysia",
+      "indicator": "Business and number conventions",
+      "description": "Malaysia uses a phone code system, all must begin with 0.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Malaysia",
+      "indicator": "Business and number conventions — Currency",
+      "description": "Malaysia uses the Malaysian Ringgit, signed as RM.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Currency"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Malaysia",
+      "indicator": "Vegetation and biome traits",
+      "description": "Malaysia spans a peninsula and the northern part of Borneo, one of the most biodiverse regions on the planet. It is well forested with several mountains. Borneo is undergoing massive deforestation for palm oil plantations.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Malaysia",
+      "indicator": "Rural utility-pole traits",
+      "description": "Malaysia uses wooden poles.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Architecture",
+      "Alphabet/script",
+      "Currency"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Specific tree",
+        "reason": "Only prohibited, duplicative, or image-dependent text remained."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Regions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 10,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

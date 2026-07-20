@@ -1,0 +1,101 @@
+{
+  "country": "Taiwan",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Taiwan",
+      "indicator": "white and black license plates",
+      "description": "Taiwanese plates are quite short with white backgrounds and black text.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Taiwan",
+      "indicator": "white and yellow road markings",
+      "description": "Taiwan uses white shoulder lines with yellow central.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Taiwan",
+      "indicator": "Distinctive bollards",
+      "description": "Taiwanese bollards are slim poles with circular reflectors on top.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Taiwan",
+      "indicator": "Urban sign conventions",
+      "description": "These smaller signs can be found on road sides and tell you which road you are on. These mirrors are a common sight. Taiwanese traffic lights.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Taiwan",
+      "indicator": "Vegetation and biome traits",
+      "description": "Taiwan is a very tropical and mountainous country.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Taiwan",
+      "indicator": "Rural utility-pole traits",
+      "description": "A common site on poles in Taiwan are these black and yellow diagonal lines.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Vegetation/Landscape"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Phone number",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Specific tree",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 6,
+    "row_count": 6,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

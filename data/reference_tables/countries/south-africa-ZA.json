@@ -1,0 +1,204 @@
+{
+  "country": "South Africa",
+  "source_url": "https://geotips.net/africa/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "South Africa",
+      "indicator": "yellow license plates",
+      "description": "Each individual region in South Africa has their own license plate. For the sake of this website, each regional license plate will be listed, but just be aware that it may be tough to tell the difference in the game itself. The public service vehicle license plates are yellow:.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "South Africa",
+      "indicator": "yellow and white road markings",
+      "description": "Much like the rest of this geographical region, you will see yellow shoulder lines and a white center divider line. Similarly to the other areas, you can also see the triple white line.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "South Africa",
+      "indicator": "Language and script",
+      "description": "South Africa uses the English and Afrikaans language. Afrikaans is very similar to the Dutch language.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "South Africa",
+      "indicator": "Distinctive bollards",
+      "description": "Like Botswana, these signs are located near the sides of Drainage ditches. However, there appears to only be one sign, not two like Botswana.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollards"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "South Africa",
+      "indicator": "They tell you which road you are on",
+      "description": "They tell you which road you are on, and how far along it you are. This bollard seems to be super rare. Its found near major cities.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollards"
+    },
+    {
+      "family": "universal",
+      "category": "vehicles",
+      "country": "South Africa",
+      "indicator": "Distinctive vehicles",
+      "description": "You will see these vans everywhere. They have a South African flag on the side with a nice design.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "South Africa",
+      "indicator": "Urban architectural traits",
+      "description": "The Architecture is heavily inspired by the British. However, nearly all residential buildings are protected by fences. This can help you distinguish between similar looking places in Australia or New Zealand.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "South Africa",
+      "indicator": "Urban sign conventions",
+      "description": "South Africa uses several different letters with their roads, however R and M are some of the most common. All traffic lights in South Africa appear to be on Yellow poles. Or at least all the major cities have them like this. They have varying degrees of paint ware.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "South Africa",
+      "indicator": "Business and number conventions",
+      "description": "The 015 indicated the region, while the 082 indicates that it is a mobile number. Wikipedia gave us a wonderful list of where each number in South Africa goes. It may be important to learn this list.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Phone numbers"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "South Africa",
+      "indicator": "Business and number conventions — Currency",
+      "description": "South Africa uses the Rand. Its usually marked by the letter R.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Currency"
+    },
+    {
+      "family": "urban",
+      "category": "public_transit",
+      "country": "South Africa",
+      "indicator": "They are in every city",
+      "description": "They are in every city, and I believe they are like Taxi’s.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "South Africa",
+      "indicator": "Terrain and scenery",
+      "description": "The general feel to South Africa is very close to Botswana. You can usually find something relatively fast that will help determine the distance.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "South Africa",
+      "indicator": "Rural utility-pole traits",
+      "description": "South Africa uses wooden poles in multiple styles. They can often be found around the Rural and developed areas.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "South Africa",
+      "indicator": "Rural roadside conventions",
+      "description": "South Africa has national (N1 to N20), provincial (R21 to R99) and regional (R300 to R799) numbered routes. The regional route numbers follow a pattern depending on the province they are in. For more information see: Numbered routes in South Africa.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road numbering system"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "South Africa",
+      "indicator": "These KM markers seem to be found on the major roads",
+      "description": "These KM markers seem to be found on the major roads.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollards"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollards",
+      "Unique Vehicle",
+      "Road Lines",
+      "Road Signs",
+      "Road numbering system",
+      "Electricity poles",
+      "License plates",
+      "Phone numbers",
+      "Currency",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Rare Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation / Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 12,
+    "row_count": 15,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

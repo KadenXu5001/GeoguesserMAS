@@ -20,7 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
         "seed-references", help="seed the frozen local reference snapshot into MongoDB"
     )
     seed.add_argument(
-        "--snapshot", type=Path, default=Path("data/reference_tables/reference_v1.json")
+        "--snapshot", type=Path, default=Path("data/reference_tables/reference_v2.json")
     )
     subparsers.add_parser(
         "download-boundaries", help="download the pinned Natural Earth country boundaries"
@@ -44,15 +44,15 @@ def build_parser() -> argparse.ArgumentParser:
     ingest = subparsers.add_parser(
         "ingest-pictures", help="validate, download, and render pilot Mapillary panoramas"
     )
-    ingest.add_argument("--limit", type=int, default=1)
-    ingest.add_argument("--country", choices=["FR", "TH", "BR"])
+    ingest.add_argument("--limit", type=int, default=None)
+    ingest.add_argument("--country")
     ingest.add_argument("--split", choices=["development", "evaluation"], default="development")
     ingest.add_argument("--coverage-path", type=Path, default=Path("data/coverage_scan.json"))
 
     pictures = subparsers.add_parser(
         "list-pictures", help="list downloaded/rendered panorama metadata"
     )
-    pictures.add_argument("--country", choices=["FR", "TH", "BR"])
+    pictures.add_argument("--country")
     pictures.add_argument("--status")
 
     manifests = subparsers.add_parser(

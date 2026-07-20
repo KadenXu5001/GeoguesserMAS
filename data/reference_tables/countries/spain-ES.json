@@ -1,0 +1,111 @@
+{
+  "country": "Spain",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Spain",
+      "indicator": "Distinctive license plates",
+      "description": "Spain uses the standard EU style plate.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Spain",
+      "indicator": "white road markings",
+      "description": "Spain uses all white lines.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Spain",
+      "indicator": "black and white and yellow bollards",
+      "description": "Spanish bollards are black and white with a yellow rectangle within the black section.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Spain",
+      "indicator": "Urban sign conventions",
+      "description": "Spanish road information signs have thick red borders. Spain uses blue, white, yellow, and brown backed signs.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Spain",
+      "indicator": "Business and number conventions",
+      "description": "Spanish mobile numbers begin with either 6, or 7.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Spain",
+      "indicator": "Vegetation and biome traits",
+      "description": "Spain has a variety of landscapes, from alpine mountains on the Andorran border, lush forests in the north, and dryer shrub and desert landscapes to the south.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Spain",
+      "indicator": "Rural utility-pole traits",
+      "description": "Spain uses wooden and concrete poles.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "The Canary islands",
+        "reason": "No reliable allowed-category mapping."
+      },
+      {
+        "section": "Specific tree",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 7,
+    "row_count": 7,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "country": "Tunisia",
+  "source_url": "https://geotips.net/africa/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Tunisia",
+      "indicator": "black and red license plates",
+      "description": "Tunisian plates are black. The red indicates that the vehicle is used by the police. It is not standard on any civilian vehicle.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Tunisia",
+      "indicator": "Its either freshly painted or faded",
+      "description": "Its either freshly painted or faded.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Tunisia",
+      "indicator": "white and yellow road markings",
+      "description": "Tunisia uses very French road markings. That includes a white divider, often dashed or solid, with white dashed shoulder lines. There is a rare chance to find a double yellow line. They seem to mainly be in some of the major cities.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Tunisia",
+      "indicator": "Language and script",
+      "description": "Tunisia uses a typical French alphabet, as well as arabic.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Tunisia",
+      "indicator": "Distinctive bollards",
+      "description": "You dont see bollards too often, but they are around some corners and some drainage areas. They look super French.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Tunisia",
+      "indicator": "They often point to large cities",
+      "description": "They often point to large cities, and will have the road number on the sides. They can also be found in Red or Yellow.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "Tunisia",
+      "indicator": "Urban utility-pole traits",
+      "description": "This is the general electricity pole.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Tunisia",
+      "indicator": "Urban sign conventions",
+      "description": "You will always find signs in both French and Arabic. Almost every sign points to Tunis. You can also find these road markers along most of the major roads.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Tunisia",
+      "indicator": "Business and number conventions",
+      "description": "All numbers look like XX-xxx-xxx with the first two being the area code. These area codes were taken from Wikipedia, but give a good idea of the numbers to look for.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "sidewalks_curbs",
+      "country": "Tunisia",
+      "indicator": "a red and white curb in most of their major cities",
+      "description": "Tunisia uses a red and white curb in most of their major cities.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Tunisia",
+      "indicator": "also the single side version of this were only one of the top lights is on the p",
+      "description": "There is also the single side version of this were only one of the top lights is on the pole.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Tunisia",
+      "indicator": "116 is the KM you are currently at",
+      "description": "the 116 is the KM you are currently at, while A1 is the road you are on.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Tunisia",
+      "indicator": "These KM markers can be found on the sides of the major roads",
+      "description": "These KM markers can be found on the sides of the major roads.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollard"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Follow Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 7,
+    "row_count": 13,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

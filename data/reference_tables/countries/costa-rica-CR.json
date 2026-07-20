@@ -1,0 +1,134 @@
+{
+  "country": "Costa Rica",
+  "source_url": "https://geotips.net/north-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Costa Rica",
+      "indicator": "yellow road markings",
+      "description": "They use a single yellow divider.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Costa Rica",
+      "indicator": "Language and script",
+      "description": "Costa Rica uses your typical Spanish alphabet.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Costa Rica",
+      "indicator": "Urban sign conventions",
+      "description": "Costa Rica uses “Alto” instead of “Pare” on their stop signs.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Costa Rica",
+      "indicator": "Business and number conventions",
+      "description": "Any Number that starts with a 2 or 4 is a landline, while 5, 6, 7, and 8 are Mobile numbers. 3 is currently reserved for mobile numbers, but not in use. They all follow the same format of XXXX-XXXX. There is also the chance to spot the Domain on many of the billboards that also house phone numbers.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "public_transit",
+      "country": "Costa Rica",
+      "indicator": "Distinctive public transit",
+      "description": "Costa Rica uses a red taxi. Taxis will have a Green Plate as well.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Costa Rica",
+      "indicator": "paths feel like they’re designed for foot traffic",
+      "description": "The paths feel like they’re designed for foot traffic. You find these signs everywhere on the University of Costa Rica, and its clear when you are on the campus.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Costa Rica",
+      "indicator": "Terrain and scenery",
+      "description": "Most of it is in the capital city of San José. You are more likely to end up in a park or outside of the airport. The airport is pretty easy to recognize. You also have access to the main road in front of it. The parks all feel the same, but its clear that it is a park.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Unique Vehicle",
+      "Road Lines",
+      "Road Signs",
+      "Phone number",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Rare Google “Car”",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Electricity poles",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "License plates",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 6,
+    "row_count": 7,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

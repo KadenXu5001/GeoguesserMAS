@@ -1,0 +1,166 @@
+{
+  "country": "Kenya",
+  "source_url": "https://geotips.net/africa/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Kenya",
+      "indicator": "white and yellow license plates",
+      "description": "Kenya uses a long white plate in the front, and a short stubby yellow plate in the back. The used is of old plates, the newer white plates contain 3 letters followed by 3 numbers and then another letter at the end.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Kenya",
+      "indicator": "yellow road markings",
+      "description": "Kenya uses a yellow center divider line, often times dashed or solid.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Kenya",
+      "indicator": "Language and script",
+      "description": "Kenya has two official languages, English and Swahili. You will find English most commonly on signs and buildings.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Kenya",
+      "indicator": "These bollards were found in Nairobi",
+      "description": "These bollards were found in Nairobi. They seem to be near intersections and have a black and white striped pattern. They did not seem to exist outside of large cities / towns. These bollards were found in Mombassa. There were also some black and white bollards around, although not as common.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollards"
+    },
+    {
+      "family": "universal",
+      "category": "vehicles",
+      "country": "Kenya",
+      "indicator": "Distinctive vehicles",
+      "description": "These vans look very similar to the ones in Uganda, however the pattern on the sides is different. You can find the same style of van, and generally the same pattern on the sides. The colors can be anything and everything.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Unique Vehicles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Kenya",
+      "indicator": "Urban architectural traits",
+      "description": "Kenya uses a lot of metal for their roofs. A lot of them are rusty and stand out from a distance. You can find a lot of these plaster / brick looking buildings around. They look like a style used in the old west USA.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Kenya",
+      "indicator": "Urban sign conventions",
+      "description": "(Front). (Back).",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Kenya",
+      "indicator": "Business and number conventions",
+      "description": "Area codes in Kenya can sometimes be useful, however you will mostly find cell phone area codes. They start with either 10x, 11x, or 7xx. This shows both the area code from Nairobi and a cell phone number.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Kenya",
+      "indicator": "Vegetation and biome traits",
+      "description": "You can find a lot of palm trees in the south of Kenya near the coast.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Kenya",
+      "indicator": "Terrain and scenery",
+      "description": "This is the general feel of most of Kenya. The orangish soil is a good sign, mixed in with the car (which isnt in the shot). This is the general feel of the Mombassa region. You can see the palm trees and the sandy soil on the sides of the road. This is the western area of Kenya. There is a lake in this area, and it feels pretty hilly.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Kenya",
+      "indicator": "Rural roadside conventions",
+      "description": "This is a KM marker.",
+      "source_url": "https://geotips.net/africa/",
+      "source_section": "Bollards"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollards",
+      "Road Lines",
+      "Road Signs",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Unique Vehicles",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Follow Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Rare Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Electricity poles",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 11,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

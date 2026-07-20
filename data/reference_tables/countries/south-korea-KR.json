@@ -1,0 +1,116 @@
+{
+  "country": "South Korea",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "South Korea",
+      "indicator": "white and yellow license plates",
+      "description": "White long plates on private vehicles:. Service vehicles use yellow plates, and buses have narrow plates too:. Taxi/service vehicle regular:. Bus:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "South Korea",
+      "indicator": "yellow and white road markings",
+      "description": "Yellow centreline with a white sideline:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "South Korea",
+      "indicator": "white and black and yellow bollards",
+      "description": "White bollard with a black stripe and a yellow dot:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "South Korea",
+      "indicator": "Urban sign conventions",
+      "description": "Green signs with white text and romanization (Latin transliteration of Hangul):. Korea uses yellow background for their warning signs:. The turn arrows are black on a yellow background:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "South Korea",
+      "indicator": "Business and number conventions",
+      "description": "Each province and city with special status has a different landline area code:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "South Korea",
+      "indicator": "Rural utility-pole traits",
+      "description": "South Korea has these black and yellow diagonal stripes on poles that are wider and less tall than the Taiwanese ones:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "South Korea",
+      "indicator": "1-digit ones are a nice way to find out where you are as their numbers increase ",
+      "description": "The 1-digit ones are a nice way to find out where you are as their numbers increase regularly from west to east coast (1, 3, 5, 7 (north-south going roads)) and from south coast to NK border (2, 4,6 (east-west going roads)). They have blue oval highway shields. Provincial roads are 3- or 4-digit and their numbers follow a pattern according to the province they are in. They have orange rectangular highway shields. For any more info on the South Korean road numbering system: South Korea Road Numbering System.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "South Korea",
+      "indicator": "Rural roadside conventions",
+      "description": "South Korea has motorways, national roads and provincial roads. Motorways are numbered with a 0 or 5 at the end depending if they are going east-west or north-south respectively. The numbers increase from south to north and from west to east. The numbers go from 10 to 65, except the highway number 1 which goes from Seoul to Busan. National roads are 1- and 2-digit and the numbers are increasing in the same way as for the motorways, from south to north and from west to east.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road numbering system",
+      "Electricity poles",
+      "License plates",
+      "Phone number"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 7,
+    "row_count": 8,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

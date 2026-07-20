@@ -32,8 +32,10 @@ function resolvePythonExecutable({
 
 const PYTHON = resolvePythonExecutable();
 const HEADINGS = [0, 90, 180, 270];
+const SOURCE_PRIVATE = "source-private";
+const RUNTIME_PRIVATE = "runtime-private";
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
-const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v2";
+const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v3";
 
 function send(res, status, body, type = "application/json", headers = {}) {
   res.writeHead(status, {
@@ -65,7 +67,7 @@ function parseCsv(text) {
   });
 }
 
-async function listTrainingPanoramas(root = ROOT) {
+async function listPilotTrainingPanoramas(root = ROOT) {
   const migrationOverlay = await loadStorageMigrationOverlay(root);
   const rows = [];
   for (const split of ["dev_v1", "eval_c1"]) {
@@ -108,6 +110,133 @@ async function listTrainingPanoramas(root = ROOT) {
   return rows;
 }
 
+function resolveObjectStoreMedia(root, reference, expectedNamespace, countryIso2, objectStoreRoot) {
+  if (!reference || reference.storage_namespace !== expectedNamespace) return null;
+  const objectKey = String(reference.object_key || "").replaceAll("\\", "/");
+  const expectedPrefix = `countries/${countryIso2}/objects/`;
+  if (!objectKey.startsWith(expectedPrefix)) return null;
+
+  const storeRoot = path.resolve(
+    objectStoreRoot || process.env.LOCAL_OBJECT_STORE_ROOT || path.join(root, ".local-data"),
+  );
+  const namespaceRoot = path.resolve(storeRoot, expectedNamespace);
+  const target = path.resolve(namespaceRoot, ...objectKey.split("/"));
+  if (!target.startsWith(`${namespaceRoot}${path.sep}`)) return null;
+  return target;
+}
+
+async function listMongoTrainingPanoramas(root = ROOT, {
+  database,
+  mongoClient,
+  uri = process.env.MONGODB_URI || "mongodb://localhost:27017",
+  databaseName = process.env.MONGODB_DATABASE || "geoguesser",
+  objectStoreRoot,
+} = {}) {
+  const definition = JSON.parse(await fs.readFile(
+    path.join(root, "data", "dataset_definitions", "worldwide_v2.json"),
+    "utf8",
+  ));
+  const playExclusions = new Set((definition.temporary_exclusions || [])
+    .filter((item) => Array.isArray(item.scopes) && item.scopes.includes("play"))
+    .map((item) => String(item.iso2).toUpperCase()));
+  const countries = new Map(definition.countries
+    .filter((item) => !playExclusions.has(String(item.iso2).toUpperCase()))
+    .map((item) => [
+    String(item.iso2).toUpperCase(),
+    String(item.country),
+    ]));
+
+  let ownedClient;
+  if (!database) {
+    ownedClient = mongoClient || new MongoClient(uri, { serverSelectionTimeoutMS: 5000 });
+    await ownedClient.connect();
+    database = ownedClient.db(databaseName);
+  }
+
+  try {
+    const records = await database.collection("panoramas").find({
+      dataset_version: definition.version,
+      country_iso2: { $in: [...countries.keys()] },
+      status: { $in: ["quality_review", "rendered"] },
+      "quality.automatic_pass": true,
+    }, {
+      projection: {
+        _id: 0,
+        mapillary_image_id: 1,
+        country_iso2: 1,
+        panorama_file: 1,
+        rendered_views: 1,
+      },
+    }).toArray();
+
+    const panoramas = [];
+    for (const record of records) {
+      const countryIso2 = String(record.country_iso2 || "").toUpperCase();
+      const panoramaFile = record.panorama_file || {};
+      const width = Number(panoramaFile.width);
+      const height = Number(panoramaFile.height);
+      if (!countries.has(countryIso2) || width <= 0 || height <= 0 || width !== height * 2) continue;
+
+      const panoramaPath = resolveObjectStoreMedia(
+        root, panoramaFile, SOURCE_PRIVATE, countryIso2, objectStoreRoot,
+      );
+      const viewEntries = Array.isArray(record.rendered_views) ? record.rendered_views : [];
+      const byHeading = new Map(viewEntries.map((view) => [Number(view.heading), view]));
+      if (byHeading.size !== HEADINGS.length || HEADINGS.some((heading) => !byHeading.has(heading))) continue;
+
+      const views = {};
+      const viewHashes = {};
+      let eligible = Boolean(panoramaPath);
+      for (const heading of HEADINGS) {
+        const view = byHeading.get(heading);
+        const target = resolveObjectStoreMedia(
+          root, view, RUNTIME_PRIVATE, countryIso2, objectStoreRoot,
+        );
+        if (!target || !/^[0-9a-f]{64}$/i.test(String(view.sha256 || ""))) eligible = false;
+        views[heading] = target;
+        viewHashes[heading] = view.sha256;
+      }
+      if (!eligible) continue;
+
+      try {
+        await Promise.all([panoramaPath, ...Object.values(views)].map((target) => fs.access(target)));
+      } catch {
+        continue;
+      }
+
+      panoramas.push({
+        sourceId: String(record.mapillary_image_id),
+        datasetVersion: definition.version,
+        countryIso2,
+        country: countries.get(countryIso2),
+        panoramaPath,
+        views,
+        viewHashes,
+      });
+    }
+    return panoramas;
+  } finally {
+    await ownedClient?.close();
+  }
+}
+
+function mergeTrainingPanoramas(pilot, worldwide) {
+  const seen = new Set(pilot.map((panorama) => panorama.sourceId));
+  return [...pilot, ...worldwide.filter((panorama) => {
+    if (seen.has(panorama.sourceId)) return false;
+    seen.add(panorama.sourceId);
+    return true;
+  })];
+}
+
+async function listTrainingPanoramas(root = ROOT, options = {}) {
+  const [pilot, worldwide] = await Promise.all([
+    listPilotTrainingPanoramas(root),
+    listMongoTrainingPanoramas(root, options),
+  ]);
+  return mergeTrainingPanoramas(pilot, worldwide);
+}
+
 async function loadStorageMigrationOverlay(root = ROOT) {
   const reportPath = path.join(root, "data", "migrations", "pilot_v1_object_store.json");
   try {
@@ -142,10 +271,19 @@ function browserSafeAnalysisPayload(value) {
   if (typeof value.predictedCountry !== "string" || !value.predictedCountry.trim()) {
     throw new Error("Vision analysis did not return the agent's predicted country.");
   }
+  if (!Array.isArray(value.alternativeCountries)) {
+    throw new Error("Vision analysis did not return the agent's alternative countries.");
+  }
+  const predictedCountry = value.predictedCountry.trim();
+  const alternativeCountries = [...new Set(value.alternativeCountries
+    .filter((country) => typeof country === "string")
+    .map((country) => country.trim())
+    .filter((country) => country && country !== predictedCountry))].slice(0, 3);
   return {
     analysis: value.analysis,
     informedEvidence: value.informedEvidence,
-    predictedCountry: value.predictedCountry.trim(),
+    predictedCountry,
+    alternativeCountries,
   };
 }
 
@@ -258,10 +396,13 @@ function serializeRound(round) {
   return payload;
 }
 
-async function runVisionAnalysis(request, { root = ROOT, python = PYTHON } = {}) {
+async function runVisionAnalysis(
+  request,
+  { root = ROOT, python = PYTHON, spawnProcess = spawn } = {},
+) {
   const input = JSON.stringify(Array.isArray(request) ? { paths: request } : request);
   return new Promise((resolve, reject) => {
-    const child = spawn(python, [path.join(root, "scripts", "run_vision_mas.py")], {
+    const child = spawnProcess(python, [path.join(root, "scripts", "run_vision_mas.py")], {
       cwd: root,
       env: {
         ...process.env,
@@ -273,20 +414,37 @@ async function runVisionAnalysis(request, { root = ROOT, python = PYTHON } = {})
     });
     let stdout = "";
     let stderr = "";
-    child.stdout.on("data", (chunk) => { stdout += chunk; });
+    let settled = false;
+    const resolveCompletedPrediction = () => {
+      if (settled) return true;
+      try {
+        const result = JSON.parse(stdout);
+        settled = true;
+        resolve(result);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+      resolveCompletedPrediction();
+    });
     child.stderr.on("data", (chunk) => {
       stderr += chunk;
       process.stderr.write(chunk);
     });
-    child.on("error", reject);
+    child.on("error", (error) => {
+      if (!settled) reject(error);
+    });
     child.on("close", (code) => {
       if (code !== 0) {
         if (!stderr) console.error(`Vision process exited with ${code}.`);
-        return reject(new Error(stderr || `Vision process exited with ${code}.`));
+        if (!settled) reject(new Error(stderr || `Vision process exited with ${code}.`));
+        return;
       }
-      try {
-        resolve(JSON.parse(stdout));
-      } catch {
+      if (!resolveCompletedPrediction()) {
+        settled = true;
         reject(new Error("Vision analysis returned malformed JSON."));
       }
     });
@@ -314,10 +472,13 @@ function visionMasRequest(panorama) {
 }
 
 function isRetryableVisionError(error) {
-  const status = Number(error?.status || error?.statusCode || error?.code);
-  if ([429, 500, 503, 504].includes(status)) return true;
   const detail = `${error?.name || ""} ${error?.code || ""} ${error?.message || error || ""}`
     .toLowerCase();
+  // Trace delivery happens after inference. Retrying would rerun a completed MAS
+  // prediction and can multiply the same oversized or unavailable upload.
+  if (detail.includes("langsmith_observability_failure")) return false;
+  const status = Number(error?.status || error?.statusCode || error?.code);
+  if ([429, 500, 503, 504].includes(status)) return true;
   return [
     "readtimeout",
     "writetimeout",
@@ -477,10 +638,14 @@ module.exports = {
   browserSafeAnalysisPayload,
   createAppServer,
   createMongoAnalysisStore,
+  listMongoTrainingPanoramas,
+  listPilotTrainingPanoramas,
   listTrainingPanoramas,
   loadStorageMigrationOverlay,
+  mergeTrainingPanoramas,
   isRetryableVisionError,
   resolvePythonExecutable,
+  runVisionAnalysis,
   serializeRound,
   visionMasRequest,
   visionAnalysisCacheKey,

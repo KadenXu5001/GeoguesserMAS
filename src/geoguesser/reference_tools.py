@@ -210,7 +210,12 @@ def lookup_urban_clues(
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
-    """Look up one complete urban-built-environment category."""
+    """Look up one complete urban-built-environment category.
+
+    Use ``urban_utility_poles`` for observed light poles, lamp posts, streetlights,
+    electricity poles, power poles, distribution poles, and their crossarms or fixtures
+    in a built-up scene. Omit ``country`` to retrieve every country's matching rows.
+    """
     return _lookup(
         category=category,
         allowed={"urban_architecture", "urban_utility_poles", "urban_signage", "street_names_addresses", "businesses_domains", "sidewalks_curbs", "public_transit"},
@@ -230,7 +235,12 @@ def lookup_rural_clues(
     runtime: ToolRuntime[GeoContext, GeoState],
     country: str | None = None,
 ) -> list[dict]:
-    """Look up one complete rural landscape and low-density-settlement category."""
+    """Look up one complete rural landscape and low-density-settlement category.
+
+    Use ``rural_utility_poles`` for observed light poles, lamp posts, electricity poles,
+    power poles, distribution poles, and their crossarms or fixtures in a rural or
+    low-density scene. Omit ``country`` to retrieve every country's matching rows.
+    """
     return _lookup(
         category=category,
         allowed={"soil_geology", "vegetation_biomes", "terrain_scenery", "climate", "agriculture_land_use", "rural_architecture", "rural_utility_poles", "rural_roadside_features"},

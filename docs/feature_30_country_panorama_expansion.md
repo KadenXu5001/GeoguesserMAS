@@ -33,6 +33,13 @@ The original scan evaluated only 31 candidates and stopped unsuccessful candidat
 sampled tiles. Expansion should first deepen and broaden the Mapillary scan before adding another
 provider.
 
+`worldwide_v2` retains its frozen 30-country taxonomy and 450-panorama target. A country may be
+listed under `temporary_exclusions` with explicit operational scopes when its reference evidence
+is under review. Such a hold does not alter qualification or the frozen target: Morocco is
+temporarily excluded from play, reference generation, and evaluation while its clue enrichment is
+rebuilt. Removing the hold requires updating the dataset definition and regenerating the affected
+artifacts.
+
 ## Goals
 
 - Freeze a dataset containing at least 30 coverage-qualified countries.

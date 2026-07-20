@@ -1,0 +1,211 @@
+{
+  "country": "United States",
+  "source_url": "https://geotips.net/north-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "United States",
+      "indicator": "Distinctive license plates",
+      "description": "Some state have multiple varieties, but its worth knowing which states don’t have a Front license plate, as there are only 17 states that don’t require it!. For a more in depth look at how the license plates look, check out the USA map!.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "United States",
+      "indicator": "yellow and white road markings",
+      "description": "The USA uses a yellow divider line and a white shoulder line. This yellow center will nearly always be a double yellow (Unlike Canada).",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "United States",
+      "indicator": "Language and script",
+      "description": "The USA uses English, however you will find signs across the country with a multitude of different languages. You will find more Spanish in the south, and other diverse languages near major cities.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "country_domains",
+      "country": "United States",
+      "indicator": "Country internet domain",
+      "description": "us. While this may be the domain for the USA, you will almost never see it. You’re more likely to see. com,. org,. net or. gov.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Domain"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "United States",
+      "indicator": "Distinctive bollards",
+      "description": "Some state may have something like a bollard (Check out Washington State).",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "universal",
+      "category": "vehicles",
+      "country": "United States",
+      "indicator": "them often around town",
+      "description": "You can find them often around town. You can also find Postal trucks around. There are different varieties, but they all contain the same logo on the side / back. All post offices will also tell you the name of the town and give you a zip code. The zip code may not be useful for Geoguessr.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "United States",
+      "indicator": "Urban architectural traits",
+      "description": "The USA has massive cities with large skyscrapers. These are pretty important as you wont find tall skyscrapers in Europe. There are some building styles, but these can vary based on the builders preference. These kind of houses are often found in the North East. Its often pretty obvious and feels “Rich”. These houses, often called “Row Houses” are found in Suburbs outside of large cities. San Francisco is almost known for these houses. We’ll get into more detail with architecture in the USA specific map.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "United States",
+      "indicator": "Green signs will point to towns and destinations",
+      "description": "The Green signs will point to towns and destinations, while the blue sign will point to gas stations, hotels or places to eat.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "United States",
+      "indicator": "Urban sign conventions",
+      "description": "There are hundreds of different signs in the USA. The most important one being the speed limit sign. This speed limit sign can save you from guessing Canada. The color seems to matter as to what will appear on the sign. There is also nothing important about the back of the signs.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "United States",
+      "indicator": "Business and number conventions",
+      "description": "There are 335 area codes in the United States. There is NO difference between a mobile number or a landline. All phone numbers will be 10 digits, set up like (xxx) xxx – xxxx.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "public_transit",
+      "country": "United States",
+      "indicator": "Distinctive public transit",
+      "description": "The USA uses a yellow school bus.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "United States",
+      "indicator": "Vegetation and biome traits",
+      "description": "There are many differences, and its best to look towards the “General Look” section to get a good feel.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "United States",
+      "indicator": "only difference seems to be the hills/mountains that you see in the distance",
+      "description": "The only difference seems to be the hills/mountains that you see in the distance.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "United States",
+      "indicator": "Terrain and scenery",
+      "description": "This is the general feel of the North East. This is the South East. You can see the sandy soil on the side of the road. This is the Central North, and its rather flat and green. You can also find a surprising lack of trees. This is the Central South, and its just as flat as the north. However, this area is a lot more dry than the north. This is the North West, also called the Pacific North West. You will notice the mountains and the tall pines. This is the South West, and looks much like the Central South.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "United States",
+      "indicator": "most common one of these is a circle sign",
+      "description": "The most common one of these is a circle sign. You can find this sign in Delaware, Iowa, Kentucky, Mississippi and New Jersey. There are then Secondary highways, often used to supplement the state highways. There are then County Highways. Counties are small districts, not to be mistaken with the word Country. Please note, there are varieties between states. These are the most common (Often called the Standard).",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Highways"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "United States",
+      "indicator": "Rural roadside conventions",
+      "description": "The USA uses multiple highway roads. You have the Interstate which travels between states. Odd numbered interstates generally travel from North to South, while Even numbers go East to West. Some notable Interstates are I95 (East coast from Miami Florida up to the Canada border at New Brunswick), I80 (Eastern New Jersey to San Francisco California), I5 goes from the Mexico border to the Canada border on the West Coast (California, Oregon and Washington State). There are also the USA Route numbers (Not to be confused with individual state roads). Which look like a Shield. These roads almost imitate interstates. State highways are mostly unique.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Highways"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "United States",
+      "indicator": "Then you get your highway signs",
+      "description": "Then you get your highway signs.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "United States",
+      "indicator": "USA map will be more detailed with road signs",
+      "description": "The USA map will be more detailed with road signs.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Highways"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Highways",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "Domain",
+      "Architecture",
+      "General look",
+      "Unique Vehicle",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Disclaimer",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      }
+    ],
+    "section_count": 12,
+    "row_count": 18,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

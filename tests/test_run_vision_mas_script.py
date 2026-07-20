@@ -13,11 +13,11 @@ def test_vision_mas_configures_utf8_output_before_running() -> None:
     assert script.index(stderr_config) < script.index("def main()")
 
 
-def test_browser_adapter_emits_only_the_selected_prediction_country() -> None:
+def test_browser_adapter_emits_selected_and_alternative_prediction_countries() -> None:
     script = Path("scripts/run_vision_mas.py").read_text(encoding="utf-8")
 
     assert '"predictedCountry": result["prediction"]["country"]' in script
-    assert 'result["prediction"]["alternatives"]' not in script
+    assert '"alternativeCountries": result["prediction"]["alternatives"][:3]' in script
 
 
 def test_browser_adapter_preserves_object_store_identity_and_hashes(tmp_path: Path) -> None:

@@ -1,0 +1,128 @@
+{
+  "country": "Japan",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Japan",
+      "indicator": "green and white license plates",
+      "description": "Since 1998, the most common license plate is green text on white background, where the first two letters on the top indicate the prefecture:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Japan",
+      "indicator": "white and yellow bollards",
+      "description": "Most common bollard that you will find, with white on the front, yellow on the back:. There is also this version:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Japan",
+      "indicator": "And this is how they appear on the map",
+      "description": "And this is how they appear on the map:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Japan",
+      "indicator": "Higher resolution here",
+      "description": "Higher resolution here: RoadNumberingSystem. A very common sign that you will mostly see in the Hokkaido island is this:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Japan",
+      "indicator": "Business and number conventions",
+      "description": "Here is a very good map of all the area codes in Japan:. For higher resolution, visit this link: Wikimedia. org.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Japan",
+      "indicator": "Vegetation and biome traits",
+      "description": "Often found in Hokkaido, this is the “Hokkaido Squash/Pumpkin” leaves:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Japan",
+      "indicator": "Rural utility-pole traits",
+      "description": "Do not confuse them with Taiwan or South Korea (they have similar):.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Japan",
+      "indicator": "Here you can find the numbering mechanism of the national highways",
+      "description": "Here you can find the numbering mechanism of the national highways, so you can find them easier on the map:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Japan",
+      "indicator": "Rural roadside conventions",
+      "description": "Japan has prefectural roads which appear as a hexagon, and national highways which appears as a rounded triangle:. This is how they appear on a sign, where road #11 is a prefectural road and road #305 is a national highway:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Signs",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Road Lines",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Specific tree",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 6,
+    "row_count": 9,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

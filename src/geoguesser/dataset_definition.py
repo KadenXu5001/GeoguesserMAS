@@ -11,6 +11,7 @@ from typing import Any, Mapping
 DEFAULT_DEFINITION_DIR = Path("data/dataset_definitions")
 PILOT_DATASET_VERSION = "pilot_v1"
 _VERSION_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
+EXCLUSION_SCOPES = frozenset({"play", "reference_generation", "evaluation"})
 
 
 @dataclass(frozen=True)
@@ -35,6 +36,19 @@ class DatasetDefinition:
     @property
     def country_iso2(self) -> frozenset[str]:
         return frozenset(country.iso2 for country in self.countries)
+
+    def excluded_iso2(self, scope: str) -> frozenset[str]:
+        if scope not in EXCLUSION_SCOPES:
+            raise ValueError(f"unsupported dataset exclusion scope: {scope}")
+        return frozenset(
+            str(item["iso2"]).upper()
+            for item in self.document.get("temporary_exclusions", [])
+            if scope in item["scopes"]
+        )
+
+    def active_countries(self, scope: str) -> tuple[DatasetCountry, ...]:
+        excluded = self.excluded_iso2(scope)
+        return tuple(country for country in self.countries if country.iso2 not in excluded)
 
 
 def definition_path(
@@ -80,6 +94,25 @@ def load_dataset_definition(
         raise ValueError("dataset definition contains duplicate country ISO2 codes")
     if len({country.continent for country in countries}) < 5:
         raise ValueError("dataset definition must represent at least five continents")
+
+    exclusions = document.get("temporary_exclusions", [])
+    if not isinstance(exclusions, list):
+        raise ValueError("dataset temporary_exclusions must be a list")
+    excluded_codes: set[str] = set()
+    for exclusion in exclusions:
+        if not isinstance(exclusion, dict):
+            raise ValueError("dataset temporary exclusion must be an object")
+        iso2 = str(exclusion.get("iso2", "")).upper()
+        scopes = exclusion.get("scopes")
+        if iso2 not in iso2_values:
+            raise ValueError(f"temporary exclusion is not a frozen country: {iso2}")
+        if iso2 in excluded_codes:
+            raise ValueError(f"duplicate temporary exclusion: {iso2}")
+        if not isinstance(scopes, list) or not scopes or set(scopes) - EXCLUSION_SCOPES:
+            raise ValueError(f"temporary exclusion has unsupported scopes: {iso2}")
+        if not str(exclusion.get("reason", "")).strip():
+            raise ValueError(f"temporary exclusion requires a reason: {iso2}")
+        excluded_codes.add(iso2)
 
     targets = document.get("targets") or {}
     development = int(targets.get("development_per_country", 0))

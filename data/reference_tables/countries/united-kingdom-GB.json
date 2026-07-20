@@ -1,0 +1,176 @@
+{
+  "country": "United Kingdom",
+  "source_url": "https://geotips.net/europe/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "United Kingdom",
+      "indicator": "white and yellow and blue license plates",
+      "description": "The UK uses white front, and yellow rear plates. Some feature the EU blue left side however this isn’t always the case.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "United Kingdom",
+      "indicator": "Distinctive road markings",
+      "description": "The UK often will have reflectors in between the center dashes on roadways. There are many different style of road lines that can ultimately be found. You will also find the famous “Zebra Crossing” nearly everywhere. You will even find that these crossings contain some lights for night time safety.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "United Kingdom",
+      "indicator": "Distinctive road markings — Road Layout",
+      "description": "Britain within the UK uses a system by which to number it’s roads. A roads are usually main roads, and B roads are usually smaller. The numbers seen on this map are always second in the naming, e. A380.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Layout"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "United Kingdom",
+      "indicator": "light poles actually nearly completely replace the cross walk sign seen in most ",
+      "description": "The light poles actually nearly completely replace the cross walk sign seen in most countries.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "United Kingdom",
+      "indicator": "Language and script",
+      "description": "(Welsh). (English). (Scottish). The UK uses proper English, while Wales has a mix of Welsh and English and Scotland can have some Scottish along with English.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "United Kingdom",
+      "indicator": "red bollards",
+      "description": "This bollard has a very large red reflector on the top.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "United Kingdom",
+      "indicator": "Urban architectural traits",
+      "description": "The UK seems to love these row houses. If it looks similar to the houses in Harry Potter, its a good tell.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_utility_poles",
+      "country": "United Kingdom",
+      "indicator": "Urban utility-pole traits",
+      "description": "The UK uses wooden Electricity poles that look like these.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "United Kingdom",
+      "indicator": "Urban sign conventions",
+      "description": "Signs in the UK can be white, green and blue. Look for the letters A or M, as these are the major roads throughout the country.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "United Kingdom",
+      "indicator": "Business and number conventions",
+      "description": "UK mobile numbers begin with 07 in the format of: 07xxx xxxxxx. Most major cities have their own area code, with some big ones to remember being:. (0141) Glasgow. (0151) Liverpool. (0161) Manchester. (020) London. (028) North Ireland.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "United Kingdom",
+      "indicator": "Terrain and scenery",
+      "description": "The UK can vary between its individual countries by look, however most urban areas look similar, the main differences occurring in more rural regions, Scotland being the most mountainous, followed by Wales, then England, and Northern Ireland. The UK will often have large hedges on the both sides of rural roads.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "United Kingdom",
+      "indicator": "UK also has a post code system which can help you narrow down which part of the ",
+      "description": "The UK also has a post code system which can help you narrow down which part of the country you are in.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "United Kingdom",
+      "indicator": "You will also see these yellow warning signs on most poles",
+      "description": "You will also see these yellow warning signs on most poles. They show a guy getting zapped by a lightning bolt.",
+      "source_url": "https://geotips.net/europe/",
+      "source_section": "Electricity poles"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "Road Layout",
+      "Electricity poles",
+      "License plates",
+      "Phone number",
+      "Architecture",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 13,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

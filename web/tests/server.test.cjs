@@ -3,12 +3,18 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs/promises");
 const os = require("node:os");
 const path = require("node:path");
+const { EventEmitter } = require("node:events");
+const { PassThrough } = require("node:stream");
 const {
   analyzeWithTransientRetry,
+  browserSafeAnalysisPayload,
   createAppServer,
   isRetryableVisionError,
-  listTrainingPanoramas,
+  listMongoTrainingPanoramas,
+  listPilotTrainingPanoramas,
+  mergeTrainingPanoramas,
   resolvePythonExecutable,
+  runVisionAnalysis,
   visionMasRequest,
   visionAnalysisCacheKey,
 } = require("../server");
@@ -62,10 +68,57 @@ test("website MAS request preserves object-store identity and cardinal order", (
   });
 });
 
+test("website receives a completed MAS prediction before LangSmith flush process exit", async () => {
+  let child;
+  const spawnProcess = () => {
+    child = new EventEmitter();
+    child.stdin = new PassThrough();
+    child.stdout = new PassThrough();
+    child.stderr = new PassThrough();
+    return child;
+  };
+  const payload = {
+    analysis: { infrastructure: { objects: [] } },
+    informedEvidence: [],
+    predictedCountry: "France",
+    alternativeCountries: ["Belgium"],
+  };
+
+  const resultPromise = runVisionAnalysis({ paths: [] }, {
+    root: process.cwd(),
+    python: "python",
+    spawnProcess,
+  });
+  let processClosed = false;
+  child.on("close", () => { processClosed = true; });
+  child.stdout.write(JSON.stringify(payload));
+
+  assert.deepEqual(await resultPromise, payload);
+  assert.equal(processClosed, false);
+
+  child.emit("close", 0);
+});
+
 test("website MAS retry classification is limited to transient transport and capacity errors", () => {
   assert.equal(isRetryableVisionError(new Error("httpx.ReadTimeout: read timed out")), true);
   assert.equal(isRetryableVisionError(Object.assign(new Error("quota"), { status: 429 })), true);
+  assert.equal(
+    isRetryableVisionError(new Error("LANGSMITH_OBSERVABILITY_FAILURE: trace flush timed out")),
+    false,
+  );
   assert.equal(isRetryableVisionError(new Error("ExtractionOutput validation failed")), false);
+});
+
+test("browser-safe analysis keeps at most three distinct alternative candidates", () => {
+  const payload = browserSafeAnalysisPayload({
+    analysis: {},
+    informedEvidence: [],
+    predictedCountry: "Portugal",
+    alternativeCountries: [" Brazil ", "Portugal", "Brazil", "Spain", "Cape Verde", "France"],
+  });
+
+  assert.deepEqual(payload.alternativeCountries, ["Brazil", "Spain", "Cape Verde"]);
+  assert.equal("confidence" in payload, false);
 });
 
 test("website starts exactly one fresh MAS run after a transient failure", async () => {
@@ -75,11 +128,11 @@ test("website starts exactly one fresh MAS run after a transient failure", async
     attempts += 1;
     assert.equal(received, request);
     if (attempts === 1) throw new Error("httpx.WriteTimeout: The write operation timed out");
-    return { analysis: {}, informedEvidence: [], predictedCountry: "France" };
+    return { analysis: {}, informedEvidence: [], predictedCountry: "France", alternativeCountries: ["Belgium"] };
   }, request);
 
   assert.equal(attempts, 2);
-  assert.deepEqual(result, { analysis: {}, informedEvidence: [], predictedCountry: "France" });
+  assert.deepEqual(result, { analysis: {}, informedEvidence: [], predictedCountry: "France", alternativeCountries: ["Belgium"] });
 });
 
 test("website does not retry a deterministic MAS failure", async () => {
@@ -90,6 +143,18 @@ test("website does not retry a deterministic MAS failure", async () => {
       throw new Error("ExtractionOutput validation failed");
     }, {}),
     /validation failed/,
+  );
+  assert.equal(attempts, 1);
+});
+
+test("website does not rerun a completed MAS after a LangSmith flush timeout", async () => {
+  let attempts = 0;
+  await assert.rejects(
+    analyzeWithTransientRetry(async () => {
+      attempts += 1;
+      throw new Error("LANGSMITH_OBSERVABILITY_FAILURE: mandatory trace flush timed out");
+    }, {}),
+    /LANGSMITH_OBSERVABILITY_FAILURE/,
   );
   assert.equal(attempts, 1);
 });
@@ -137,6 +202,7 @@ async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } =
       return {
         analysis: { signs_and_language: { objects: [] } },
         predictedCountry: "Portugal",
+        alternativeCountries: ["Brazil", "Spain"],
         informedEvidence: [{
           id: "informed-1",
           description: "Portuguese road text supports Brazil.",
@@ -223,8 +289,8 @@ test("vision analysis is generated once and reused per panorama", async (t) => {
   assert.deepEqual(second.body.analysis, first.body.analysis);
   assert.deepEqual(second.body.informedEvidence, first.body.informedEvidence);
   assert.equal(second.body.predictedCountry, "Portugal");
+  assert.deepEqual(second.body.alternativeCountries, ["Brazil", "Spain"]);
   const serialized = JSON.stringify(second.body).toLowerCase();
-  assert.equal(serialized.includes('"alternatives"'), false);
   assert.equal(serialized.includes('"groundtruth"'), false);
   assert.equal(serialized.includes('"correctcountry"'), false);
   assert.equal(serialized.includes('"countryiso2"'), false);
@@ -278,7 +344,7 @@ test("failed vision analysis is not persisted", async (t) => {
     analyze: async () => {
       attempts += 1;
       if (attempts === 1) throw new Error("temporary provider failure");
-      return { analysis: { infrastructure: { objects: [] } }, informedEvidence: [], predictedCountry: "France" };
+      return { analysis: { infrastructure: { objects: [] } }, informedEvidence: [], predictedCountry: "France", alternativeCountries: ["Belgium"] };
     },
   });
   t.after(async () => {
@@ -326,7 +392,7 @@ test("static GeoJSON is served as a feature collection instead of a serialized b
   assert.equal(data.type === "Buffer", false);
 });
 
-test("training media resolves through a completed object-store migration overlay", async (t) => {
+test("pilot training media resolves through a completed object-store migration overlay", async (t) => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-migration-test-"));
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   const datasetDir = path.join(root, "data", "datasets");
@@ -379,9 +445,100 @@ test("training media resolves through a completed object-store migration overlay
     }),
   );
 
-  const panoramas = await listTrainingPanoramas(root);
+  const panoramas = await listPilotTrainingPanoramas(root);
 
   assert.equal(panoramas.length, 1);
   assert.equal(panoramas[0].panoramaPath, panorama);
   assert.equal(panoramas[0].views[270], views[270]);
+});
+
+test("worldwide training media loads from eligible MongoDB records", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-worldwide-test-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.mkdir(path.join(root, "data", "dataset_definitions"), { recursive: true });
+  await fs.writeFile(
+    path.join(root, "data", "dataset_definitions", "worldwide_v2.json"),
+    JSON.stringify({
+      version: "worldwide_v2",
+      countries: [
+        { iso2: "NZ", country: "New Zealand" },
+        { iso2: "MA", country: "Morocco" },
+      ],
+      temporary_exclusions: [{ iso2: "MA", scopes: ["play"] }],
+    }),
+  );
+
+  const panoramaHash = "a".repeat(64);
+  const viewHashes = Object.fromEntries([0, 90, 180, 270].map((heading, index) => [
+    heading,
+    String(index + 1).repeat(64),
+  ]));
+  const mediaReference = (namespace, hash) => ({
+    storage_namespace: namespace,
+    object_key: `countries/NZ/objects/${hash.slice(0, 2)}/${hash}.jpg`,
+    sha256: hash,
+  });
+  const panoramaFile = {
+    ...mediaReference("source-private", panoramaHash),
+    width: 6000,
+    height: 3000,
+  };
+  const renderedViews = Object.entries(viewHashes).map(([heading, hash]) => ({
+    heading: Number(heading),
+    ...mediaReference("runtime-private", hash),
+  }));
+  const references = [panoramaFile, ...renderedViews];
+  await Promise.all(references.map(async (reference) => {
+    const target = path.join(
+      root,
+      ".local-data",
+      reference.storage_namespace,
+      ...reference.object_key.split("/"),
+    );
+    await fs.mkdir(path.dirname(target), { recursive: true });
+    await fs.writeFile(target, "image");
+  }));
+
+  let receivedQuery;
+  const database = {
+    collection(name) {
+      assert.equal(name, "panoramas");
+      return {
+        find(query) {
+          receivedQuery = query;
+          return {
+            async toArray() {
+              return [{
+                mapillary_image_id: "worldwide-image-1",
+                country_iso2: "NZ",
+                panorama_file: panoramaFile,
+                rendered_views: renderedViews,
+              }];
+            },
+          };
+        },
+      };
+    },
+  };
+
+  const panoramas = await listMongoTrainingPanoramas(root, { database });
+
+  assert.equal(receivedQuery.dataset_version, "worldwide_v2");
+  assert.deepEqual(receivedQuery.country_iso2.$in, ["NZ"]);
+  assert.deepEqual(receivedQuery.status.$in, ["quality_review", "rendered"]);
+  assert.equal(panoramas.length, 1);
+  assert.equal(panoramas[0].datasetVersion, "worldwide_v2");
+  assert.equal(panoramas[0].country, "New Zealand");
+  assert.equal(panoramas[0].panoramaPath.endsWith(`${panoramaHash}.jpg`), true);
+  assert.deepEqual(panoramas[0].viewHashes, viewHashes);
+});
+
+test("worldwide rounds extend pilot rounds without replacing duplicate pilot identities", () => {
+  const pilot = [{ sourceId: "pilot-1", datasetVersion: "pilot_v1" }];
+  const worldwide = [
+    { sourceId: "pilot-1", datasetVersion: "worldwide_v2" },
+    { sourceId: "worldwide-1", datasetVersion: "worldwide_v2" },
+  ];
+
+  assert.deepEqual(mergeTrainingPanoramas(pilot, worldwide), [pilot[0], worldwide[1]]);
 });

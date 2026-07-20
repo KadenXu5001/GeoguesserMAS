@@ -1,0 +1,211 @@
+{
+  "country": "Mexico",
+  "source_url": "https://geotips.net/north-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Mexico",
+      "indicator": "Distinctive license plates",
+      "description": "Licesne Plates are a problem in Mexico. There are 32 states, with each state having their own plate. They also update the plates with a new deisgn every 4-5 years. It was eye catching and I hope it got you interested!. Mexico Plates 1. Mexico Plates 2. Mexico Plates 3. Mexico Plates 4. Mexico Plates 5.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Mexico",
+      "indicator": "yellow and white road markings",
+      "description": "Mexico, like the rest of North America, uses a Yellow divider and white shoulder lines. The yellow divider will be a double line on major roads, and a single line on smaller roads. A good thing to notice is that the white shoulder lines are dashed on most major highways in a passing zone. Outside of passing zones and side roads often use a solid white line.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Mexico",
+      "indicator": "Language and script",
+      "description": "Mexico uses a traditional Spanish alphabet.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Alphabet/script"
+    },
+    {
+      "family": "universal",
+      "category": "bollards",
+      "country": "Mexico",
+      "indicator": "white and black bollards",
+      "description": "This bollard is common in the south. All bollards tend to have the pattern of a white reflector on the top section and a black base.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Bollard"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Mexico",
+      "indicator": "It can be really useful to know where the numbers lead to (ex",
+      "description": "It can be really useful to know where the numbers lead to (ex.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Mexico",
+      "indicator": "the North American Yellow warning signs",
+      "description": "Mexico uses the North American Yellow warning signs. They seem to have large “bolded” images on them.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Mexico",
+      "indicator": "Urban sign conventions",
+      "description": "Mexico uses Alto on their stop sign. This is super important and can be a really good deciding factor in Central and South America. Mexico also uses a variety of colored signs like the USA, but the Green ones are the ones you want to look for.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Mexico",
+      "indicator": "Business and number conventions",
+      "description": "All phone numbers in Mexico consist of 10 digits. Introduced in 2018, a new plan exists. The FIRST digit will assign a region for the country. The following numbers attribute to the regions. 2 – East. 3 – West. 4 – North. 5 – Central. 6 – Northwest. 7 – South. 8 – Northeast. 9 – Southeast.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Phone number"
+    },
+    {
+      "family": "urban",
+      "category": "public_transit",
+      "country": "Mexico",
+      "indicator": "Distinctive public transit",
+      "description": "Mexico City uses a pink and white taxi.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Unique Vehicle"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Mexico",
+      "indicator": "Vegetation and biome traits",
+      "description": "Mexico boasts the highest number of pine and oak species in the world. Other notable trees include mahogany, zapote and ceiba (also known as pochote), the sacred tree of the Maya. There are also a lot of Cacti, with this being a good sign you’re near or in Mexico.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Vegetation/Landscape"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Mexico",
+      "indicator": "North of Mexico is basically a giant desert",
+      "description": "The North of Mexico is basically a giant desert. That being said, there are parts that are less desert-y than others. This is the Central Mexican feel. It feels like the South West USA but with some mountains and hills.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "terrain_scenery",
+      "country": "Mexico",
+      "indicator": "Terrain and scenery",
+      "description": "Because of the size of Mexico, there are a few general feels. Its pretty distinct from any other region. Its also one of the heaviest tourist destinations in Mexico (Cancun). The South of Mexico generally has this sandy / dirt feel on the sides. You can see it near the grassy areas on the sides of this.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "General look"
+    },
+    {
+      "family": "rural",
+      "category": "rural_utility_poles",
+      "country": "Mexico",
+      "indicator": "Rural utility-pole traits",
+      "description": "There is an established meta with poles in Mexico. The majority of poles use this octagonal shape. It is a good clue to use. This doesn’t mean that it is the only pole, with wooden poles still being used occasionally.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Electricity Poles"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Mexico",
+      "indicator": "Baja California having highway 1)",
+      "description": "Baja California having highway 1).",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Mexico",
+      "indicator": "Mexico also uses KM",
+      "description": "Mexico also uses KM, which can help you figure out whether its Mexico or the South West USA.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Mexico",
+      "indicator": "This is the highway map of Mexico",
+      "description": "This is the highway map of Mexico.",
+      "source_url": "https://geotips.net/north-america/",
+      "source_section": "Road Signs"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Unique Vehicle",
+      "Road Lines",
+      "Road Signs",
+      "Electricity Poles",
+      "License plates",
+      "Phone number",
+      "Vegetation/Landscape",
+      "General look",
+      "Alphabet/script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Traditional Clothing",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 10,
+    "row_count": 16,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

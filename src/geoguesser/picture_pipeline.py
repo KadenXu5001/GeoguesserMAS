@@ -40,14 +40,22 @@ def _sequence_id(metadata: Mapping[str, Any], fallback: str) -> str:
     return str(sequence or fallback)
 
 
-def pilot_candidates(path: Path = DEFAULT_COVERAGE_SCAN) -> Iterable[tuple[str, dict]]:
+def picture_candidates(
+    path: Path = DEFAULT_COVERAGE_SCAN,
+    target_iso2: set[str] | None = None,
+) -> Iterable[tuple[str, dict]]:
     report = json.loads(path.read_text(encoding="utf-8"))
-    pilot_iso2 = {country.iso2 for country in PILOT_COUNTRIES}
     for country in report["countries"]:
-        if country["iso2"] not in pilot_iso2:
+        iso2 = country["iso2"]
+        if target_iso2 is not None and iso2 not in target_iso2:
             continue
         for evidence in country.get("evidence", []):
-            yield country["iso2"], evidence
+            yield iso2, evidence
+
+
+def pilot_candidates(path: Path = DEFAULT_COVERAGE_SCAN) -> Iterable[tuple[str, dict]]:
+    pilot_iso2 = {country.iso2 for country in PILOT_COUNTRIES}
+    yield from picture_candidates(path, target_iso2=pilot_iso2)
 
 
 def _file_sha256(path: Path) -> str:
@@ -78,7 +86,7 @@ def ingest_picture_candidates(
         "failed": 0,
         "skipped": 0,
     }
-    for expected_country, evidence in pilot_candidates(coverage_path):
+    for expected_country, evidence in picture_candidates(coverage_path):
         if country_iso2 and expected_country != country_iso2.upper():
             continue
         if limit is not None and counts["examined"] >= limit:

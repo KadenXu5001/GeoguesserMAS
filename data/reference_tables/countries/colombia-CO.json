@@ -1,0 +1,125 @@
+{
+  "country": "Colombia",
+  "source_url": "https://geotips.net/south-america/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Colombia",
+      "indicator": "yellow and white license plates",
+      "description": "License plates in Colombia are yellow and have the municipality name at the bottom. Taxis and trucks in Colombia have a white side plate on them which is sometimes unblurred, giving away the region/city name.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "License Plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Colombia",
+      "indicator": "white and yellow road markings",
+      "description": "Like most of the Western Hemisphere, the shoulder lines are white while the center divider is yellow.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Colombia",
+      "indicator": "Language and script",
+      "description": "Colombia uses the Spanish language.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Alphabet/Script"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Colombia",
+      "indicator": "Urban sign conventions",
+      "description": "Colombia has several unique sign features. All sign posts are white and slim compared to other countries. Speed signs are round with a red outside and white inside (like Brazil). However all these signs also have a unique grey cross on the back of them.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Colombia",
+      "indicator": "Business and number conventions",
+      "description": "Based on this, the (8) in 8716700 tells you that its the Boyacá, Tolima, Huila, San Andrés, Meta, Caquetá and the Amazon or the Orinoco departments. The (310) indicates that its a mobile number. This map shows the first number of each local phone code is directly correlated to a region. Its worth knowing.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Phone Numbers"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Colombia",
+      "indicator": "Rural roadside conventions",
+      "description": "You can also find these two styles of KM markers around.",
+      "source_url": "https://geotips.net/south-america/",
+      "source_section": "Bollard"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Bollard",
+      "Road Lines",
+      "Road Signs",
+      "License Plates",
+      "Phone Numbers",
+      "Alphabet/Script"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Most Helpful",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Rare Car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google Coverage",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Electricity Poles",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Architecture",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "General Look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Internet Domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 6,
+    "row_count": 6,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}

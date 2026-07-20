@@ -1,0 +1,172 @@
+{
+  "country": "Indonesia",
+  "source_url": "https://geotips.net/asia/",
+  "rows": [
+    {
+      "family": "universal",
+      "category": "license_plates",
+      "country": "Indonesia",
+      "indicator": "Distinctive license plates",
+      "description": "Motorcycle plates:. Indonesia has front motorcycle plates too, in contrast with Malaysia.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "License plates"
+    },
+    {
+      "family": "universal",
+      "category": "road_markings",
+      "country": "Indonesia",
+      "indicator": "white road markings",
+      "description": "Usually all-white:. The double centreline in Indonesia is found only on highways, unlike Malaysia which often uses it on 2-lane roads.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Lines"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Indonesia",
+      "indicator": "Language and script",
+      "description": "Indonesian uses the Latin alphabet:. Useful vocabulary:. North – Utara. East – Timur. West – Barat. South – Selatan. Central – Tengah. Southeast – Tenggara. Kota – City. Desa – Village. Street/road – Jalan (abbreviated as Jl. Province – Provinsi. Regency – Kabupaten (abbreviated as Kab. District – Kecamatan (abbreviated as Kec. Selamat datang – Welcome. Selamat jalan – Goodbye (bon voyage). Peringatan: Merokok membunuhmu – Warning: Smoking kills you. Additional language notes:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Alphabet/language"
+    },
+    {
+      "family": "universal",
+      "category": "language_script",
+      "country": "Indonesia",
+      "indicator": "part ci- means “river” and Sundanese is the language spoken in the provinces of ",
+      "description": "The part ci- means “river” and Sundanese is the language spoken in the provinces of West Java and Banten. You can also find some of these languages – Sundanese, Javanese, Balinese, etc.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Alphabet/language"
+    },
+    {
+      "family": "universal",
+      "category": "chevrons_guardrails",
+      "country": "Indonesia",
+      "indicator": "Guardrails",
+      "description": "Guardrails:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_architecture",
+      "country": "Indonesia",
+      "indicator": "Urban architectural traits",
+      "description": "Classic Indonesian houses:. Houses with brick tile roofs can most frequently be found on the main islands (e. Java, Bali), while the metal roof ones are more frequent on the other, less populated islands (Sumatra, Borneo, Sulawesi, Nusa Tenggaras). However, this is not always fool-proof and both house types can be found on all the islands. This type of roof is very specific to Indonesia:. Mosque:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Architecture"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Indonesia",
+      "indicator": "Bridge railings",
+      "description": "Bridge railings:. Settlements can often have these welcome and goodbye signs stating the name of the settlement and the subdivision(s) it is in:. These boards containing information can usually be found in front of important buildings in a settlement:. Location information can be found in many places in Indonesia (boards, billboards, shop fronts, etc. Indonesian flags can be found everywhere, and in many forms:. Prayer flags on the side of the road are very common too, each colour carrying a meaning:. Sometimes there are these ornamented structures by the side of the road, usually when entering or exiting a settlement:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "urban_signage",
+      "country": "Indonesia",
+      "indicator": "Urban sign conventions",
+      "description": "Directional road signs in Indonesia are usually found only at important crossroads:. Indonesia uses the yellow diamond-shaped warning signs, like the rest of Southeast Asia:. The turn arrows are black with a yellow background:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road Signs"
+    },
+    {
+      "family": "urban",
+      "category": "businesses_domains",
+      "country": "Indonesia",
+      "indicator": "Business and number conventions",
+      "description": "Cigarette ad banners and boards are everywhere in Indonesia:. Indomaret is one of the most popular convenience store chains in Indonesia:. Bank BRI is one of the largest banks in Indonesia:. If you find a Sumsel Babel bank, you know you are in the provinces of South Sumatra (Sumatera Selatan) or Bangka Belitung:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Ads"
+    },
+    {
+      "family": "rural",
+      "category": "vegetation_biomes",
+      "country": "Indonesia",
+      "indicator": "Vegetation and biome traits",
+      "description": "Oil palms are very specific agricultural planted trees which are mostly found on the islands of Sumatra and Borneo in Indonesia:. Another agriculturally planted tree species is the rubber tree, which can be found here and there all over Indonesia:. It is characterised by thin whitish bark trunks and is planted in an arranged pattern, just like oil palms. Rice is also grown all around Indonesia:. Rice growing map of Indonesia:. Trees in Indonesia can sometimes be painted with the flag colours on the trunks:.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Specific tree"
+    },
+    {
+      "family": "rural",
+      "category": "rural_roadside_features",
+      "country": "Indonesia",
+      "indicator": "Rural roadside conventions",
+      "description": "Usually you won’t see any road numbers on signs nor on the map:. Indonesia Road Numbering System.",
+      "source_url": "https://geotips.net/asia/",
+      "source_section": "Road numbering system"
+    }
+  ],
+  "audit": {
+    "included_sections": [
+      "Road Lines",
+      "Road Signs",
+      "Road numbering system",
+      "License plates",
+      "Ads",
+      "Specific tree",
+      "Architecture",
+      "Alphabet/language"
+    ],
+    "skipped_sections": [
+      {
+        "section": "Country Flag",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Capital City",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Google car",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Bollard",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Camera Generation",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Electricity poles",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Phone area codes",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Vegetation/Landscape",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Religion",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "General look",
+        "reason": "No explicit textual clue."
+      },
+      {
+        "section": "Subdivisions",
+        "reason": "Excluded or provider-specific section."
+      },
+      {
+        "section": "Internet domain",
+        "reason": "No explicit textual clue."
+      }
+    ],
+    "section_count": 8,
+    "row_count": 11,
+    "warnings": [
+      "Local deterministic extraction used GeoTips text only; associated images were not interpreted, so descriptions contain no image-derived details."
+    ]
+  }
+}
