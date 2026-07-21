@@ -47,6 +47,8 @@ this document is amended first.
 
 ## Shared experience
 
+- The user-facing product name is `GeoTrainer`. The former `AtlasLens` name must not appear in
+  visible interface copy, labels, or branding.
 - The interface must be responsive and usable with mouse, touch, and keyboard input.
 - Desktop and mobile layouts must preserve the same content hierarchy and available actions.
 - Loading, empty, error, and disabled states must be visible and understandable.
@@ -214,6 +216,9 @@ The Vision MAS screenshot is the structural reference. The screen contains:
   cardinal view, and placing a pointer over the highlight reveals its short description. Keyboard
   focus reveals the same description, and touch users can read it in the persistent selected-item
   control.
+- Object observations and descriptions displayed as informed-evidence hints use sentence
+  capitalization in selector cards, image tooltips, and accessible labels. This is a presentation
+  transformation only; the underlying MAS evidence text remains unchanged.
 - Evidence-selector cards must never permanently truncate their clue text. On pointer hover or
   keyboard focus, a card expands smoothly within the selector while its siblings contract slightly
   so the full observation and description can be read. On touch-sized layouts, the selected card
@@ -393,3 +398,10 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
 - Kept the mandatory LangSmith flush running server-side after prediction delivery and required
   any later trace failure to remain a clearly logged observability failure.
 - Prohibited a late trace failure from rerunning or retracting the already completed MAS result.
+
+### 2026-07-20: GeoTrainer branding and capitalized informed hints
+
+- Renamed the user-facing product from `AtlasLens` to `GeoTrainer` across the header and footer.
+- Required informed object observations and descriptions to begin with a capital letter anywhere
+  they are presented as selector hints, image tooltips, or accessible labels.
+- Preserved the original evidence strings in the MAS and website payloads.

@@ -68,6 +68,15 @@ test("website MAS request preserves object-store identity and cardinal order", (
   });
 });
 
+test("informed object hints use sentence capitalization without changing acronyms", async () => {
+  const { capitalizeHintText } = await import("../src/displayText.mjs");
+
+  assert.equal(capitalizeHintText("wooden utility pole"), "Wooden utility pole");
+  assert.equal(capitalizeHintText("  portuguese road text  "), "Portuguese road text");
+  assert.equal(capitalizeHintText("USA-style road shield"), "USA-style road shield");
+  assert.equal(capitalizeHintText(null), "");
+});
+
 test("website receives a completed MAS prediction before LangSmith flush process exit", async () => {
   let child;
   const spawnProcess = () => {
@@ -172,7 +181,7 @@ test("website stops after the second transient MAS failure", async () => {
 });
 
 async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } = {}) {
-  const directory = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-server-test-"));
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), "geotrainer-server-test-"));
   const panoramaPath = path.join(directory, "secret-brazil-panorama.jpg");
   const viewPaths = Object.fromEntries([0, 90, 180, 270].map((heading) => [
     heading,
@@ -393,7 +402,7 @@ test("static GeoJSON is served as a feature collection instead of a serialized b
 });
 
 test("pilot training media resolves through a completed object-store migration overlay", async (t) => {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-migration-test-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "geotrainer-migration-test-"));
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   const datasetDir = path.join(root, "data", "datasets");
   const migrationDir = path.join(root, "data", "migrations");
@@ -453,7 +462,7 @@ test("pilot training media resolves through a completed object-store migration o
 });
 
 test("worldwide training media loads from eligible MongoDB records", async (t) => {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "atlaslens-worldwide-test-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "geotrainer-worldwide-test-"));
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   await fs.mkdir(path.join(root, "data", "dataset_definitions"), { recursive: true });
   await fs.writeFile(

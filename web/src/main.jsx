@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import CountryMap from "./CountryMap";
 import PanoramaViewer from "./PanoramaViewer";
 import { analyzeRound, createRound, getRound, submitGuess } from "./api";
+import { capitalizeHintText } from "./displayText.mjs";
 import "./style.css";
 
 const DIRECTIONS = [0, 90, 180, 270];
@@ -15,6 +16,8 @@ const CATEGORY_COLORS = {
   terrain_vegetation_and_climate: "#5db8ff",
   architecture_and_settlement: "#ff9f68",
 };
+const SEEN_ROUNDS_KEY = "geotrainer.seenRounds";
+const LEGACY_SEEN_ROUNDS_KEY = "atlaslens.seenRounds";
 
 function Icon({ name, size = 20 }) {
   const paths = {
@@ -39,7 +42,7 @@ function navigate(path, setPath) {
 function Brand({ onClick, compact = false }) {
   return <button className={`brand ${compact ? "compact" : ""}`} onClick={onClick} aria-label="Go to the home screen">
     <span className="brand-mark"><Icon name="compass" size={22} /></span>
-    <span>Atlas<span>Lens</span></span>
+    <span>Geo<span>Trainer</span></span>
   </button>;
 }
 
@@ -69,7 +72,7 @@ function HomeScreen({ starting, error, onExplore }) {
       <button className="mode-card" disabled><span className="mode-icon"><span className="flag">US</span></span><span className="mode-copy"><strong>USA</strong><small>Coming soon</small></span><span className="soon">Soon</span></button>
       <button className="mode-card" disabled><span className="mode-icon"><Icon name="spark" size={27} /></span><span className="mode-copy"><strong>More modes</strong><small>In development</small></span><span className="soon">Soon</span></button>
     </div></section>
-  </main><footer><span>AtlasLens</span><span>Learning the world, one clue at a time.</span></footer></div>;
+  </main><footer><span>GeoTrainer</span><span>Learning the world, one clue at a time.</span></footer></div>;
 }
 
 function ResultCard({ result, loadingNext, onNext }) {
@@ -113,9 +116,10 @@ function boxStyle(bbox) {
 }
 
 function VisionImage({ round, direction, objects, showAgentSees, showAgentInforms, informedEvidence }) {
+  const informedDescription = capitalizeHintText(informedEvidence?.description);
   return <article className="vision-view"><div className="vision-image"><img src={round.viewUrls[direction]} alt={`${DIRECTION_NAMES[direction]} cardinal view`} /><div className="bbox-layer">
     {showAgentSees && objects.map((object, index) => <div className="bbox" key={`${object.key}-${index}`} style={{ ...boxStyle(object.bbox), borderColor: object.color }}><span style={{ background: object.color }}>{object.key.replaceAll("_", " ")} · {object.confidence}%</span></div>)}
-    {showAgentInforms && informedEvidence?.heading === direction && <div className="informed-bbox" style={boxStyle(informedEvidence.bbox)} tabIndex="0" aria-label={`Evidence: ${informedEvidence.description}`}><span className="informed-badge">Informs</span><span className="informed-tooltip" role="tooltip">{informedEvidence.description}</span></div>}
+    {showAgentInforms && informedEvidence?.heading === direction && <div className="informed-bbox" style={boxStyle(informedEvidence.bbox)} tabIndex="0" aria-label={`Evidence: ${informedDescription}`}><span className="informed-badge">Informs</span><span className="informed-tooltip" role="tooltip">{informedDescription}</span></div>}
   </div><span className="direction-tag">{DIRECTION_NAMES[direction]} · {direction}°</span></div></article>;
 }
 
@@ -142,7 +146,7 @@ function VisionScreen({ round, state, setState, onBack }) {
   return <div className="vision-page"><AppHeader onHome={onBack} /><main className="page-shell vision-shell">
     <section className="page-heading vision-heading"><button className="back-link" onClick={onBack}><Icon name="arrowLeft" size={17} /> Back to panorama</button><div><span>Optional hint · Vision MAS</span><h1>See what the agent sees</h1></div><div className="place-id">Answer remains hidden</div></section>
     <section className="vision-intro"><div><div className="eyebrow"><span /> Four-view analysis</div><h2>Visual evidence, made visible.</h2><p>Compare everything the agent detected with the smaller set of clues that informed its final prediction.</p>{state.predictedCountry && <div className="agent-prediction"><span><Icon name="spark" size={17} /></span><div><small>Agent prediction</small><strong>{state.predictedCountry}</strong>{state.alternativeCountries?.length > 0 && <p className="prediction-alternatives"><span>Other candidates</span>{state.alternativeCountries.join(" · ")}</p>}<em>The agent is not shown the answer beforehand. This is its best guess and may be wrong.</em></div></div>}</div><div className="vision-controls" aria-label="Vision overlay controls"><div className="controls-title"><span>Overlay controls</span>{state.analysisLoading && <span className="spinner" />}</div><OverlaySwitch label="What the agent sees" description="All detected objects" checked={state.showAgentSees} disabled={!state.analysis} onChange={(showAgentSees) => setState((current) => ({ ...current, showAgentSees }))} /><OverlaySwitch label="What the agent informs" description="Prediction evidence" checked={state.showAgentInforms} disabled={!informedEvidence.length} onChange={(showAgentInforms) => setState((current) => ({ ...current, showAgentInforms }))} />{state.analysisLoading && <small className="controls-status">Analyzing once for this panorama…</small>}</div></section>
-    {informedEvidence.length > 0 && <section className="informed-selector" aria-label="Evidence that informed the prediction"><div><span className="section-label"><Icon name="spark" size={17} /> What the agent informs</span><strong>Select one clue to highlight</strong></div><div className="informed-options">{informedEvidence.map((item, index) => <button key={item.id} className={selectedEvidence?.id === item.id ? "selected" : ""} onClick={() => setState((current) => ({ ...current, selectedEvidenceId: item.id }))} aria-pressed={selectedEvidence?.id === item.id}><span>{index + 1}</span><span><strong>{item.observation}</strong><small>{item.description}</small></span></button>)}</div></section>}
+    {informedEvidence.length > 0 && <section className="informed-selector" aria-label="Evidence that informed the prediction"><div><span className="section-label"><Icon name="spark" size={17} /> What the agent informs</span><strong>Select one clue to highlight</strong></div><div className="informed-options">{informedEvidence.map((item, index) => <button key={item.id} className={selectedEvidence?.id === item.id ? "selected" : ""} onClick={() => setState((current) => ({ ...current, selectedEvidenceId: item.id }))} aria-pressed={selectedEvidence?.id === item.id}><span>{index + 1}</span><span><strong>{capitalizeHintText(item.observation)}</strong><small>{capitalizeHintText(item.description)}</small></span></button>)}</div></section>}
     {!state.analysisLoading && state.analysis && informedEvidence.length === 0 && <div className="informed-empty">No final evidence could be associated with a detected bounding box for this panorama.</div>}
     <section className="vision-grid">{DIRECTIONS.map((direction) => <VisionImage key={direction} round={round} direction={direction} objects={objectsByDirection[direction]} showAgentSees={state.showAgentSees} showAgentInforms={state.showAgentInforms} informedEvidence={selectedEvidence} />)}</section>
     {state.analysisError && <div className="analysis-empty error"><Icon name="eye" size={28} /><strong>Analysis could not be completed</strong><span>{state.analysisError}</span><button onClick={() => setState((current) => ({ ...current, analysisError: "", analysisLoading: false }))}>Try again</button></div>}
@@ -186,10 +190,15 @@ function App() {
   async function startRound() {
     setStarting(true); setError("");
     try {
-      const seen = JSON.parse(sessionStorage.getItem("atlaslens.seenRounds") || "[]");
+      const seen = JSON.parse(
+        sessionStorage.getItem(SEEN_ROUNDS_KEY)
+          || sessionStorage.getItem(LEGACY_SEEN_ROUNDS_KEY)
+          || "[]",
+      );
       const nextRound = await createRound(seen);
       const nextSeen = [...seen, nextRound.roundId].slice(-100);
-      sessionStorage.setItem("atlaslens.seenRounds", JSON.stringify(nextSeen));
+      sessionStorage.setItem(SEEN_ROUNDS_KEY, JSON.stringify(nextSeen));
+      sessionStorage.removeItem(LEGACY_SEEN_ROUNDS_KEY);
       setRound(nextRound); resetRoundState();
       go(`/world/${nextRound.roundId}`);
     } catch (requestError) { setError(requestError.message); }

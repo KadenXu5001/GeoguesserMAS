@@ -2007,5 +2007,234 @@
   },
   "{\"category\": \"agriculture_land_use\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
     "response": []
+  },
+  "{\"category\": \"language_script\", \"country\": null, \"family\": \"universal\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Australia",
+        "indicator": "Language and script",
+        "description": "Australia uses a typical English alphabet. However, you can often find signs that include names that come from the Aboriginal Language.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Brazil",
+        "indicator": "Language and script",
+        "description": "Brazil is the only country in South America that speaks Portuguese.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Alphabet/Script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Canada",
+        "indicator": "Language and script",
+        "description": "Canada uses English as well as French. The French is a little more prominent in the East and can draw a line from Quebec. From Quebec east is Both French and English, and Ontario west is more English heavy.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Chile",
+        "indicator": "Language and script",
+        "description": "Chile uses the Spanish language.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Language"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Colombia",
+        "indicator": "Language and script",
+        "description": "Colombia uses the Spanish language.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Alphabet/Script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Costa Rica",
+        "indicator": "Language and script",
+        "description": "Costa Rica uses your typical Spanish alphabet.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "France",
+        "indicator": "Language and script",
+        "description": "France uses a typical French Alphabet.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Germany",
+        "indicator": "Language and script",
+        "description": "Germany uses a Latin based script with few unique characters.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "India",
+        "indicator": "Language and script",
+        "description": "You can check out this Indian Language Comparison. page to get a better understanding of what the characters look like.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Indonesia",
+        "indicator": "Language and script",
+        "description": "Indonesian uses the Latin alphabet:. Useful vocabulary:. North – Utara. East – Timur. West – Barat. South – Selatan. Central – Tengah. Southeast – Tenggara. Kota – City. Desa – Village. Street/road – Jalan (abbreviated as Jl. Province – Provinsi. Regency – Kabupaten (abbreviated as Kab. District – Kecamatan (abbreviated as Kec. Selamat datang – Welcome. Selamat jalan – Goodbye (bon voyage). Peringatan: Merokok membunuhmu – Warning: Smoking kills you. Additional language notes:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Alphabet/language"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Indonesia",
+        "indicator": "part ci- means “river” and Sundanese is the language spoken in the provinces of ",
+        "description": "The part ci- means “river” and Sundanese is the language spoken in the provinces of West Java and Banten. You can also find some of these languages – Sundanese, Javanese, Balinese, etc.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Alphabet/language"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Italy",
+        "indicator": "Language and script",
+        "description": "Italy uses Italian, however there are chances to see other languages near the borders like Swiss, Austrian, French, Slovenian and Croatian.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Kenya",
+        "indicator": "Language and script",
+        "description": "Kenya has two official languages, English and Swahili. You will find English most commonly on signs and buildings.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Malaysia",
+        "indicator": "Language and script",
+        "description": "Malay is written in a Latin script.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Mexico",
+        "indicator": "Language and script",
+        "description": "Mexico uses a traditional Spanish alphabet.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Netherlands",
+        "indicator": "It’s often a sort of phonetically spoken/written English",
+        "description": "It’s often a sort of phonetically spoken/written English.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Netherlands",
+        "indicator": "Language and script",
+        "description": "People in the Netherlands speak Dutch and English. It is very common that you will see English on the streets during your Geoguessr missions, often in the form of business names. There is however, another official language within the Netherlands, Frysian. This language is only spoken in the province of Friesland, in the north where Leeuwarden and Heerenveen are located. City names appear in both languages in those areas, the bottom one being Frysian. Street names look different there. You can see â, ê, and û appear, as well as more j’s and y’s than in Dutch. Frysian is actually closer to English than it is to Dutch.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "New Zealand",
+        "indicator": "Language and script",
+        "description": "New Zealand uses English and Māori. Most of the North Island contains both languages. A key way to know if a place is a Māori word is if it ends in common vowel pairs, like ‘ui’, ‘ea’, or ‘oa’.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Peru",
+        "indicator": "Language and script",
+        "description": "Peru uses the Spanish language.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Alphabet/Script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "South Africa",
+        "indicator": "Language and script",
+        "description": "South Africa uses the English and Afrikaans language. Afrikaans is very similar to the Dutch language.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Sweden",
+        "indicator": "Language and script",
+        "description": "Sweden uses Swedish, an alphabet based in the Latin script.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Thailand",
+        "indicator": "Language and script",
+        "description": "The Thai script is incredibly complex consisting of many symbols as well as being tonal featuring 5 tones.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "Tunisia",
+        "indicator": "Language and script",
+        "description": "Tunisia uses a typical French alphabet, as well as arabic.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "United Kingdom",
+        "indicator": "Language and script",
+        "description": "(Welsh). (English). (Scottish). The UK uses proper English, while Wales has a mix of Welsh and English and Scotland can have some Scottish along with English.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Alphabet/script"
+      },
+      {
+        "family": "universal",
+        "category": "language_script",
+        "country": "United States",
+        "indicator": "Language and script",
+        "description": "The USA uses English, however you will find signs across the country with a multitude of different languages. You will find more Spanish in the south, and other diverse languages near major cities.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Alphabet/script"
+      }
+    ]
   }
 }
