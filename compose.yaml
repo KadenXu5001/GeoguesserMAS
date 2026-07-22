@@ -49,7 +49,7 @@ services:
       MONGODB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@mongodb:27017/${MONGODB_DATABASE:-geoguesser}?authSource=${MONGODB_DATABASE:-geoguesser}
       MONGODB_DATABASE: ${MONGODB_DATABASE:-geoguesser}
       LOCAL_OBJECT_STORE_ROOT: /mnt/geoguesser
-      REQUIRE_PROXY_AUTH: "true"
+      REQUIRE_PROXY_AUTH: "false"
       TRUST_PROXY_HEADERS: "true"
       PERSIST_ROUNDS_IN_MONGODB: "true"
       MAS_RATE_LIMIT_ENABLED: "true"
@@ -81,7 +81,7 @@ services:
       retries: 8
       start_period: 20s
     mem_limit: 1150m
-    cpus: 1.5
+    cpus: 1.0
     logging:
       options: { max-size: "10m", max-file: "3" }
 
@@ -92,8 +92,6 @@ services:
       app: { condition: service_healthy }
     environment:
       APP_DOMAIN: ${APP_DOMAIN}
-      APP_BASIC_AUTH_USERNAME: ${APP_BASIC_AUTH_USERNAME}
-      APP_BASIC_AUTH_PASSWORD_HASH: ${APP_BASIC_AUTH_PASSWORD_HASH}
     ports:
       - "80:80"
       - "443:443"

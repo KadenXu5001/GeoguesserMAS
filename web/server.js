@@ -478,7 +478,7 @@ function createMongoRequestGuard({
   }
   return {
     async check({ userId, ip }) {
-      await increment("user", userId, userLimit);
+      if (userId !== "anonymous") await increment("user", userId, userLimit);
       await increment("ip", ip, ipLimit);
     },
     async close() { await client.close(); },

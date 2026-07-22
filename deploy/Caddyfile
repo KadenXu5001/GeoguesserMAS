@@ -5,11 +5,7 @@
 	}
 
 	handle {
-		basic_auth {
-			{$APP_BASIC_AUTH_USERNAME} {$APP_BASIC_AUTH_PASSWORD_HASH}
-		}
 		reverse_proxy app:3000 {
-			header_up X-Authenticated-User {http.auth.user.id}
 			header_up X-Real-IP {remote_host}
 			header_up -Authorization
 		}

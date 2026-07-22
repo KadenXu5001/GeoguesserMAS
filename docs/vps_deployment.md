@@ -101,9 +101,9 @@ GCS identity can read runtime media and write only the backup prefix.
    active MAS child cleanup.
 2. Persist active rounds in MongoDB with ownership, creation/expiration timestamps, an atomic
    one-time guess update, and a TTL index.
-3. Add authentication and ownership checks for paid endpoints.
-4. Add Mongo-backed per-user and per-IP throttling, a per-instance MAS concurrency limit of one,
-   and a global monthly model-spend stop.
+3. Keep the public application account-free while preserving opaque round IDs and one-time guesses.
+4. Add Mongo-backed per-IP throttling, a per-instance MAS concurrency limit of one, and a global
+   monthly model-spend stop for paid analysis requests.
 5. Complete a local production-image smoke test against the Compose MongoDB service.
 6. Verify focused Node/Python tests and `git diff --check`.
 
@@ -142,7 +142,7 @@ volumes survive recreation, and secrets are absent from the image and repository
 6. Configure Gemini, LangSmith, and only the other API credentials actually required by production.
 7. Point the domain's A/AAAA records to the VPS and verify Caddy-managed HTTPS.
 
-**Gate:** the public HTTPS health endpoint succeeds, authenticated application flows work, private
+**Gate:** the public HTTPS health and application endpoints succeed without a login prompt, private
 images render from the GCS-backed mirror, and MongoDB records match the source counts and samples.
 
 ## Phase 6: Backups, hardening, and acceptance
@@ -164,12 +164,36 @@ or below $15 per month.
 
 ## Routine deployment
 
-After reviewing incoming changes and migrations:
+The default release path is `.github/workflows/deploy-production.yml`. Every push to `main` must
+pass the complete Python suite, Node suite, frontend build, Compose validation, and production
+image build before the tested commit is deployed over SSH. Production deployments are serialized,
+verify the pinned SSH host key, refuse a dirty server checkout, and fast-forward only to the exact
+tested `origin/main` commit.
+
+The workflow uses a dedicated non-root deployment user with Docker access. Configure the
+`production` GitHub Environment with these secrets:
+
+- `VPS_HOST`: the production origin IP;
+- `VPS_USER`: the dedicated deployment username;
+- `VPS_SSH_PRIVATE_KEY`: a dedicated private Ed25519 key used only by GitHub Actions; and
+- `VPS_SSH_KNOWN_HOSTS`: the verified `known_hosts` entry for the VPS.
+
+The deploy user must own `/srv/geotrainer/app`, belong to the Docker group, and have group-read
+access to `/etc/geotrainer/production.env`. Docker-group membership is root-equivalent and must not
+be shared with ordinary shell users. The dedicated Actions key must not be reused as an
+administrator key or committed to Git.
+
+Schema-sensitive changes to `src/geoguesser/storage.py` or `deploy/mongodb/init-app-user.js` fail
+closed in automatic deployment. Take and restore-verify a production backup, then release those
+changes manually. Routine code-only rollback is performed by reverting the bad commit on `main`;
+the resulting revert commit follows the same tested deployment path.
+
+For an explicitly reviewed manual release:
 
 ```bash
 git pull --ff-only
-docker compose up -d --build
-docker compose ps
+docker compose --env-file /etc/geotrainer/production.env up -d --build
+docker compose --env-file /etc/geotrainer/production.env ps
 ```
 
 Do not use an unqualified `git pull`, and take a database backup before a release containing a
@@ -181,11 +205,12 @@ not by deleting persistent volumes.
 - `compose.yaml` is the production stack. `compose.mongodb-dev.yaml` retains the unauthenticated,
   host-published MongoDB workflow for local development only.
 - `.env.production.example` is the production variable inventory. Copy it to
-  `/etc/geotrainer/production.env`, replace every placeholder, set owner `root:root`, and set mode
-  `0600`. Use URL-safe generated MongoDB passwords; do not commit the populated file.
-- `deploy/Caddyfile` leaves `/healthz` public and requires Caddy Basic Auth for everything else.
-  Generate the password hash with the pinned Caddy image and escape every `$` as `$$` in the
-  Compose environment file.
+  `/etc/geotrainer/production.env`, replace every placeholder, set owner `root:<deploy-user>`, and
+  set mode `0640` so only root and the dedicated deployment user can read it. Use URL-safe generated
+  MongoDB passwords; do not commit the populated file.
+- `deploy/Caddyfile` serves the application and `/healthz` publicly over HTTPS, strips inbound
+  authorization headers, proxies only to the private app service, and applies the required browser
+  security headers.
 - `deploy/scripts/sync_media.sh` synchronizes both private media namespaces into the persistent
   host mirror. Run it through `bash` after authenticating the least-privilege GCS identity, then
   run `verify_media_sync.sh` to compare cloud/local counts and verify every content-addressed local
@@ -201,9 +226,8 @@ not by deleting persistent volumes.
 - `deploy/scripts/import_mongodb.sh` performs an explicitly confirmed, checksum-verified initial
   production import, reruns validators/indexes, and restarts the app. `database_inventory.sh`
   produces the canonical collection-count and representative-record inventory for comparison.
-- `deploy/scripts/verify_public_deployment.sh` proves public HTTPS, public health, anonymous denial,
-  authenticated access, and key browser security headers without putting the password in a process
-  argument. Its curl config must be root-owned and mode `0600`.
+- `deploy/scripts/verify_public_deployment.sh` proves public HTTPS, public health, account-free
+  application access, and key browser security headers.
 
 Prepare and start a new host checkout with:
 
@@ -266,8 +290,6 @@ retention policy after the off-host nightly backup and restore drill have indepe
 After DNS resolves and Caddy has obtained a trusted certificate:
 
 ```bash
-sudo install -m 0600 deploy/curl-auth.conf.example /etc/geotrainer/curl-auth.conf
-sudoedit /etc/geotrainer/curl-auth.conf
 sudo GEOTRAINER_PUBLIC_URL=https://YOUR_DOMAIN \
   bash deploy/scripts/verify_public_deployment.sh
 ```
@@ -278,7 +300,7 @@ inventory after each restart. A representative paid MAS request must additionall
 LangSmith trace before the deployment gate is closed.
 
 The local production smoke test on 2026-07-21 verified a successful image build, Compose schema
-initialization, public health `200`, anonymous application `401`, authenticated application `200`,
+initialization, the then-configured Basic Auth boundary (superseded by public access on 2026-07-22),
 Mongo-backed round survival across a MongoDB container restart, TTL indexes, graceful app SIGTERM
 with exit code 0, and a compressed dump/restore with matching representative counts. Idle local
 usage was approximately 24 MiB app, 191 MiB MongoDB, and 12 MiB Caddy. Peak MAS memory and public
@@ -294,6 +316,7 @@ production frontend build.
 - Move MongoDB to Atlas only if the monthly budget increases and managed operation becomes more
   valuable than the additional cost.
 - Add external uptime and resource alerts.
-- Add CI/CD after the manual deployment and rollback path are proven.
+- Replace static SSH deployment credentials with an ephemeral identity mechanism if the hosting
+  provider later supports one that is simpler than the dedicated key.
 - Replace the synchronized media mirror with direct signed-URL or workload-federated GCS access if
   the code change later reduces operational burden.

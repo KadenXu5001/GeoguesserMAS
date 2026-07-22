@@ -11,13 +11,17 @@ Finish every locally testable deployment invariant before provisioning one low-c
 - [ ] Obtain approval for the recommended Hetzner CX33 (4 GiB) in Nuremberg at $9.99/month plus $0.60/month IPv4 excluding tax; keep DigitalOcean 2 GiB at $12/month only as fallback.
 - [x] Build the production Compose stack with private authenticated MongoDB, app, and containerized Caddy; publish only ports 80 and 443 and persist MongoDB/Caddy volumes.
 - [x] Replace the in-memory `RoundStore` production path with an async MongoDB round repository, atomic one-time guess submission, expiration timestamps, and a TTL index; retain an injectable in-memory store for focused tests.
-- [x] Add authenticated user identity to paid `/analyze` requests and bind round ownership to that identity without exposing answer-bearing metadata.
-- [x] Add Mongo-backed per-user and per-IP throttling, a per-instance MAS semaphore of 1, and a persistent global monthly model-spend stop; reject overload before spawning Python.
+- [x] Make production account-free while preserving opaque round identity, single-use guesses, and answer privacy.
+- [x] Add Mongo-backed per-IP throttling for anonymous traffic, a per-instance MAS semaphore of 1, and a persistent global monthly model-spend stop; reject overload before spawning Python.
 - [ ] Add focused tests for authentication, ownership, throttling, concurrency, persistent rounds, TTL indexes, duplicate guesses, monthly cost exhaustion, and graceful shutdown.
-- [ ] Provision the least-privilege VPS GCS identity and run the implemented media sync/integrity check plus nightly backup/upload/restore drill against the private bucket.
+- [x] Run the VPS GCS media sync and integrity gate: 1,668 runtime-private and 442 source-private objects synchronized and verified.
+- [ ] Replace temporary root user gcloud authentication with a least-privilege VPS identity and complete the nightly backup/upload/restore drill.
 - [x] Add a single VPS readiness gate that verifies GCS access, incrementally synchronizes both media namespaces, validates cloud/local counts and local content hashes, enforces the shared media-group contract, and validates Compose.
-- [x] Validate the production image and Compose stack locally, including Caddy authentication, schema initialization, Mongo restart persistence, and a dump/restore drill.
-- [ ] Provision the approved VPS, harden it, deploy, configure DNS/HTTPS, reboot, and complete the public acceptance tests.
+- [x] Validate the production image and Compose stack locally, including public Caddy routing, schema initialization, Mongo restart persistence, and a dump/restore drill.
+- [x] Provision the DigitalOcean VPS, deploy the Compose stack, restore 556 MongoDB panorama records, obtain the Caddy certificate, and verify public HTTPS health.
+- [ ] Complete public browser/image/MAS acceptance, restart persistence, firewall review, and public post-reboot verification.
+- [x] Add a serialized GitHub Actions CI/CD workflow that tests every push to `main`, builds the production image, verifies the exact commit and SSH host key, refuses dirty VPS state, and deploys routine code changes.
+- [ ] Provision the dedicated non-root Actions deploy key/user, configure the four production-environment secrets, align the VPS checkout with `main`, and prove the first automatic deployment.
 - [x] Configure `.env` with Mapillary, Gemini, and LangSmith credentials.
 - [x] Add `.env` to `.gitignore` and verify it is not tracked.
 - [x] Pin the initial Python dependencies.
@@ -109,6 +113,8 @@ Finish every locally testable deployment invariant before provisioning one low-c
 
 ## Decisions
 
+- 2026-07-22: Deploy tested pushes to `main` through GitHub Actions using a dedicated non-root SSH identity, immutable checkout action, serialized releases, exact-SHA/clean-checkout enforcement, and a manual verified-backup gate for MongoDB schema-sensitive changes.
+
 - 2026-07-21: Replace the planned Cloud Run and MongoDB Atlas deployment with one Ubuntu 24.04 VPS running app, MongoDB, and Caddy through Docker Compose; retain the existing private GCS bucket as media source of truth and target no more than $15 total recurring monthly project spend.
 - 2026-07-21: Run Caddy as a Compose service rather than installing a duplicate host service; keep MongoDB private to the Compose network and use a persistent volume.
 - 2026-07-21: Initially synchronize immutable GCS runtime media to a persistent read-only VPS mirror to preserve the current filesystem-based application contract; defer direct signed-URL access.
@@ -182,8 +188,8 @@ Finish every locally testable deployment invariant before provisioning one low-c
 
 ## Open Questions / Dependencies
 
-- Choose DigitalOcean or Hetzner, VPS region, and plan only after confirming the current price leaves a safe LLM reserve under the $15 total monthly cap.
-- Confirm the Cloudflare origin record targets `165.227.193.203` and complete HTTPS acceptance after the stack starts; the first release uses Caddy Basic Auth with backend round ownership.
+- Record the actual DigitalOcean monthly price and confirm it leaves a safe LLM reserve under the $15 total monthly cap.
+- Complete account-free browser, image, and MAS acceptance through the Cloudflare-proxied domain.
 - Provisioning the VPS, changing DNS, and creating or rotating credentials require explicit user approval.
 - The external VPS needs a least-privilege GCS authentication method; Workload Identity Federation is preferred, with a tightly protected service-account key only if federation is impractical.
 - Measure a representative live MAS run on the selected VPS; idle local containers fit comfortably, but peak Python/model-client memory is not yet proven on 2 GiB.
@@ -193,6 +199,14 @@ Finish every locally testable deployment invariant before provisioning one low-c
 - GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
 ## Last Updated
+
+2026-07-22 - Added the GitHub Actions CI/CD workflow and fail-closed VPS release script. Verified 175 Python tests, 31 Node tests, the production frontend build, focused deployment invariants, Compose rendering, and `git diff --check`. Dedicated deploy-user/key provisioning, GitHub production secrets, and the first live automatic release remain.
+
+2026-07-22 - Replaced the temporary Caddy Basic Auth boundary with account-free public HTTPS access at the user's request. Retained opaque rounds, per-IP throttling, one-MAS concurrency, the monthly spend ceiling, private MongoDB/media paths, and all security headers.
+
+2026-07-22 - Deployed MongoDB, app, and Caddy on the 1-vCPU/2-GiB VPS. Restored 556 panoramas, synchronized and verified GCS media, obtained the `geo-trainer.com` certificate, and confirmed public health `200` plus anonymous application denial `401`. Authenticated gameplay, live MAS memory, reboot persistence, least-privilege GCS auth, and backup restore remain.
+
+2026-07-22 - Adjusted the app CPU limit from 1.5 to 1.0 after the provisioned 1-vCPU DigitalOcean host correctly rejected the larger reservation during first startup.
 
 2026-07-22 - Recorded `geo-trainer.com` and origin `165.227.193.203`. Public DNS currently resolves through Cloudflare, while HTTPS health is not yet reachable.
 
