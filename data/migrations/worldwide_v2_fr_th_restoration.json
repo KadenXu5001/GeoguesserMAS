@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "migration_id": "worldwide-v2-fr-th-restoration-v1",
+  "target_dataset_version": "worldwide_v2",
+  "restored_from": "pilot_v1",
+  "applied_on": "2026-07-21",
+  "selection_policy": "Approved development records with valid content-addressed assets, selected by ascending panorama wrap_mae until each country reaches 10 playable worldwide_v2 records.",
+  "preconditions": {
+    "status": "rendered",
+    "split": "development",
+    "automatic_quality_pass": true,
+    "manual_review_status": "approved",
+    "exact_equirectangular_aspect_ratio": "2:1",
+    "required_headings": [0, 90, 180, 270],
+    "all_object_checksums_verified": true
+  },
+  "countries": {
+    "FR": {
+      "count_before": 2,
+      "count_restored": 8,
+      "count_after": 10,
+      "mapillary_image_ids": [
+        "1071222191492422",
+        "1058019072873068",
+        "677921998429064",
+        "1419742835788635",
+        "1350096039970943",
+        "1834424547111721",
+        "1192265416047418",
+        "1162876208991752"
+      ]
+    },
+    "TH": {
+      "count_before": 6,
+      "count_restored": 4,
+      "count_after": 10,
+      "mapillary_image_ids": [
+        "404005578344996",
+        "560306409056480",
+        "140282381932319",
+        "174045531704036"
+      ]
+    }
+  }
+}

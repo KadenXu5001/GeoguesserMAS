@@ -1,16 +1,111 @@
+name: geotrainer
+
 services:
   mongodb:
     image: mongo:8.0
+    command: ["mongod", "--auth", "--wiredTigerCacheSizeGB", "0.25"]
     restart: unless-stopped
-    ports:
-      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_APP_DATABASE: ${MONGODB_DATABASE:-geoguesser}
+      MONGO_APP_USERNAME: ${MONGO_APP_USERNAME}
+      MONGO_APP_PASSWORD: ${MONGO_APP_PASSWORD}
     volumes:
-      - geoguesser-mongodb:/data/db
+      - mongodb-data:/data/db
+      - ./deploy/mongodb/init-app-user.js:/docker-entrypoint-initdb.d/10-app-user.js:ro
+      - ./deploy/mongodb/verify-restore.js:/opt/geotrainer/verify-restore.js:ro
+      - ./deploy/mongodb/inventory.js:/opt/geotrainer/inventory.js:ro
     healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand('ping').ok"]
-      interval: 5s
+      test: ["CMD-SHELL", "mongosh --quiet --username \"$${MONGO_INITDB_ROOT_USERNAME}\" --password \"$${MONGO_INITDB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval \"quit(db.adminCommand('ping').ok ? 0 : 1)\""]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 12
+      start_period: 20s
+    logging:
+      options: { max-size: "10m", max-file: "3" }
+    mem_limit: 384m
+
+  mongo-init-schema:
+    build: .
+    restart: "no"
+    depends_on:
+      mongodb: { condition: service_healthy }
+    environment:
+      MONGODB_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGODB_DATABASE:-geoguesser}?authSource=admin
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-geoguesser}
+    command: ["/opt/venv/bin/python", "main.py", "init-mongodb"]
+
+  app:
+    build: .
+    restart: unless-stopped
+    stop_grace_period: 20s
+    depends_on:
+      mongodb: { condition: service_healthy }
+      mongo-init-schema: { condition: service_completed_successfully }
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      MONGODB_URI: mongodb://${MONGO_APP_USERNAME}:${MONGO_APP_PASSWORD}@mongodb:27017/${MONGODB_DATABASE:-geoguesser}?authSource=${MONGODB_DATABASE:-geoguesser}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-geoguesser}
+      LOCAL_OBJECT_STORE_ROOT: /mnt/geoguesser
+      REQUIRE_PROXY_AUTH: "true"
+      TRUST_PROXY_HEADERS: "true"
+      PERSIST_ROUNDS_IN_MONGODB: "true"
+      MAS_RATE_LIMIT_ENABLED: "true"
+      MAS_BUDGET_ENABLED: "true"
+      MAS_CONCURRENCY_LIMIT: "1"
+      MAS_MAX_QUEUE: "0"
+      MAS_USER_REQUESTS_PER_HOUR: ${MAS_USER_REQUESTS_PER_HOUR:-6}
+      MAS_IP_REQUESTS_PER_HOUR: ${MAS_IP_REQUESTS_PER_HOUR:-12}
+      MONTHLY_MAS_BUDGET_USD: ${MONTHLY_MAS_BUDGET_USD:-3.00}
+      MAS_MAX_REQUEST_RESERVATION_USD: "1.00"
+      ACTIVE_ROUND_TTL_HOURS: ${ACTIVE_ROUND_TTL_HOURS:-24}
+      VISION_ANALYSIS_DEADLINE_MS: "215000"
+      VISION_ANALYSIS_TERMINATION_GRACE_MS: "15000"
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GEMINI_REFERENCE_MODEL: ${GEMINI_REFERENCE_MODEL:-gemini-3.5-flash}
+      LANGSMITH_TRACING: "true"
+      LANGCHAIN_CALLBACKS_BACKGROUND: "false"
+      LANGSMITH_ENDPOINT: ${LANGSMITH_ENDPOINT:-https://api.smith.langchain.com}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT:-geoguesser}
+    volumes:
+      - ${GEOTRAINER_MEDIA_DIR:-/srv/geotrainer/media}:/mnt/geoguesser:ro
+    group_add:
+      - ${GEOTRAINER_MEDIA_GID:-2000}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
+    mem_limit: 1150m
+    cpus: 1.5
+    logging:
+      options: { max-size: "10m", max-file: "3" }
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      app: { condition: service_healthy }
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      APP_BASIC_AUTH_USERNAME: ${APP_BASIC_AUTH_USERNAME}
+      APP_BASIC_AUTH_PASSWORD_HASH: ${APP_BASIC_AUTH_PASSWORD_HASH}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    logging:
+      options: { max-size: "10m", max-file: "3" }
 
 volumes:
-  geoguesser-mongodb:
+  mongodb-data:
+  caddy-data:
+  caddy-config:

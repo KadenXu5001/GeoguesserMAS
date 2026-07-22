@@ -52,7 +52,7 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
   text.
 - The extraction tool is single-use per run. It must be marked attempted before its provider call;
   provider failure, malformed output, or capacity failure is terminal for that run. Extraction must
-  not be retried, have a JSON fallback, or be called again after success or failure.
+  not be retried within that run, have a JSON fallback, or be called again after success or failure.
 - During the extraction phase, runtime middleware must bind the supervisor's tool choice to the
   exact `extract_visual_evidence` tool name; the supervisor may not deliberate among later tools
   before extraction.
@@ -78,6 +78,23 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 - No tool may be repeated, retried, or called merely to verify a previous result, except that the
   supervisor may repeat `write_todos` only for legitimate status updates to the existing finite
   plan.
+- A MAS run is one isolated invocation with fresh graph state, runtime counters, cost accounting,
+  and trace identity. No model call, provider call, tool call, extraction, specialist task, or other
+  phase may be retried within that invocation.
+- The caller may start at most one new MAS run for the same analysis request only when the preceding
+  run ends with a timeout before returning a prediction, capacity warning, or other structured
+  result. The timed-out run must be terminated before the replacement begins; the two runs may not
+  overlap or share graph state, runtime counters, cost accounting, or trace identity. Provider,
+  validation, capacity, observability, and other non-timeout failures must not trigger a new run.
+- A caller-level timeout retry is a distinct MAS run, not permission to resume or repeat any action
+  inside the timed-out run. Each run independently remains subject to every ordering, single-use,
+  tracing, three-minute, and $0.50 invariant in this constitution.
+- The production website must enforce a 215-second outer deadline on each MAS child process and
+  continue supervising that process after an early browser response until it exits. At the outer
+  deadline it must request termination, allow at most 15 seconds for shutdown and trace cleanup,
+  then forcibly terminate a child that is still alive. No replacement run may start after this
+  outer deadline because the enclosing request no longer has enough time budget. The hosting
+  request timeout must remain at least 10 seconds longer than the deadline plus shutdown grace.
 - Runtime middleware remains the source of hard enforcement for specialist, re-examination,
   orchestrator-turn, token, and cost limits. Prompts may explain these limits but cannot replace
   code enforcement.
@@ -102,6 +119,10 @@ GeoGuessr multi-agent system. A change is incomplete if it violates these rules.
 - Trace delivery is synchronous and must be flushed before the process exits. A trace-upload
   failure is an observability failure and must be printed clearly in the terminal; it must not be
   confused with a model or MAS prediction failure.
+- A timed-out process must attempt the same synchronous trace flush during its termination grace
+  period. Forced termination after that grace period is the sole case in which a flush may be
+  incomplete; it must be logged explicitly as an observability failure and must not start another
+  MAS run.
 
 ## Frontend design fidelity
 

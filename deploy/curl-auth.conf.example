@@ -1,0 +1,3 @@
+# Install as /etc/geotrainer/curl-auth.conf with root:root ownership and mode 0600.
+# Do not commit the populated file.
+user = "replace_username:replace_password"

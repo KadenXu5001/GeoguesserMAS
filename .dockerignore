@@ -1,0 +1,59 @@
+# Version control and CI
+.git/
+.github/
+
+# Environments and secrets
+.env
+.env.*
+!.env.example
+venv/
+.venv/
+.runtime-venv/
+.runtime-win/
+.sandbox-venv/
+.sandbox-native/
+
+# Node
+node_modules/
+web/node_modules/
+web/dist/
+
+# Python caches and build artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Local artifacts, caches, and object store
+.artifacts/
+.uv-cache/
+.uv-sandbox-cache/
+.local-data/
+data/panoramas/
+data/rendered/
+data/boundaries/
+
+# Legacy/local-only media and scraped hint files
+countryhintsfiles/
+countryhintsfiles-online/
+
+# Agent/dev-only state
+.agents/
+.deepagents/
+
+# Logs
+*.log
+.server-out.log
+.server-err.log
+
+# Editor/OS cruft
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

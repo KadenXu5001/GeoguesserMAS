@@ -110,6 +110,49 @@ VISION_ANALYSIS_CACHE_VALIDATOR = {
     }
 }
 
+ACTIVE_ROUND_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "_id", "owner_id", "panorama", "answered", "created_at", "expires_at",
+        ],
+        "properties": {
+            "_id": {"bsonType": "string", "minLength": 36, "maxLength": 36},
+            "owner_id": {"bsonType": "string", "minLength": 1, "maxLength": 128},
+            "panorama": {"bsonType": "object"},
+            "answered": {"bsonType": "bool"},
+            "result": {"bsonType": ["object", "null"]},
+            "created_at": {"bsonType": "date"},
+            "expires_at": {"bsonType": "date"},
+        },
+    }
+}
+
+REQUEST_LIMIT_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["_id", "count", "expires_at"],
+        "properties": {
+            "_id": {"bsonType": "string", "minLength": 1, "maxLength": 256},
+            "count": {"bsonType": ["int", "long"]},
+            "expires_at": {"bsonType": "date"},
+        },
+    }
+}
+
+RUNTIME_BUDGET_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": ["_id", "spent_usd", "reserved_usd", "expires_at"],
+        "properties": {
+            "_id": {"bsonType": "string", "minLength": 7, "maxLength": 7},
+            "spent_usd": {"bsonType": ["double", "int", "long", "decimal"]},
+            "reserved_usd": {"bsonType": ["double", "int", "long", "decimal"]},
+            "expires_at": {"bsonType": "date"},
+        },
+    }
+}
+
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -145,6 +188,9 @@ class MongoRepository:
         self._ensure_collection("ingestion_attempts", None)
         self._ensure_collection("reference_rows", REFERENCE_VALIDATOR)
         self._ensure_collection("vision_analysis_cache", VISION_ANALYSIS_CACHE_VALIDATOR)
+        self._ensure_collection("active_rounds", ACTIVE_ROUND_VALIDATOR)
+        self._ensure_collection("request_limits", REQUEST_LIMIT_VALIDATOR)
+        self._ensure_collection("runtime_budgets", RUNTIME_BUDGET_VALIDATOR)
 
         self.database.panoramas.create_index(
             [("mapillary_image_id", ASCENDING)], unique=True, name="uq_mapillary_image"
@@ -185,6 +231,18 @@ class MongoRepository:
         self.database.vision_analysis_cache.create_index(
             [("source_id", ASCENDING), ("cache_version", ASCENDING)],
             name="source_cache_version",
+        )
+        self.database.active_rounds.create_index(
+            [("expires_at", ASCENDING)], expireAfterSeconds=0, name="expire_active_rounds"
+        )
+        self.database.active_rounds.create_index(
+            [("owner_id", ASCENDING), ("created_at", ASCENDING)], name="owner_round_history"
+        )
+        self.database.request_limits.create_index(
+            [("expires_at", ASCENDING)], expireAfterSeconds=0, name="expire_request_limits"
+        )
+        self.database.runtime_budgets.create_index(
+            [("expires_at", ASCENDING)], expireAfterSeconds=0, name="expire_runtime_budgets"
         )
 
         pilot = pilot_dataset_document()

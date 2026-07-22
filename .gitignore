@@ -1,6 +1,7 @@
 .env
 .env.*
 !.env.example
+!.env.production.example
 venv/
 .venv/
 .runtime-venv/
@@ -13,6 +14,7 @@ __pycache__/
 htmlcov/
 .artifacts/
 .local-data/
+Cloud envs.md
 data/panoramas/
 data/rendered/
 data/boundaries/
@@ -25,3 +27,5 @@ web/node_modules/
 .deepagents/
 countryhintsfiles/
 countryhintsfiles-online/
+geogusserSSH
+geogusserSSH.pub
