@@ -27,7 +27,7 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
 
     MongoRepository(database).initialize()
 
-    assert database.create_collection.call_count == 5
+    assert database.create_collection.call_count == 8
     database.panoramas.create_index.assert_any_call(
         [("mapillary_image_id", 1)], unique=True, name="uq_mapillary_image"
     )
@@ -37,6 +37,15 @@ def test_initialize_creates_schema_indexes_and_pilot_version() -> None:
     database.vision_analysis_cache.create_index.assert_called_once_with(
         [("source_id", 1), ("cache_version", 1)],
         name="source_cache_version",
+    )
+    database.active_rounds.create_index.assert_any_call(
+        [("expires_at", 1)], expireAfterSeconds=0, name="expire_active_rounds"
+    )
+    database.request_limits.create_index.assert_called_once_with(
+        [("expires_at", 1)], expireAfterSeconds=0, name="expire_request_limits"
+    )
+    database.runtime_budgets.create_index.assert_called_once_with(
+        [("expires_at", 1)], expireAfterSeconds=0, name="expire_runtime_budgets"
     )
     database.reference_rows.create_index.assert_any_call(
         REFERENCE_UNIQUE_INDEX, unique=True, name="uq_reference_row"
@@ -78,6 +87,7 @@ def test_initialize_replaces_legacy_reference_unique_index() -> None:
     database.list_collection_names.return_value = [
         "panoramas", "dataset_versions", "ingestion_attempts", "reference_rows",
         "vision_analysis_cache",
+        "active_rounds", "request_limits", "runtime_budgets",
     ]
     database.reference_rows.index_information.return_value = {
         "uq_reference_row": {

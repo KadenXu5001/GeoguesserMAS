@@ -2,10 +2,22 @@
 
 ## Current Objective
 
-Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS path before tuning prompts or considering expansion to the worldwide taxonomy. Keep local MongoDB/reference data and disk-backed images separated from model-facing extraction payloads.
+Finish every locally testable deployment invariant before provisioning one low-cost Ubuntu 24.04 VPS: authenticated Docker MongoDB, a verified private-GCS media mirror readable by the non-root app container, production Compose/Caddy readiness, protected paid endpoints, constitutional MAS shutdown/tracing behavior, and controls targeting no more than $15 in total monthly project spend.
 
 ## Now
 
+- [x] Replace the Cloud Run/Atlas plan with `docs/vps_deployment.md` and retain the completed private GCS media work.
+- [x] Run the deployment-focused Node server suite with coverage for `PORT`, `0.0.0.0`, authentication, bounded concurrency, top-level `SIGTERM`, MongoDB closure, and active MAS child cleanup (30 tests passed on 2026-07-22).
+- [ ] Obtain approval for the recommended Hetzner CX33 (4 GiB) in Nuremberg at $9.99/month plus $0.60/month IPv4 excluding tax; keep DigitalOcean 2 GiB at $12/month only as fallback.
+- [x] Build the production Compose stack with private authenticated MongoDB, app, and containerized Caddy; publish only ports 80 and 443 and persist MongoDB/Caddy volumes.
+- [x] Replace the in-memory `RoundStore` production path with an async MongoDB round repository, atomic one-time guess submission, expiration timestamps, and a TTL index; retain an injectable in-memory store for focused tests.
+- [x] Add authenticated user identity to paid `/analyze` requests and bind round ownership to that identity without exposing answer-bearing metadata.
+- [x] Add Mongo-backed per-user and per-IP throttling, a per-instance MAS semaphore of 1, and a persistent global monthly model-spend stop; reject overload before spawning Python.
+- [ ] Add focused tests for authentication, ownership, throttling, concurrency, persistent rounds, TTL indexes, duplicate guesses, monthly cost exhaustion, and graceful shutdown.
+- [ ] Provision the least-privilege VPS GCS identity and run the implemented media sync/integrity check plus nightly backup/upload/restore drill against the private bucket.
+- [x] Add a single VPS readiness gate that verifies GCS access, incrementally synchronizes both media namespaces, validates cloud/local counts and local content hashes, enforces the shared media-group contract, and validates Compose.
+- [x] Validate the production image and Compose stack locally, including Caddy authentication, schema initialization, Mongo restart persistence, and a dump/restore drill.
+- [ ] Provision the approved VPS, harden it, deploy, configure DNS/HTTPS, reboot, and complete the public acceptance tests.
 - [x] Configure `.env` with Mapillary, Gemini, and LangSmith credentials.
 - [x] Add `.env` to `.gitignore` and verify it is not tracked.
 - [x] Pin the initial Python dependencies.
@@ -97,6 +109,12 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 
 ## Decisions
 
+- 2026-07-21: Replace the planned Cloud Run and MongoDB Atlas deployment with one Ubuntu 24.04 VPS running app, MongoDB, and Caddy through Docker Compose; retain the existing private GCS bucket as media source of truth and target no more than $15 total recurring monthly project spend.
+- 2026-07-21: Run Caddy as a Compose service rather than installing a duplicate host service; keep MongoDB private to the Compose network and use a persistent volume.
+- 2026-07-21: Initially synchronize immutable GCS runtime media to a persistent read-only VPS mirror to preserve the current filesystem-based application contract; defer direct signed-URL access.
+- 2026-07-22: Require production migration inventories to match collection counts and stable representative `_id` values; require media cloud/local count equality plus SHA-256 verification of every local content-addressed object.
+- 2026-07-22: Complete all locally testable deployment work before VPS provisioning; use host/container media GID `2000` and one pre-start readiness command for GCS sync, integrity verification, and Compose validation.
+- 2026-07-22: Use `geo-trainer.com` for production with provided origin IPv4 `165.227.193.203`; public DNS is Cloudflare-proxied, so verify origin routing and HTTPS after the stack starts.
 - 2026-07-10: Use a minimal MAS with one orchestrator and two possible specialists; invoke at least one and at most two specialists per panorama, each at most once.
 - 2026-07-10: Treat extraction and re-examination as perception components, not agents.
 - 2026-07-10: Send four 1024×1024 cardinal views together in one Flash extraction call.
@@ -164,12 +182,21 @@ Run and inspect the frozen France/Thailand/Brazil pilot through the complete MAS
 
 ## Open Questions / Dependencies
 
+- Choose DigitalOcean or Hetzner, VPS region, and plan only after confirming the current price leaves a safe LLM reserve under the $15 total monthly cap.
+- Confirm the Cloudflare origin record targets `165.227.193.203` and complete HTTPS acceptance after the stack starts; the first release uses Caddy Basic Auth with backend round ownership.
+- Provisioning the VPS, changing DNS, and creating or rotating credentials require explicit user approval.
+- The external VPS needs a least-privilege GCS authentication method; Workload Identity Federation is preferred, with a tightly protected service-account key only if federation is impractical.
+- Measure a representative live MAS run on the selected VPS; idle local containers fit comfortably, but peak Python/model-client memory is not yet proven on 2 GiB.
 - Recheck production model IDs, tokenization behavior, and provider prices immediately before the frozen evaluation.
 - Select a versioned country-centroid dataset for haversine scoring.
 - Define the seeded split procedure after coverage, distance, and sequence filtering.
 - GeoTips/GeoHints reference extraction must preserve source attribution and be frozen before final evaluation.
 
 ## Last Updated
+
+2026-07-22 - Recorded `geo-trainer.com` and origin `165.227.193.203`. Public DNS currently resolves through Cloudflare, while HTTPS health is not yet reachable.
+
+2026-07-22 - Added the testable GCS-backed VPS readiness gate and Linux shared-media-group contract. Verified 174 Python tests, 30 Node tests, the Vite production build, Linux shell syntax, Compose rendering, production image builds, all eight local MongoDB collections/TTL indexes, and a production-container read of the mounted object store. External VPS identity, DNS, and live public acceptance remain provisioning tasks.
 
 2026-07-13 - Completed five production-model bbox validations on development-only samples. The validator now checkpoints each sample, retries transient 429/5xx errors with exponential backoff and jitter, processes sequentially, records failures, and uses a larger JSON output budget; one extra candidate exhausted retries with a Gemini 503.
 

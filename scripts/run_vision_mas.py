@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 import sys
 from pathlib import Path
 from typing import Any
@@ -43,6 +44,14 @@ class SnapshotRepository:
         return lookup_references(self.snapshot, category=category, country=country)
 
 
+class MasTerminationRequested(RuntimeError):
+    """Raised on SIGTERM so mandatory trace cleanup can run before process exit."""
+
+
+def _request_termination(signum: int, _frame: Any) -> None:
+    raise MasTerminationRequested(f"Vision MAS process received signal {signum}")
+
+
 def build_mas_row(request: dict[str, Any]) -> dict[str, str]:
     """Preserve object-store identity while adapting the website request to a MAS row."""
     paths = request.get("paths")
@@ -67,6 +76,7 @@ def build_mas_row(request: dict[str, Any]) -> dict[str, str]:
 
 
 def main() -> None:
+    signal.signal(signal.SIGTERM, _request_termination)
     request = json.load(sys.stdin)
     snapshot = load_reference_snapshot(ROOT / "data" / "reference_tables" / "reference_v2.json")
     row = build_mas_row(request)
@@ -90,6 +100,12 @@ def main() -> None:
             "informedEvidence": result["informed_evidence"],
             "predictedCountry": result["prediction"]["country"],
             "alternativeCountries": result["prediction"]["alternatives"][:3],
+            # Internal accounting only; the Node response allowlist removes this field.
+            "costUsd": round(sum(
+                float(event.get("cost_usd", 0) or 0)
+                for event in result.get("usage", [])
+                if isinstance(event, dict)
+            ), 6),
         }, ensure_ascii=False))
     finally:
         print("[vision-mas] flushing mandatory LangSmith traces", file=sys.stderr, flush=True)

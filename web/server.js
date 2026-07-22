@@ -7,7 +7,8 @@ const { spawn } = require("node:child_process");
 const { MongoClient } = require("mongodb");
 
 const ROOT = path.resolve(__dirname, "..");
-const PORT = Number(process.env.VISION_PORT || 3000);
+const PORT = Number(process.env.PORT || process.env.VISION_PORT || 3000);
+const HOST = process.env.HOST || "0.0.0.0";
 
 function resolvePythonExecutable({
   root = ROOT,
@@ -36,6 +37,52 @@ const SOURCE_PRIVATE = "source-private";
 const RUNTIME_PRIVATE = "runtime-private";
 const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
 const VISION_ANALYSIS_CACHE_VERSION = process.env.VISION_ANALYSIS_CACHE_VERSION || "vision-analysis-v3";
+const VISION_ANALYSIS_DEADLINE_MS = positiveMilliseconds(
+  process.env.VISION_ANALYSIS_DEADLINE_MS,
+  215_000,
+);
+const VISION_ANALYSIS_TERMINATION_GRACE_MS = positiveMilliseconds(
+  process.env.VISION_ANALYSIS_TERMINATION_GRACE_MS,
+  15_000,
+);
+
+class HttpError extends Error {
+  constructor(status, message, headers = {}) {
+    super(message);
+    this.status = status;
+    this.headers = headers;
+  }
+}
+
+function enabled(value) {
+  return /^(1|true|yes)$/i.test(String(value || ""));
+}
+
+function boundedNumber(value, fallback, minimum = 0) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= minimum ? parsed : fallback;
+}
+
+function requestIdentity(req, {
+  required = enabled(process.env.REQUIRE_PROXY_AUTH),
+  trustProxy = enabled(process.env.TRUST_PROXY_HEADERS),
+  userHeader = process.env.AUTH_USER_HEADER || "x-authenticated-user",
+} = {}) {
+  const forwardedUser = trustProxy ? String(req.headers[userHeader] || "").trim() : "";
+  if (forwardedUser && !/^[\w.@+-]{1,128}$/.test(forwardedUser)) {
+    throw new HttpError(400, "Invalid authenticated user header.");
+  }
+  if (required && !forwardedUser) throw new HttpError(401, "Authentication is required.");
+  const address = trustProxy
+    ? String(req.headers["x-real-ip"] || "").trim()
+    : String(req.socket?.remoteAddress || "unknown");
+  return { userId: forwardedUser || "anonymous", ip: address.slice(0, 128) || "unknown" };
+}
+
+function positiveMilliseconds(value, fallback) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
 
 function send(res, status, body, type = "application/json", headers = {}) {
   res.writeHead(status, {
@@ -331,6 +378,189 @@ function createMongoAnalysisStore({
   };
 }
 
+function createMongoRoundStore(panoramas, {
+  uri = process.env.MONGODB_URI || "mongodb://localhost:27017",
+  databaseName = process.env.MONGODB_DATABASE || "geoguesser",
+  ttlHours = boundedNumber(process.env.ACTIVE_ROUND_TTL_HOURS, 24, 1),
+  randomIndex = (length) => randomInt(length),
+  client = new MongoClient(uri),
+} = {}) {
+  const collection = client.db(databaseName).collection("active_rounds");
+  const toRound = (document) => document && ({
+    id: document._id,
+    panorama: document.panorama,
+    answered: document.answered,
+    result: document.result || null,
+    createdAt: document.created_at?.getTime?.() || Date.now(),
+  });
+  return {
+    async create(excludedRoundIds = [], ownerId = "anonymous") {
+      const prior = excludedRoundIds.length
+        ? await collection.find({ _id: { $in: excludedRoundIds }, owner_id: ownerId })
+          .project({ "panorama.sourceId": 1 }).toArray()
+        : [];
+      const excludedSources = new Set(prior.map((item) => item.panorama?.sourceId).filter(Boolean));
+      let candidates = panoramas.filter((item) => !excludedSources.has(item.sourceId));
+      if (!candidates.length) candidates = panoramas;
+      if (!candidates.length) throw new HttpError(503, "No playable panoramas are available.");
+      const now = new Date();
+      const document = {
+        _id: randomUUID(), owner_id: ownerId,
+        panorama: candidates[randomIndex(candidates.length)],
+        answered: false, result: null, created_at: now,
+        expires_at: new Date(now.getTime() + ttlHours * 60 * 60 * 1000),
+      };
+      await collection.insertOne(document);
+      return toRound(document);
+    },
+    async get(roundId, ownerId = "anonymous") {
+      return toRound(await collection.findOne({ _id: roundId, owner_id: ownerId }));
+    },
+    async guess(roundId, selectedIso2, ownerId = "anonymous") {
+      const normalized = String(selectedIso2 || "").trim().toUpperCase();
+      if (!/^[A-Z]{2}$/.test(normalized)) {
+        return { status: 400, body: { error: "Choose a valid country before guessing." } };
+      }
+      const existing = await collection.findOne({ _id: roundId, owner_id: ownerId });
+      if (!existing) return { status: 404, body: { error: "Training round not found." } };
+      if (existing.answered) {
+        return { status: 409, body: { error: "This round has already been submitted." } };
+      }
+      const result = {
+        correct: normalized === existing.panorama.countryIso2,
+        selectedCountry: { iso2: normalized, name: REGION_NAMES.of(normalized) || normalized },
+        correctCountry: {
+          iso2: existing.panorama.countryIso2,
+          name: existing.panorama.country || REGION_NAMES.of(existing.panorama.countryIso2),
+        },
+      };
+      const updated = await collection.findOneAndUpdate(
+        { _id: roundId, owner_id: ownerId, answered: false },
+        { $set: { answered: true, result } },
+        { returnDocument: "after" },
+      );
+      if (!updated) {
+        return { status: 409, body: { error: "This round has already been submitted." } };
+      }
+      return { status: 200, body: result };
+    },
+    async close() { await client.close(); },
+  };
+}
+
+function createMongoRequestGuard({
+  uri = process.env.MONGODB_URI || "mongodb://localhost:27017",
+  databaseName = process.env.MONGODB_DATABASE || "geoguesser",
+  userLimit = boundedNumber(process.env.MAS_USER_REQUESTS_PER_HOUR, 6, 1),
+  ipLimit = boundedNumber(process.env.MAS_IP_REQUESTS_PER_HOUR, 12, 1),
+  windowSeconds = boundedNumber(process.env.MAS_RATE_WINDOW_SECONDS, 3600, 1),
+  client = new MongoClient(uri),
+} = {}) {
+  const collection = client.db(databaseName).collection("request_limits");
+  const digest = (value) => createHash("sha256").update(value).digest("hex");
+  async function increment(kind, value, limit, now = Date.now()) {
+    const windowStart = Math.floor(now / (windowSeconds * 1000)) * windowSeconds;
+    const id = `${kind}:${digest(value)}:${windowStart}`;
+    const result = await collection.findOneAndUpdate(
+      { _id: id },
+      {
+        $inc: { count: 1 },
+        $setOnInsert: { expires_at: new Date((windowStart + windowSeconds * 2) * 1000) },
+      },
+      { upsert: true, returnDocument: "after" },
+    );
+    if (result.count > limit) {
+      const retryAfter = Math.max(1, windowStart + windowSeconds - Math.floor(now / 1000));
+      throw new HttpError(429, "Vision analysis rate limit exceeded.", {
+        "retry-after": String(retryAfter),
+      });
+    }
+  }
+  return {
+    async check({ userId, ip }) {
+      await increment("user", userId, userLimit);
+      await increment("ip", ip, ipLimit);
+    },
+    async close() { await client.close(); },
+  };
+}
+
+function createMongoMasBudget({
+  uri = process.env.MONGODB_URI || "mongodb://localhost:27017",
+  databaseName = process.env.MONGODB_DATABASE || "geoguesser",
+  monthlyLimitUsd = boundedNumber(process.env.MONTHLY_MAS_BUDGET_USD, 3, 0.01),
+  reserveUsd = boundedNumber(process.env.MAS_MAX_REQUEST_RESERVATION_USD, 1, 0.01),
+  client = new MongoClient(uri),
+} = {}) {
+  const collection = client.db(databaseName).collection("runtime_budgets");
+  return {
+    async reserve(now = new Date()) {
+      const period = now.toISOString().slice(0, 7);
+      const expiresAt = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 2, 1));
+      try {
+        await collection.updateOne(
+          { _id: period },
+          { $setOnInsert: { spent_usd: 0, reserved_usd: 0, expires_at: expiresAt } },
+          { upsert: true },
+        );
+        const document = await collection.findOneAndUpdate(
+          {
+            _id: period,
+            $expr: { $lte: [
+              { $add: [
+                { $ifNull: ["$spent_usd", 0] },
+                { $ifNull: ["$reserved_usd", 0] },
+                reserveUsd,
+              ] },
+              monthlyLimitUsd,
+            ] },
+          },
+          {
+            $inc: { reserved_usd: reserveUsd },
+          },
+          { returnDocument: "after" },
+        );
+        if (!document) throw new Error("budget unavailable");
+      } catch (error) {
+        if (error?.code === 11000 || /budget unavailable/i.test(error.message || "")) {
+          throw new HttpError(503, "The monthly Vision analysis budget has been reached.");
+        }
+        throw error;
+      }
+      return { period, reserveUsd };
+    },
+    async settle(reservation, chargedUsd) {
+      const charge = Math.max(0, Math.min(reservation.reserveUsd, Number(chargedUsd) || 0));
+      await collection.updateOne(
+        { _id: reservation.period },
+        { $inc: { reserved_usd: -reservation.reserveUsd, spent_usd: charge } },
+      );
+    },
+    async close() { await client.close(); },
+  };
+}
+
+class Semaphore {
+  constructor(limit = 1, maxQueue = Number.POSITIVE_INFINITY) {
+    this.limit = limit; this.maxQueue = maxQueue; this.active = 0; this.waiters = [];
+  }
+  async use(task) {
+    if (this.active >= this.limit) {
+      if (this.waiters.length >= this.maxQueue) {
+        throw new HttpError(503, "Vision analysis is busy; try again shortly.", {
+          "retry-after": "5",
+        });
+      }
+      await new Promise((resolve) => this.waiters.push(resolve));
+    }
+    this.active += 1;
+    try { return await task(); } finally {
+      this.active -= 1;
+      this.waiters.shift()?.();
+    }
+  }
+}
+
 class RoundStore {
   constructor(panoramas, randomIndex = (length) => randomInt(length)) {
     this.panoramas = panoramas;
@@ -398,7 +628,14 @@ function serializeRound(round) {
 
 async function runVisionAnalysis(
   request,
-  { root = ROOT, python = PYTHON, spawnProcess = spawn } = {},
+  {
+    root = ROOT,
+    python = PYTHON,
+    spawnProcess = spawn,
+    deadlineMs = VISION_ANALYSIS_DEADLINE_MS,
+    terminationGraceMs = VISION_ANALYSIS_TERMINATION_GRACE_MS,
+    activeChildren,
+  } = {},
 ) {
   const input = JSON.stringify(Array.isArray(request) ? { paths: request } : request);
   return new Promise((resolve, reject) => {
@@ -412,11 +649,46 @@ async function runVisionAnalysis(
       },
       stdio: ["pipe", "pipe", "pipe"],
     });
+    activeChildren?.add(child);
     let stdout = "";
     let stderr = "";
     let settled = false;
+    let processClosed = false;
+    let outerDeadlineReached = false;
+    let forceTerminationTimer;
+    const deadlineError = () => {
+      const error = new Error(
+        `Vision MAS child exceeded its ${deadlineMs} ms outer process deadline.`,
+      );
+      error.code = "VISION_ANALYSIS_OUTER_DEADLINE";
+      return error;
+    };
+    const deadlineTimer = setTimeout(() => {
+      if (processClosed) return;
+      outerDeadlineReached = true;
+      console.error(
+        `Vision MAS child reached its ${deadlineMs} ms outer deadline; requesting termination.`,
+      );
+      try {
+        child.kill("SIGTERM");
+      } catch (error) {
+        console.error(`Vision MAS graceful termination request failed: ${error.message || error}`);
+      }
+      forceTerminationTimer = setTimeout(() => {
+        if (processClosed) return;
+        console.error(
+          "LANGSMITH_OBSERVABILITY_FAILURE: Vision MAS child did not exit during its "
+            + `${terminationGraceMs} ms trace-cleanup grace; forcing termination.`,
+        );
+        try {
+          child.kill("SIGKILL");
+        } catch (error) {
+          console.error(`Vision MAS forced termination failed: ${error.message || error}`);
+        }
+      }, terminationGraceMs);
+    }, deadlineMs);
     const resolveCompletedPrediction = () => {
-      if (settled) return true;
+      if (settled || outerDeadlineReached) return settled;
       try {
         const result = JSON.parse(stdout);
         settled = true;
@@ -435,9 +707,23 @@ async function runVisionAnalysis(
       process.stderr.write(chunk);
     });
     child.on("error", (error) => {
-      if (!settled) reject(error);
+      if (!settled && !outerDeadlineReached) {
+        settled = true;
+        reject(error);
+      }
     });
     child.on("close", (code) => {
+      activeChildren?.delete(child);
+      processClosed = true;
+      clearTimeout(deadlineTimer);
+      clearTimeout(forceTerminationTimer);
+      if (outerDeadlineReached) {
+        if (!settled) {
+          settled = true;
+          reject(deadlineError());
+        }
+        return;
+      }
       if (code !== 0) {
         if (!stderr) console.error(`Vision process exited with ${code}.`);
         if (!settled) reject(new Error(stderr || `Vision process exited with ${code}.`));
@@ -471,38 +757,34 @@ function visionMasRequest(panorama) {
   };
 }
 
-function isRetryableVisionError(error) {
+function isWholeRunTimeout(error) {
   const detail = `${error?.name || ""} ${error?.code || ""} ${error?.message || error || ""}`
     .toLowerCase();
-  // Trace delivery happens after inference. Retrying would rerun a completed MAS
-  // prediction and can multiply the same oversized or unavailable upload.
+  // Only a timeout before a structured result permits one new, isolated MAS run.
+  // Capacity, provider, validation, and observability failures remain terminal.
+  if (detail.includes("vision_analysis_outer_deadline")) return false;
   if (detail.includes("langsmith_observability_failure")) return false;
   const status = Number(error?.status || error?.statusCode || error?.code);
-  if ([429, 500, 503, 504].includes(status)) return true;
+  if (status === 504) return true;
   return [
+    "etimedout",
     "readtimeout",
     "writetimeout",
     "connecttimeout",
     "pooltimeout",
-    "connecterror",
-    "remoteprotocolerror",
     "timeout error",
     "timed out",
     "deadline exceeded",
-    "resource_exhausted",
-    "too many requests",
-    "service unavailable",
-    "503 unavailable",
-    "internal server error",
   ].some((marker) => detail.includes(marker));
 }
 
-async function analyzeWithTransientRetry(analyze, request) {
+async function analyzeWithTimeoutRetry(analyze, request, onRetry = async () => {}) {
   try {
     return await analyze(request);
   } catch (error) {
-    if (!isRetryableVisionError(error)) throw error;
-    console.warn("Vision MAS transient failure; starting one fresh website retry.");
+    if (!isWholeRunTimeout(error)) throw error;
+    await onRetry(error);
+    console.warn("Vision MAS timed out; starting one fresh, isolated MAS run.");
     return analyze(request);
   }
 }
@@ -533,28 +815,58 @@ async function serveFrontend(res, requestPath, root = ROOT) {
 function createAppServer({
   root = ROOT,
   panoramas,
-  analyze = (request) => runVisionAnalysis(request, { root }),
+  analyze,
   analysisStore = createMongoAnalysisStore(),
+  roundStore,
+  requestGuard,
+  masBudget,
+  semaphore = new Semaphore(
+    boundedNumber(process.env.MAS_CONCURRENCY_LIMIT, 1, 1),
+    boundedNumber(process.env.MAS_MAX_QUEUE, 0),
+  ),
+  authOptions,
   randomIndex,
 } = {}) {
+  const activeChildren = new Set();
+  const analyzeFn = analyze || ((request) => runVisionAnalysis(request, { root, activeChildren }));
   const panoramaPromise = panoramas ? Promise.resolve(panoramas) : listTrainingPanoramas(root);
-  const storePromise = panoramaPromise.then((items) => new RoundStore(items, randomIndex));
+  const storePromise = panoramaPromise.then((items) => roundStore || (
+    enabled(process.env.PERSIST_ROUNDS_IN_MONGODB)
+      ? createMongoRoundStore(items, { randomIndex })
+      : new RoundStore(items, randomIndex)
+  ));
+  storePromise.catch(() => {});
   const inFlightAnalyses = new Map();
+  const guard = requestGuard || (enabled(process.env.MAS_RATE_LIMIT_ENABLED)
+    ? createMongoRequestGuard() : { async check() {}, async close() {} });
+  const budget = masBudget || (enabled(process.env.MAS_BUDGET_ENABLED)
+    ? createMongoMasBudget() : {
+      async reserve() { return { reserveUsd: 0 }; }, async settle() {}, async close() {},
+    });
 
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, "http://127.0.0.1");
+
+      if (req.method === "GET" && url.pathname === "/healthz") {
+        return send(res, 200, { status: "ok" });
+      }
+
+      const identity = url.pathname.startsWith("/api/")
+        ? requestIdentity(req, authOptions)
+        : { userId: "anonymous", ip: "unknown" };
+
       const store = await storePromise;
 
       if (req.method === "POST" && url.pathname === "/api/rounds") {
         const payload = await readJson(req);
         const excluded = Array.isArray(payload.excludeRoundIds) ? payload.excludeRoundIds : [];
-        return send(res, 201, serializeRound(store.create(excluded)));
+        return send(res, 201, serializeRound(await store.create(excluded, identity.userId)));
       }
 
       const roundMatch = url.pathname.match(/^\/api\/rounds\/([0-9a-f-]+)$/i);
       if (req.method === "GET" && roundMatch) {
-        const round = store.get(roundMatch[1]);
+        const round = await store.get(roundMatch[1], identity.userId);
         return round
           ? send(res, 200, serializeRound(round))
           : send(res, 404, { error: "Training round not found." });
@@ -562,14 +874,14 @@ function createAppServer({
 
       const panoramaMatch = url.pathname.match(/^\/api\/rounds\/([0-9a-f-]+)\/panorama$/i);
       if (req.method === "GET" && panoramaMatch) {
-        const round = store.get(panoramaMatch[1]);
+        const round = await store.get(panoramaMatch[1], identity.userId);
         if (!round) return send(res, 404, { error: "Training round not found." });
         return send(res, 200, await fs.readFile(round.panorama.panoramaPath), "image/jpeg");
       }
 
       const viewMatch = url.pathname.match(/^\/api\/rounds\/([0-9a-f-]+)\/views\/(0|90|180|270)$/i);
       if (req.method === "GET" && viewMatch) {
-        const round = store.get(viewMatch[1]);
+        const round = await store.get(viewMatch[1], identity.userId);
         if (!round) return send(res, 404, { error: "Training round not found." });
         return send(res, 200, await fs.readFile(round.panorama.views[Number(viewMatch[2])]), "image/jpeg");
       }
@@ -577,14 +889,15 @@ function createAppServer({
       const guessMatch = url.pathname.match(/^\/api\/rounds\/([0-9a-f-]+)\/guess$/i);
       if (req.method === "POST" && guessMatch) {
         const payload = await readJson(req);
-        const outcome = store.guess(guessMatch[1], payload.countryIso2);
+        const outcome = await store.guess(guessMatch[1], payload.countryIso2, identity.userId);
         return send(res, outcome.status, outcome.body);
       }
 
       const analyzeMatch = url.pathname.match(/^\/api\/rounds\/([0-9a-f-]+)\/analyze$/i);
       if (req.method === "POST" && analyzeMatch) {
-        const round = store.get(analyzeMatch[1]);
+        const round = await store.get(analyzeMatch[1], identity.userId);
         if (!round) return send(res, 404, { error: "Training round not found." });
+        await guard.check(identity);
         const cacheKey = visionAnalysisCacheKey(round.panorama);
         const persisted = await analysisStore.get(cacheKey);
         if (persisted) {
@@ -594,9 +907,25 @@ function createAppServer({
         let task = inFlightAnalyses.get(cacheKey);
         if (!task) {
           task = (async () => {
-            const generated = browserSafeAnalysisPayload(
-              await analyzeWithTransientRetry(analyze, visionMasRequest(round.panorama)),
-            );
+            let reservation;
+            let retryCharge = 0;
+            let raw;
+            let generated;
+            try {
+              raw = await semaphore.use(async () => {
+                reservation = await budget.reserve();
+                return analyzeWithTimeoutRetry(
+                  analyzeFn,
+                  visionMasRequest(round.panorama),
+                  async () => { retryCharge = 0.5; },
+                );
+              });
+              generated = browserSafeAnalysisPayload(raw);
+            } catch (error) {
+              if (reservation) await budget.settle(reservation, reservation.reserveUsd);
+              throw error;
+            }
+            await budget.settle(reservation, retryCharge + boundedNumber(raw.costUsd, 0));
             await analysisStore.set(cacheKey, generated, {
               sourceId: round.panorama.sourceId,
               viewHashes: HEADINGS.map((heading) => round.panorama.viewHashes?.[heading] || null),
@@ -618,35 +947,98 @@ function createAppServer({
       if (req.method === "GET" && !url.pathname.startsWith("/api/") && await serveFrontend(res, url.pathname, root)) return;
       send(res, 404, { error: "Not found." });
     } catch (error) {
-      send(res, 400, { error: error.message || "Request failed." });
+      send(res, error.status || 400, { error: error.message || "Request failed." },
+        "application/json", error.headers || {});
     }
   });
-  server.on("close", () => { void analysisStore.close?.(); });
+  let resourcesClosed;
+  server.activeChildren = activeChildren;
+  server.closeResources = () => {
+    if (!resourcesClosed) resourcesClosed = Promise.all([
+      analysisStore.close?.(), guard.close?.(), budget.close?.(),
+      storePromise.then((store) => store.close?.()).catch(() => undefined),
+    ]);
+    return resourcesClosed;
+  };
+  server.on("close", () => { void server.closeResources(); });
   return server;
 }
 
+async function shutdownServer(server, {
+  graceMs = VISION_ANALYSIS_TERMINATION_GRACE_MS,
+  log = console,
+} = {}) {
+  const children = [...(server.activeChildren || [])];
+  for (const child of children) {
+    try { child.kill("SIGTERM"); } catch (error) {
+      log.error(`Vision MAS graceful shutdown request failed: ${error.message || error}`);
+    }
+  }
+  const serverClosed = new Promise((resolve) => {
+    server.close((error) => resolve(error || null));
+  });
+  const childrenClosed = Promise.all(children.map((child) => new Promise((resolve) => {
+    child.once("close", resolve);
+  })));
+  let timer;
+  const timedOut = await Promise.race([
+    Promise.all([serverClosed, childrenClosed, server.closeResources?.()]).then(() => false),
+    new Promise((resolve) => { timer = setTimeout(() => resolve(true), graceMs); }),
+  ]);
+  clearTimeout(timer);
+  if (timedOut) {
+    log.error(
+      "LANGSMITH_OBSERVABILITY_FAILURE: shutdown exceeded the trace-cleanup grace; "
+        + "forcing remaining MAS children to stop.",
+    );
+    for (const child of server.activeChildren || []) {
+      try { child.kill("SIGKILL"); } catch (error) {
+        log.error(`Vision MAS forced shutdown failed: ${error.message || error}`);
+      }
+    }
+    server.closeAllConnections?.();
+  }
+  return !timedOut;
+}
+
 if (require.main === module) {
-  createAppServer().listen(PORT, "127.0.0.1", () => {
-    console.log(`GeoGuessr training frontend: http://127.0.0.1:${PORT}`);
+  const server = createAppServer().listen(PORT, HOST, () => {
+    console.log(`GeoGuessr training frontend: http://${HOST}:${PORT}`);
     console.log(`Vision MAS Python: ${PYTHON}`);
   });
+
+  let shuttingDown = false;
+  const handleShutdown = async (signal) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`${signal} received: allowing up to 15 seconds for traces and MongoDB cleanup.`);
+    const graceful = await shutdownServer(server);
+    process.exit(graceful ? 0 : 1);
+  };
+  process.on("SIGTERM", () => { void handleShutdown("SIGTERM"); });
+  process.on("SIGINT", () => { void handleShutdown("SIGINT"); });
 }
 
 module.exports = {
   RoundStore,
-  analyzeWithTransientRetry,
+  analyzeWithTimeoutRetry,
   browserSafeAnalysisPayload,
   createAppServer,
   createMongoAnalysisStore,
+  createMongoMasBudget,
+  createMongoRequestGuard,
+  createMongoRoundStore,
   listMongoTrainingPanoramas,
   listPilotTrainingPanoramas,
   listTrainingPanoramas,
   loadStorageMigrationOverlay,
   mergeTrainingPanoramas,
-  isRetryableVisionError,
+  isWholeRunTimeout,
   resolvePythonExecutable,
   runVisionAnalysis,
+  Semaphore,
   serializeRound,
+  shutdownServer,
   visionMasRequest,
   visionAnalysisCacheKey,
 };

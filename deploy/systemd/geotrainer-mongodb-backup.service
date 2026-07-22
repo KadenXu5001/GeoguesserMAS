@@ -1,0 +1,13 @@
+[Unit]
+Description=Back up GeoTrainer MongoDB to private Google Cloud Storage
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/geotrainer/backup.env
+ExecStart=/usr/bin/bash /srv/geotrainer/app/deploy/scripts/backup_mongodb.sh
+User=root
+Group=root
+PrivateTmp=true
+NoNewPrivileges=true

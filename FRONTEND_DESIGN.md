@@ -99,6 +99,11 @@ country, submits a guess, and learns whether the country was correct.
 - The training set combines the 45 frozen pilot panoramas with eligible `worldwide_v2` panoramas
   registered in MongoDB. The two sources are additive and are deduplicated by Mapillary source
   identity, with the frozen pilot manifest winning any collision.
+- A production deployment may omit pilot media when the deployment independently verifies that
+  eligible `worldwide_v2` rounds still serve France, Brazil, and Thailand. Omitting pilot media must
+  not remove any of those three countries from the playable country pool. Objects referenced by a
+  restored `worldwide_v2` record must be uploaded even when their original provenance was the pilot
+  collection; only pilot-only, unreferenced media may be omitted.
 - A `worldwide_v2` MongoDB record is playable only when it is explicitly tagged with that dataset
   version, belongs to one of the versioned dataset's countries, has `quality.automatic_pass` set,
   is in `quality_review` or `rendered` state, has an exact 2:1 original panorama, has exactly one
@@ -234,10 +239,17 @@ The Vision MAS screenshot is the structural reference. The screen contains:
   server-side.
 - Vision analysis normally runs once per panorama and is persisted in a server-controlled website
   cache for later visits, including visits after the website server restarts. If that initial MAS
-  run fails with a transient transport or Gemini capacity error, the website may start exactly one
-  fresh production MAS run with the same server-side image references. The failed run is never
-  resumed or cached, and validation, policy, and other deterministic failures are not retried.
+  run times out before returning a prediction, capacity warning, or other structured result, the
+  website may start exactly one fresh, isolated production MAS run with the same server-side image
+  references after the timed-out run terminates. The failed run is never resumed or cached. Generic
+  provider, validation, policy, capacity, observability, and all other non-timeout failures do not
+  start another run.
 - The first guide visit may show a loading state while the analysis runs.
+- The website supervises every MAS child process with a 215-second outer deadline, including after
+  an early browser-safe prediction has been returned. At that deadline it requests termination,
+  allows at most 15 seconds for trace cleanup and process exit, and then forcibly terminates a child
+  that remains alive. This outer safety deadline never starts a replacement run; only an earlier
+  timeout that leaves sufficient enclosing-request budget may use the single fresh-run allowance.
 - The loading state ends as soon as the MAS emits its complete browser-safe prediction JSON. The
   website must not wait for the subsequent mandatory LangSmith trace flush or Python process exit
   before presenting and caching that completed result. Trace delivery continues server-side; a
@@ -311,6 +323,19 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
 
 ## Decision record
 
+### 2026-07-21: VPS production access boundary
+
+- Protected the production website and every application API route with Caddy-managed HTTP Basic
+  authentication, while leaving only `/healthz` public for infrastructure health checks.
+- Kept credentials out of the frontend bundle and browser storage. Caddy removes the inbound
+  `Authorization` header and forwards only a validated username and client address to the app over
+  the private Docker network.
+- Required the backend to bind opaque rounds to the authenticated username and to enforce
+  per-user, per-IP, concurrency, and monthly MAS spend limits server-side. Local development may
+  explicitly disable the trusted-proxy authentication boundary.
+- Required production HTTPS responses to include HSTS, CSP, `nosniff`, frame-denial, referrer, and
+  permissions policies at the Caddy boundary without changing the approved visible interface.
+
 ### 2026-07-19: Initial frontend master specification
 
 - Established the three-screen structure from the user-provided home, map, and Vision MAS
@@ -356,11 +381,40 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
 
 ### 2026-07-19: Bounded website MAS recovery
 
-- Allowed the website analysis boundary to start one fresh MAS run after a transient timeout or
-  Gemini capacity failure from the initial run.
+- Allowed the website analysis boundary to start one fresh MAS run only after a timeout from the
+  initial run and only after that timed-out run terminates without a structured result.
 - Kept retries outside the failed MAS graph so extraction remains single-use within every run.
-- Continued to cache only successful browser-safe analysis and prohibited retries for deterministic
-  validation or policy failures.
+- Continued to cache only successful browser-safe analysis and prohibited new runs for generic
+  provider, validation, policy, capacity, and observability failures.
+
+### 2026-07-21: Timeout-only whole-run retry amendment
+
+- Defined each MAS invocation as an isolated run with fresh graph state, runtime counters, cost
+  accounting, and trace identity.
+- Prohibited every retry inside a run while permitting at most one replacement run when the first
+  invocation times out before returning any structured result.
+- Removed Gemini capacity and other non-timeout provider failures from website retry eligibility.
+
+### 2026-07-21: Deployment media and MAS process deadline
+
+- Allowed production to omit pilot media only while independently playable `worldwide_v2` rounds
+  continue to cover France, Brazil, and Thailand.
+- Added a 215-second outer MAS child-process deadline with a 15-second graceful termination window,
+  keeping cleanup bounded below the planned 240-second Cloud Run timeout.
+- Kept process supervision active after early prediction delivery and prohibited a fresh run after
+  the outer safety deadline.
+
+### 2026-07-21: Restore France and Thailand worldwide coverage
+
+- Restored eight approved France development panoramas and four approved Thailand development
+  panoramas from the frozen pilot collection into `worldwide_v2`, bringing each country to ten
+  independently playable MongoDB records.
+- Selected only automatic-quality passes with approved manual review, exact 2:1 originals, all four
+  cardinal views, and verified content-addressed objects. Among eligible development records, the
+  lowest horizontal seam-error scores were selected deterministically.
+- Kept frozen evaluation records and rejected Thailand candidates out of the restoration. The pilot
+  CSVs remain authoritative for their original split membership, and pilot identities continue to
+  win frontend deduplication when local pilot media is present.
 
 ### 2026-07-20: Readable evidence cards and visible agent prediction
 

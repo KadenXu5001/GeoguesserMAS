@@ -6,15 +6,17 @@ const path = require("node:path");
 const { EventEmitter } = require("node:events");
 const { PassThrough } = require("node:stream");
 const {
-  analyzeWithTransientRetry,
+  analyzeWithTimeoutRetry,
   browserSafeAnalysisPayload,
   createAppServer,
-  isRetryableVisionError,
+  isWholeRunTimeout,
   listMongoTrainingPanoramas,
   listPilotTrainingPanoramas,
   mergeTrainingPanoramas,
   resolvePythonExecutable,
   runVisionAnalysis,
+  Semaphore,
+  shutdownServer,
   visionMasRequest,
   visionAnalysisCacheKey,
 } = require("../server");
@@ -108,14 +110,89 @@ test("website receives a completed MAS prediction before LangSmith flush process
   child.emit("close", 0);
 });
 
-test("website MAS retry classification is limited to transient transport and capacity errors", () => {
-  assert.equal(isRetryableVisionError(new Error("httpx.ReadTimeout: read timed out")), true);
-  assert.equal(isRetryableVisionError(Object.assign(new Error("quota"), { status: 429 })), true);
+test("website keeps supervising an early prediction until the child deadline", async () => {
+  let child;
+  let terminated;
+  const termination = new Promise((resolve) => { terminated = resolve; });
+  const spawnProcess = () => {
+    child = new EventEmitter();
+    child.stdin = new PassThrough();
+    child.stdout = new PassThrough();
+    child.stderr = new PassThrough();
+    child.kill = (signal) => {
+      terminated(signal);
+      setImmediate(() => child.emit("close", null, signal));
+      return true;
+    };
+    return child;
+  };
+  const payload = {
+    analysis: { infrastructure: { objects: [] } },
+    informedEvidence: [],
+    predictedCountry: "France",
+    alternativeCountries: ["Belgium"],
+  };
+
+  const resultPromise = runVisionAnalysis({ paths: [] }, {
+    root: process.cwd(),
+    python: "python",
+    spawnProcess,
+    deadlineMs: 10,
+    terminationGraceMs: 50,
+  });
+  child.stdout.write(JSON.stringify(payload));
+
+  assert.deepEqual(await resultPromise, payload);
+  assert.equal(await termination, "SIGTERM");
+});
+
+test("website force-terminates and rejects a child that exceeds the shutdown grace", async () => {
+  let child;
+  const signals = [];
+  const spawnProcess = () => {
+    child = new EventEmitter();
+    child.stdin = new PassThrough();
+    child.stdout = new PassThrough();
+    child.stderr = new PassThrough();
+    child.kill = (signal) => {
+      signals.push(signal);
+      if (signal === "SIGKILL") setImmediate(() => child.emit("close", null, signal));
+      return true;
+    };
+    return child;
+  };
+
+  const resultPromise = runVisionAnalysis({ paths: [] }, {
+    root: process.cwd(),
+    python: "python",
+    spawnProcess,
+    deadlineMs: 10,
+    terminationGraceMs: 10,
+  });
+
+  await assert.rejects(
+    resultPromise,
+    (error) => error.code === "VISION_ANALYSIS_OUTER_DEADLINE",
+  );
+  assert.deepEqual(signals, ["SIGTERM", "SIGKILL"]);
+});
+
+test("website whole-run retry classification is limited to timeouts", () => {
+  assert.equal(isWholeRunTimeout(new Error("httpx.ReadTimeout: read timed out")), true);
+  assert.equal(isWholeRunTimeout(Object.assign(new Error("gateway timeout"), { status: 504 })), true);
+  assert.equal(isWholeRunTimeout(Object.assign(new Error("quota"), { status: 429 })), false);
+  assert.equal(isWholeRunTimeout(new Error("503 UNAVAILABLE")), false);
   assert.equal(
-    isRetryableVisionError(new Error("LANGSMITH_OBSERVABILITY_FAILURE: trace flush timed out")),
+    isWholeRunTimeout(Object.assign(new Error("outer deadline"), {
+      code: "VISION_ANALYSIS_OUTER_DEADLINE",
+    })),
     false,
   );
-  assert.equal(isRetryableVisionError(new Error("ExtractionOutput validation failed")), false);
+  assert.equal(
+    isWholeRunTimeout(new Error("LANGSMITH_OBSERVABILITY_FAILURE: trace flush timed out")),
+    false,
+  );
+  assert.equal(isWholeRunTimeout(new Error("ExtractionOutput validation failed")), false);
 });
 
 test("browser-safe analysis keeps at most three distinct alternative candidates", () => {
@@ -130,10 +207,10 @@ test("browser-safe analysis keeps at most three distinct alternative candidates"
   assert.equal("confidence" in payload, false);
 });
 
-test("website starts exactly one fresh MAS run after a transient failure", async () => {
+test("website starts exactly one fresh MAS run after a timeout", async () => {
   let attempts = 0;
   const request = { paths: ["0.jpg", "90.jpg", "180.jpg", "270.jpg"] };
-  const result = await analyzeWithTransientRetry(async (received) => {
+  const result = await analyzeWithTimeoutRetry(async (received) => {
     attempts += 1;
     assert.equal(received, request);
     if (attempts === 1) throw new Error("httpx.WriteTimeout: The write operation timed out");
@@ -147,7 +224,7 @@ test("website starts exactly one fresh MAS run after a transient failure", async
 test("website does not retry a deterministic MAS failure", async () => {
   let attempts = 0;
   await assert.rejects(
-    analyzeWithTransientRetry(async () => {
+    analyzeWithTimeoutRetry(async () => {
       attempts += 1;
       throw new Error("ExtractionOutput validation failed");
     }, {}),
@@ -159,7 +236,7 @@ test("website does not retry a deterministic MAS failure", async () => {
 test("website does not rerun a completed MAS after a LangSmith flush timeout", async () => {
   let attempts = 0;
   await assert.rejects(
-    analyzeWithTransientRetry(async () => {
+    analyzeWithTimeoutRetry(async () => {
       attempts += 1;
       throw new Error("LANGSMITH_OBSERVABILITY_FAILURE: mandatory trace flush timed out");
     }, {}),
@@ -168,19 +245,33 @@ test("website does not rerun a completed MAS after a LangSmith flush timeout", a
   assert.equal(attempts, 1);
 });
 
-test("website stops after the second transient MAS failure", async () => {
+test("website stops after the second MAS timeout", async () => {
   let attempts = 0;
   await assert.rejects(
-    analyzeWithTransientRetry(async () => {
+    analyzeWithTimeoutRetry(async () => {
+      attempts += 1;
+      throw new Error("httpx.ReadTimeout: read timed out");
+    }, {}),
+    /read timed out/,
+  );
+  assert.equal(attempts, 2);
+});
+
+test("website does not start a new MAS run after a non-timeout provider failure", async () => {
+  let attempts = 0;
+  await assert.rejects(
+    analyzeWithTimeoutRetry(async () => {
       attempts += 1;
       throw new Error("503 UNAVAILABLE");
     }, {}),
     /503 UNAVAILABLE/,
   );
-  assert.equal(attempts, 2);
+  assert.equal(attempts, 1);
 });
 
-async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } = {}) {
+async function startFixture({
+  analysisStore = memoryAnalysisStore(), analyze, requestGuard, masBudget, semaphore, authOptions,
+} = {}) {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), "geotrainer-server-test-"));
   const panoramaPath = path.join(directory, "secret-brazil-panorama.jpg");
   const viewPaths = Object.fromEntries([0, 90, 180, 270].map((heading) => [
@@ -206,6 +297,10 @@ async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } =
     }],
     randomIndex: () => 0,
     analysisStore,
+    requestGuard,
+    masBudget,
+    semaphore,
+    authOptions,
     analyze: analyze || (async () => {
       analyzeCalls += 1;
       return {
@@ -231,6 +326,90 @@ async function startFixture({ analysisStore = memoryAnalysisStore(), analyze } =
     getAnalyzeCalls: () => analyzeCalls,
   };
 }
+
+test("production proxy authentication protects API routes while health remains public", async (t) => {
+  const fixture = await startFixture({ authOptions: { required: true, trustProxy: true } });
+  t.after(async () => {
+    await new Promise((resolve) => fixture.server.close(resolve));
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  });
+
+  const health = await jsonRequest(`${fixture.baseUrl}/healthz`);
+  assert.equal(health.response.status, 200);
+  const denied = await jsonRequest(`${fixture.baseUrl}/api/rounds`, {
+    method: "POST", headers: { "content-type": "application/json" }, body: "{}",
+  });
+  assert.equal(denied.response.status, 401);
+  const allowed = await jsonRequest(`${fixture.baseUrl}/api/rounds`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-authenticated-user": "alice@example.com",
+      "x-real-ip": "203.0.113.10",
+    },
+    body: "{}",
+  });
+  assert.equal(allowed.response.status, 201);
+});
+
+test("paid analysis guard receives authenticated user and proxy client address", async (t) => {
+  const identities = [];
+  const fixture = await startFixture({
+    authOptions: { required: true, trustProxy: true },
+    requestGuard: { async check(identity) { identities.push(identity); }, async close() {} },
+  });
+  t.after(async () => {
+    await new Promise((resolve) => fixture.server.close(resolve));
+    await fs.rm(fixture.directory, { recursive: true, force: true });
+  });
+  const headers = { "x-authenticated-user": "alice", "x-real-ip": "198.51.100.8" };
+  const created = await jsonRequest(`${fixture.baseUrl}/api/rounds`, {
+    method: "POST", headers: { ...headers, "content-type": "application/json" }, body: "{}",
+  });
+  await jsonRequest(`${fixture.baseUrl}/api/rounds/${created.body.roundId}/analyze`, {
+    method: "POST", headers,
+  });
+  assert.deepEqual(identities, [{ userId: "alice", ip: "198.51.100.8" }]);
+});
+
+test("MAS semaphore admits only one active task", async () => {
+  const semaphore = new Semaphore(1, 2);
+  let active = 0;
+  let maximum = 0;
+  const work = () => semaphore.use(async () => {
+    active += 1;
+    maximum = Math.max(maximum, active);
+    await new Promise((resolve) => setTimeout(resolve, 5));
+    active -= 1;
+  });
+  await Promise.all([work(), work(), work()]);
+  assert.equal(maximum, 1);
+});
+
+test("production MAS semaphore rejects excess work instead of queueing without bound", async () => {
+  const semaphore = new Semaphore(1, 0);
+  let release;
+  const first = semaphore.use(() => new Promise((resolve) => { release = resolve; }));
+  await assert.rejects(
+    semaphore.use(async () => {}),
+    (error) => error.status === 503 && error.headers["retry-after"] === "5",
+  );
+  release();
+  await first;
+});
+
+test("server shutdown terminates active MAS children within the cleanup grace", async () => {
+  const child = new EventEmitter();
+  child.kill = (signal) => {
+    assert.equal(signal, "SIGTERM");
+    setImmediate(() => child.emit("close", 0));
+  };
+  const server = new EventEmitter();
+  server.activeChildren = new Set([child]);
+  server.close = (callback) => setImmediate(() => callback());
+  server.closeResources = async () => {};
+  assert.equal(await shutdownServer(server, { graceMs: 50 }), true);
+});
 
 async function jsonRequest(url, options = {}) {
   const response = await fetch(url, options);
@@ -276,6 +455,49 @@ test("round payload hides answer-bearing metadata until submission", async (t) =
     body: JSON.stringify({ countryIso2: "BR" }),
   });
   assert.equal(repeated.response.status, 409);
+});
+
+test("healthz reports liveness without waiting on the panorama store", async (t) => {
+  let releaseStore;
+  const stalledPanoramas = new Promise((resolve) => { releaseStore = resolve; });
+  const server = createAppServer({
+    panoramas: stalledPanoramas,
+    analysisStore: memoryAnalysisStore(),
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  t.after(async () => {
+    releaseStore([]);
+    await new Promise((resolve) => server.close(resolve));
+  });
+  const address = server.address();
+
+  const { response, body } = await jsonRequest(`http://127.0.0.1:${address.port}/healthz`);
+  assert.equal(response.status, 200);
+  assert.deepEqual(body, { status: "ok" });
+});
+
+test("healthz stays reachable and the process survives a rejected panorama store", async (t) => {
+  let unhandled = false;
+  const onUnhandledRejection = () => { unhandled = true; };
+  process.on("unhandledRejection", onUnhandledRejection);
+  const server = createAppServer({
+    panoramas: Promise.reject(new Error("Mongo unreachable")),
+    analysisStore: memoryAnalysisStore(),
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  t.after(async () => {
+    process.off("unhandledRejection", onUnhandledRejection);
+    await new Promise((resolve) => server.close(resolve));
+  });
+  const address = server.address();
+
+  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => setImmediate(resolve));
+
+  const { response, body } = await jsonRequest(`http://127.0.0.1:${address.port}/healthz`);
+  assert.equal(response.status, 200);
+  assert.deepEqual(body, { status: "ok" });
+  assert.equal(unhandled, false);
 });
 
 test("vision analysis is generated once and reused per panorama", async (t) => {

@@ -1,0 +1,27 @@
+{$APP_DOMAIN} {
+	@health path /healthz
+	handle @health {
+		reverse_proxy app:3000
+	}
+
+	handle {
+		basic_auth {
+			{$APP_BASIC_AUTH_USERNAME} {$APP_BASIC_AUTH_PASSWORD_HASH}
+		}
+		reverse_proxy app:3000 {
+			header_up X-Authenticated-User {http.auth.user.id}
+			header_up X-Real-IP {remote_host}
+			header_up -Authorization
+		}
+	}
+
+	header {
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.tile.openstreetmap.org; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		-Server
+	}
+}
