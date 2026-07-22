@@ -9,6 +9,7 @@ const {
   analyzeWithTimeoutRetry,
   browserSafeAnalysisPayload,
   createAppServer,
+  createMongoRequestGuard,
   isWholeRunTimeout,
   listMongoTrainingPanoramas,
   listPilotTrainingPanoramas,
@@ -396,6 +397,35 @@ test("production MAS semaphore rejects excess work instead of queueing without b
   );
   release();
   await first;
+});
+
+test("anonymous production traffic uses only the per-IP request limit", async () => {
+  const ids = [];
+  const client = {
+    db() {
+      return {
+        collection() {
+          return {
+            async findOneAndUpdate({ _id }) {
+              ids.push(_id);
+              return { count: 1 };
+            },
+          };
+        },
+      };
+    },
+    async close() {},
+  };
+  const guard = createMongoRequestGuard({ client });
+
+  await guard.check({ userId: "anonymous", ip: "203.0.113.8" });
+  assert.equal(ids.length, 1);
+  assert.match(ids[0], /^ip:/);
+
+  await guard.check({ userId: "alice", ip: "203.0.113.9" });
+  assert.equal(ids.length, 3);
+  assert.match(ids[1], /^user:/);
+  assert.match(ids[2], /^ip:/);
 });
 
 test("server shutdown terminates active MAS children within the cleanup grace", async () => {

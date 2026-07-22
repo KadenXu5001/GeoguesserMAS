@@ -323,6 +323,19 @@ four-view analysis. Focused server tests and desktop/mobile browser checks cover
 
 ## Decision record
 
+### 2026-07-22: Public production access
+
+- Removed the Caddy HTTP Basic Auth prompt so the home, training, media, guess, and Vision Guide
+  routes are publicly accessible over HTTPS without an account or sign-in step.
+- Kept opaque round IDs, server-authoritative answers, one-time guess submission, bounded MAS
+  concurrency, per-IP request limits, and the persistent monthly MAS spend ceiling. Anonymous
+  traffic does not use a shared per-user throttle because every visitor has the same anonymous
+  identity; the client address is the public request-limit key.
+- Continued to strip inbound authorization headers at Caddy and keep MongoDB, the application port,
+  answer metadata, local media paths, and model credentials inaccessible from the public network.
+- Retained all production security headers and left `/healthz` publicly available for infrastructure
+  checks.
+
 ### 2026-07-21: VPS production access boundary
 
 - Protected the production website and every application API route with Caddy-managed HTTP Basic
