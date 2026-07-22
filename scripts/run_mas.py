@@ -6,6 +6,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -24,13 +25,26 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from geoguesser.mas_runner import run_mas_row  # noqa: E402
 from geoguesser.agent_factory import create_geoguesser_agent  # noqa: E402
-from geoguesser.reference_data import load_reference_snapshot  # noqa: E402
-from geoguesser.storage import MongoRepository, connect_database  # noqa: E402
+from geoguesser.reference_data import load_reference_snapshot, lookup_references  # noqa: E402
 from geoguesser.gemini_client import create_gemini_client  # noqa: E402
 from geoguesser.langsmith_tracing import (  # noqa: E402
     create_langsmith_tracer,
     flush_langsmith_traces,
 )
+
+
+class SnapshotRepository:
+    """Read-only local adapter over a versioned reference snapshot."""
+
+    def __init__(self, snapshot: dict[str, Any]) -> None:
+        self.snapshot = snapshot
+
+    def lookup_references(
+        self, *, version: str, category: str, country: str | None = None
+    ) -> list[dict[str, Any]]:
+        if version != self.snapshot["version"]:
+            raise ValueError(f"reference version {version} is unavailable")
+        return lookup_references(self.snapshot, category=category, country=country)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -53,22 +67,15 @@ def main() -> int:
     if not rows:
         raise SystemExit("dataset contains no rows")
 
-    snapshot = load_reference_snapshot(args.snapshot)
-    client, database = connect_database()
+    snapshot_path = args.snapshot if args.snapshot.is_absolute() else ROOT / args.snapshot
+    snapshot = load_reference_snapshot(snapshot_path)
+    repository = SnapshotRepository(snapshot)
+    gemini_client = create_gemini_client()
+    langsmith_tracer = create_langsmith_tracer()
+    # Compile the graph once; per-row RuntimeBudget measures inference only.
+    supervisor_agent = create_geoguesser_agent()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     try:
-        client.admin.command("ping")
-        repository = MongoRepository(database)
-        repository.initialize()
-        if not database.reference_rows.find_one({"version": snapshot["version"]}):
-            raise SystemExit(
-                f"reference version {snapshot['version']} is not seeded; run "
-                "python main.py seed-references first"
-            )
-        gemini_client = create_gemini_client()
-        langsmith_tracer = create_langsmith_tracer()
-        # Compile the graph once; per-row RuntimeBudget measures inference only.
-        supervisor_agent = create_geoguesser_agent()
-        args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open("w", encoding="utf-8") as handle:
             for index, row in enumerate(rows, start=1):
                 print(f"[MAS {index}/{len(rows)}] starting image {row.get('mapillary_image_id')}", flush=True)
@@ -110,13 +117,12 @@ def main() -> int:
                     print(f"ERROR image_id={result.get('image_id')}: {result['error']}")
                 handle.write(json.dumps(result, ensure_ascii=False) + "\n")
                 print(json.dumps({"index": index, **result}, ensure_ascii=False))
-        print("[LangSmith] flushing mandatory trace uploads", flush=True)
-        flush_langsmith_traces(tracer=langsmith_tracer)
-        print("[LangSmith] trace upload flush completed", flush=True)
         print(f"wrote {len(rows)} results to {args.output}")
         return 0
     finally:
-        client.close()
+        print("[LangSmith] flushing mandatory trace uploads", flush=True)
+        flush_langsmith_traces(tracer=langsmith_tracer)
+        print("[LangSmith] trace upload flush completed", flush=True)
 
 
 if __name__ == "__main__":

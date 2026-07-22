@@ -77,23 +77,30 @@ Read the narration at a natural pace (~150 wpm). Bracketed lines are on-screen a
 
 ## 1:35–2:15 — Under the hood: the multi-agent system
 
-**[Cut to editor or a simple architecture diagram / CONSTITUTION.md.]**
+**[Cut to editor: `agent_factory.py` or `budget_middleware.py`.]**
 
 > "Under the hood this is a LangChain Deep Agents orchestrator. A Gemini Flash pass extracts visual
-> evidence from all four views first. The orchestrator then delegates to one or two narrow
-> specialists — urban and rural — each with its own private lookup tools, and it can optionally
-> re-examine one region with a cropped, targeted re-check when two countries are genuinely close."
+> evidence from all four views first, then the orchestrator delegates to one or two narrow
+> specialists — urban and rural — each scoped to its own private lookup tools."
+
+**[Point at `wrap_model_call` / the `tool_choice` override in `budget_middleware.py`.]**
+
+> "The important part is that this isn't just a prompt asking the model to behave — there's runtime
+> middleware that tracks the current phase and sets `tool_choice` to the one legal next tool on every
+> turn. If the model tries to finalize before a specialist has actually run, the tool call is
+> rejected in code, not just discouraged in a system prompt."
+
+**[Point at `_with_authorized_objects` or the specialist system prompt.]**
+
+> "Delegation is capability-scoped too: each specialist only gets tools for its own clue domain, and
+> it has to cite an exact object the extraction pass actually detected — so the evidence you saw
+> highlighted on the panorama earlier is traceable back to a real tool call, not invented after the
+> fact."
 
 **[Show LangSmith trace.]**
 
 > "Every run is traced end-to-end in LangSmith — I can see exactly which tools fired, in what order,
 > and with what inputs, which is how I debug and tune this instead of guessing."
-
-**[Optional: point at the constitution doc.]**
-
-> "The whole delegation sequence is enforced as a hard DAG at runtime — extraction, then delegation,
-> then optional re-examination, then one final prediction — so the agent can't skip steps or loop
-> forever."
 
 ---
 

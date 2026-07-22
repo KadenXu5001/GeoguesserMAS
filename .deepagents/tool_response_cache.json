@@ -2236,5 +2236,746 @@
         "source_section": "Alphabet/script"
       }
     ]
+  },
+  "{\"category\": \"terrain_scenery\", \"country\": null, \"family\": \"rural\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Argentina",
+        "indicator": "Terrain and scenery",
+        "description": "A general rule of thumb is as follows: Mountains are to the west, plains are to the east. The further north you go, the higher the mountains get.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Topography"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Australia",
+        "indicator": "highest point is Mt",
+        "description": "The highest point is Mt. In 1983, grains of rock from Western Australia were dated at 4. 2 billion years old, making them the oldest ever found on earth.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Topography"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Australia",
+        "indicator": "Terrain and scenery",
+        "description": "The continent of Australia is divided into four general topographic regions: (1) a low, sandy eastern coastal plain; (2) the eastern highlands, ranging from 300 to more than 2,100 m (1,000–7,000 ft) in altitude and extending from Cape York Peninsula in northern Queensland southward to Tasmania; (3) the central plains, consisting largely of a north-south series of drainage basins, including the Great Artesian Basin, which underlies about 1,751,480 sq km (676,250 sq mi) of territory and is the most extensive area of internal drainage in the world; and (4) the western plateau, covered with great deserts and “bigger plains” (regularly spaced sand ridges and rocky wastes), rising 300 to 600 m (1,000–2,000 ft) high and constituting most of the western half of the continent.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Topography"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Canada",
+        "indicator": "Terrain and scenery",
+        "description": "Each Province can have its own feel, but due to other factors we wont talk about too many different areas. This is the general feel of the East. That includes Prince Edward Island, Nova Scotia, Newfoundland and New Brunswick. This is the General feel of Ontario and Quebec. Manitoba has its own feel. You can tell its Saskatchewan or Eastern Alberta because they don’t have many trees. This is the West. It covers the Western part of Alberta and British Columbia. This is the general feel of the North. That included Yukon, the Northwest Territories and Nunavut.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Chile",
+        "indicator": "Terrain and scenery",
+        "description": "Its pretty unique and easy to tell where you are. This general look is from the North of the Country. The Further north, the more of a desert feel. The further south you go, the greener the area becomes. Also notice the line colors as this is really important!.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "General Look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Costa Rica",
+        "indicator": "paths feel like they’re designed for foot traffic",
+        "description": "The paths feel like they’re designed for foot traffic. You find these signs everywhere on the University of Costa Rica, and its clear when you are on the campus.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Costa Rica",
+        "indicator": "Terrain and scenery",
+        "description": "Most of it is in the capital city of San José. You are more likely to end up in a park or outside of the airport. The airport is pretty easy to recognize. You also have access to the main road in front of it. The parks all feel the same, but its clear that it is a park.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "India",
+        "indicator": "Terrain and scenery",
+        "description": "Its the pinpointing that may be a bit more difficult.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Italy",
+        "indicator": "Terrain and scenery",
+        "description": "As Italy is near the Mediterranean sea, you will find landscapes that look similar to this. This is taken from Sicily. This is from the Island of Sardinia. However, this isn’t the only type of shot you will see. The north of the country is very different. The valleys of the mountains create a totally different feel.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Kenya",
+        "indicator": "Terrain and scenery",
+        "description": "This is the general feel of most of Kenya. The orangish soil is a good sign, mixed in with the car (which isnt in the shot). This is the general feel of the Mombassa region. You can see the palm trees and the sandy soil on the sides of the road. This is the western area of Kenya. There is a lake in this area, and it feels pretty hilly.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Mexico",
+        "indicator": "North of Mexico is basically a giant desert",
+        "description": "The North of Mexico is basically a giant desert. That being said, there are parts that are less desert-y than others. This is the Central Mexican feel. It feels like the South West USA but with some mountains and hills.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Mexico",
+        "indicator": "Terrain and scenery",
+        "description": "Because of the size of Mexico, there are a few general feels. Its pretty distinct from any other region. Its also one of the heaviest tourist destinations in Mexico (Cancun). The South of Mexico generally has this sandy / dirt feel on the sides. You can see it near the grassy areas on the sides of this.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "Netherlands",
+        "indicator": "Terrain and scenery",
+        "description": "The Netherlands is the country of cute little villages with canals and small little bridges. It is also the country of dikes protecting the people from the water, which are often full with cows or sheep. The Dutch love fields of flowers, windmills, more windmills and of course bicycles. Oh, and it is the country where you can find all garbage bins of the neighborhood piled up, ready to be emptied.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "New Zealand",
+        "indicator": "Terrain and scenery",
+        "description": "This is the General feel of the North Island. While New Zealand is really diverse, its a generic feel. This is the General feel of the South Island. The best thing to do is imagine the Lord of the Rings movies. If it looks like Middle Earth, its New Zealand.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "South Africa",
+        "indicator": "Terrain and scenery",
+        "description": "The general feel to South Africa is very close to Botswana. You can usually find something relatively fast that will help determine the distance.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "United Kingdom",
+        "indicator": "Terrain and scenery",
+        "description": "The UK can vary between its individual countries by look, however most urban areas look similar, the main differences occurring in more rural regions, Scotland being the most mountainous, followed by Wales, then England, and Northern Ireland. The UK will often have large hedges on the both sides of rural roads.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "United Kingdom",
+        "indicator": "UK also has a post code system which can help you narrow down which part of the ",
+        "description": "The UK also has a post code system which can help you narrow down which part of the country you are in.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "United States",
+        "indicator": "only difference seems to be the hills/mountains that you see in the distance",
+        "description": "The only difference seems to be the hills/mountains that you see in the distance.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      },
+      {
+        "family": "rural",
+        "category": "terrain_scenery",
+        "country": "United States",
+        "indicator": "Terrain and scenery",
+        "description": "This is the general feel of the North East. This is the South East. You can see the sandy soil on the side of the road. This is the Central North, and its rather flat and green. You can also find a surprising lack of trees. This is the Central South, and its just as flat as the north. However, this area is a lot more dry than the north. This is the North West, also called the Pacific North West. You will notice the mountains and the tall pines. This is the South West, and looks much like the Central South.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "General look"
+      }
+    ]
+  },
+  "{\"category\": \"urban_utility_poles\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Brazil",
+        "indicator": "Urban utility-pole traits",
+        "description": "Common Brazilian electricity poles have these slim indentations or steps, and sometimes can even have circular holes inside them:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Germany",
+        "indicator": "Urban utility-pole traits",
+        "description": "Electricity poles don’t follow any pattern.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "India",
+        "indicator": "Urban utility-pole traits",
+        "description": "There is an entire established meta for regions in India based loosely around the shape / style of electricity pole you can find in the region.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Netherlands",
+        "indicator": "Urban utility-pole traits",
+        "description": "Electricity poles in the Netherlands look like this. The reclaimed land of Flevoland, as well as the northern Wadden Islands don’t have any such typical electricity poles.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "New Zealand",
+        "indicator": "Urban utility-pole traits",
+        "description": "These concrete poles are mostly found in Suburbs and urban areas. The wooden poles are mostly found in rural areas, but they can also be found closer to urban areas.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Peru",
+        "indicator": "Urban utility-pole traits",
+        "description": "The majority of electricity poles are painted on the bottom, most common color being black.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Sweden",
+        "indicator": "Urban utility-pole traits",
+        "description": "Sweden features wooden electricity poles.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "Tunisia",
+        "indicator": "Urban utility-pole traits",
+        "description": "This is the general electricity pole.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Electricity poles"
+      },
+      {
+        "family": "urban",
+        "category": "urban_utility_poles",
+        "country": "United Kingdom",
+        "indicator": "Urban utility-pole traits",
+        "description": "The UK uses wooden Electricity poles that look like these.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Electricity poles"
+      }
+    ]
+  },
+  "{\"category\": \"urban_signage\", \"country\": null, \"family\": \"urban\", \"version\": \"reference-v2\"}": {
+    "response": [
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Argentina",
+        "indicator": "RN numbers generally increase the further south you go after you hit #51",
+        "description": "RN numbers generally increase the further south you go after you hit #51. Do not confuse this type of street sign with Peru because of the black-white pattern:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Argentina",
+        "indicator": "Urban sign conventions",
+        "description": "Specific to Argentina are the street signs that you find in different cities. Those can be black, blue and green:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Australia",
+        "indicator": "Australia typically uses a green sign with a blue shield as their state road sym",
+        "description": "Australia typically uses a green sign with a blue shield as their state road symbol. Its important to note that New Zealand uses a RED shield while the USA has their typical Black and White / Red and Blue shields. Roads are often alphanumeric or on blue shields.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Australia",
+        "indicator": "the Black and White ones occasionally near traffic circles",
+        "description": "You can find the Black and White ones occasionally near traffic circles. As for the Yellow and Black ones, these are located in Forested hilly areas, and are quite hard to find. Like other countries in the world, you can find the City name as well as their logo on most trash bins located around. As these are often smaller, its often difficult to make out the name or logo.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Australia",
+        "indicator": "Urban sign conventions",
+        "description": "Australia uses yellow diamond-shaped warning signs often featuring the local fauna. Australia has a wide range of signs, most look similar to signs you could find in the USA or Canada. “Shire” essentially means County. You can find these signs near all “Shire” borders, with some indicating a population or showing a crest of arms. You can occasionally find these wild fire signs. They will sometimes indicate the area you are on up top, and Code Red can sometimes be Catastrophic. However, they share a very similar design and can be found on the outskirts of most large towns.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Australia",
+        "indicator": "You can even use a few quick tips for State-Specific metas",
+        "description": "You can even use a few quick tips for State-Specific metas. Some Western Australia road signs will be on yellow poles. Some bollards in Western Australia will be painted brown at the bottom. Western Australia, New South Wales, Queensland, Tasmania and the Australian Capital Territory have white borders around their traffic lights, while Victoria, South Australia and the Northern Territory do not. No Stopping sings in New South Wales are red, unlike anywhere else in the country.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "also white signs that just carry general information on them",
+        "description": "There are also white signs that just carry general information on them. They wont tell you anything about towns, but you will be able to tell that the language is Portuguese. Warning signs in Brazil have the American yellow diamond-shaped style:. The stop signs in Brazil say PARE, just like in all other South American countries:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "road sign poles can be black",
+        "description": "The road sign poles can be black, white, brown or metallic:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "roadside turn warning arrows are either yellow with a black background or black ",
+        "description": "The roadside turn warning arrows are either yellow with a black background or black with a yellow background:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "Urban sign conventions",
+        "description": "The green signs seem to point to towns and villages. The blue signs seem to point to administrative regions, politicians, or other important information about the region or town.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Brazil",
+        "indicator": "Urban sign conventions variant 6",
+        "description": "However, this is not the case in cities and towns. These overhanging signs with bent poles are very common in Brazil. They point the way either to the nearest cities and roads, or parts of cities if found in a city:. The backs of all types of official road signs in Brazil are black:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Canada",
+        "indicator": "They will let you know what province you are in 99% of the time",
+        "description": "They will let you know what province you are in 99% of the time. Road signs are very similar to the USA.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Chile",
+        "indicator": "Urban sign conventions",
+        "description": "Most signs use a blue background with white text. Its also clearly in Spanish. The other version of this is the Green sign with white text. These do exist and can be right next to some of the blue signs!.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Colombia",
+        "indicator": "Urban sign conventions",
+        "description": "Colombia has several unique sign features. All sign posts are white and slim compared to other countries. Speed signs are round with a red outside and white inside (like Brazil). However all these signs also have a unique grey cross on the back of them.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Costa Rica",
+        "indicator": "Urban sign conventions",
+        "description": "Costa Rica uses “Alto” instead of “Pare” on their stop signs.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "France",
+        "indicator": "one road lettering system you don’t want to look for would be the C or D roads",
+        "description": "The one road lettering system you don’t want to look for would be the C or D roads. C roads are unique for each Town while the D roads are a bit different. These are Department roads, and each of the 96 mainland French departments have their own numbers. THEY CAN REPEAT!.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "France",
+        "indicator": "Urban sign conventions",
+        "description": "These are scattered across the major roads, telling you not only the road you’re on, but also how far along you are. You can also see these road signs, pointing to local towns and cities. The A roads are across all of France while most of the E roads are shared between European Countries, with E3 being located solely in France.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "France",
+        "indicator": "You can often find signs with multiple languages on them",
+        "description": "You can often find signs with multiple languages on them. These can be from Bretagne (on the western half of the country) with a language that contains many words ending in “c’h”, Biscay in the south west which contains a lot of the letter X, or Corsica with a language that looks Italian.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Germany",
+        "indicator": "Urban sign conventions",
+        "description": "German road signs are written with black characters on yellow background. A black border also surrounds signs.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Indonesia",
+        "indicator": "Bridge railings",
+        "description": "Bridge railings:. Settlements can often have these welcome and goodbye signs stating the name of the settlement and the subdivision(s) it is in:. These boards containing information can usually be found in front of important buildings in a settlement:. Location information can be found in many places in Indonesia (boards, billboards, shop fronts, etc. Indonesian flags can be found everywhere, and in many forms:. Prayer flags on the side of the road are very common too, each colour carrying a meaning:. Sometimes there are these ornamented structures by the side of the road, usually when entering or exiting a settlement:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Indonesia",
+        "indicator": "Urban sign conventions",
+        "description": "Directional road signs in Indonesia are usually found only at important crossroads:. Indonesia uses the yellow diamond-shaped warning signs, like the rest of Southeast Asia:. The turn arrows are black with a yellow background:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Italy",
+        "indicator": "Urban sign conventions",
+        "description": "Italy uses the word “Via” on MOST of their street signs. You can clearly see them on nearly every building (at a cross road). SS roads are unique to Italy, while E roads are European roads and are shared between countries.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Japan",
+        "indicator": "And this is how they appear on the map",
+        "description": "And this is how they appear on the map:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Japan",
+        "indicator": "Higher resolution here",
+        "description": "Higher resolution here: RoadNumberingSystem. A very common sign that you will mostly see in the Hokkaido island is this:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Kenya",
+        "indicator": "Urban sign conventions",
+        "description": "(Front). (Back).",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Malaysia",
+        "indicator": "Urban sign conventions",
+        "description": "Malaysia uses blue backed signs for locations, and red for important info. Malaysian stop signs say berhenti. It uses yellow diamond warning signs. Malaysia uses black and white poles for its signs.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Mexico",
+        "indicator": "It can be really useful to know where the numbers lead to (ex",
+        "description": "It can be really useful to know where the numbers lead to (ex.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Mexico",
+        "indicator": "the North American Yellow warning signs",
+        "description": "Mexico uses the North American Yellow warning signs. They seem to have large “bolded” images on them.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Mexico",
+        "indicator": "Urban sign conventions",
+        "description": "Mexico uses Alto on their stop sign. This is super important and can be a really good deciding factor in Central and South America. Mexico also uses a variety of colored signs like the USA, but the Green ones are the ones you want to look for.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Netherlands",
+        "indicator": "Brown signs normally show touristic information",
+        "description": "Brown signs normally show touristic information. Red and white signs like these are directions for cyclists. These are very clear indications that you are in the Netherlands. Street signs in the Netherlands look like this. Most common they end with -straat, -weg, -pad or -plein (street/road/path/square). Fietspad means bicycle lane, not a street name. Don’t look for a street named Fietspad on the map.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Netherlands",
+        "indicator": "Red for A-roads",
+        "description": "Red for A-roads, Green for E-roads, Yellow for N-roads. Yellow signs with black letters are warning signs with instructions. Think about detours, road constructions, or when two lines merge into one. Most of the time they are not used, but you can see X-es on them, or numbers with speed limits too.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Netherlands",
+        "indicator": "Urban sign conventions",
+        "description": "National hectometer signs are green with white letters. They will have either Li or Re written on them, to indicate that you are on the left (Li) of the right (Re) driveway.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Netherlands",
+        "indicator": "What a lot of people don’t know is that hectometer pole are arguably the best wa",
+        "description": "What a lot of people don’t know is that hectometer pole are arguably the best ways to locate yourself on the map. Besides the national hectometer signs, a lot of provinces have local ones too, and if you know them by heart, your guess will automatically be better. Drenthe. Flevoland. Friesland. Gelderland. Groningen. Limburg. Noord-Brabant. Noord-Holland. Overijssel. Utrecht. Zeeland. Zuid-Holland. Directions to cities are generally blue signs with white letters.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Netherlands",
+        "indicator": "When entering a tunnel",
+        "description": "When entering a tunnel, you will see this. Local areas within cities have a white border around them on the signs.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "New Zealand",
+        "indicator": "New Zealand uses a solid yellow line for its stop line",
+        "description": "New Zealand uses a solid yellow line for its stop line.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "New Zealand",
+        "indicator": "They just make the assumption that the drivers know better",
+        "description": "They just make the assumption that the drivers know better.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "New Zealand",
+        "indicator": "Urban sign conventions",
+        "description": "New Zealand has these green signs that are on most major roads. That red shield is important as it is the New Zealand State road system. New Zealand uses Diagonal warning signs, and they appear on White wooden poles. The exception is pedestrian crossings, which have black and white striped poles. New Zealand’s Yield signs are white and red. They also have a white painted triangle on the road. This is a unique combination.",
+        "source_url": "https://geotips.net/oceania/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Peru",
+        "indicator": "department",
+        "description": "The department, or region, is Ayacucho, which is also the name of a large city. The province is called Huanta. The town of Huanta is visible at a relatively zoomed-out level, near Ayacucho, which has narrowed down where to look for our district. Finally, finding the district of Huamanguilla was relatively difficult but not impossible, given that knowing the province narrowed down the area in which the district could be. Therefore, sometimes district and town names do not immediately come up and take some more searching.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "A Guide to Understanding Signs in Peru"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Peru",
+        "indicator": "Urban sign conventions",
+        "description": "Road signs are usually painted in black white pattern:.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Peru",
+        "indicator": "Urban sign conventions — A Guide to Understanding Signs in Peru",
+        "description": "Peruvian addresses on signs or posters usually include the names of administrative divisions. Peru has 3 levels of Administrative Divisions:. Regions. Regions are sometimes called Departments and are the largest political divisions of Peru. There are 25 regions:. Provinces. Regions are subdivided into provinces. There are 196 provinces. Districts. Regions are subdivided into districts. There are 1838 districts. Here we have a ton of words, but we only need to focus on the words “distrito,” “provincia,” and “departamento.",
+        "source_url": "https://geotips.net/south-america/",
+        "source_section": "A Guide to Understanding Signs in Peru"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Poland",
+        "indicator": "speed limit signs have a characteristic font to them",
+        "description": "The speed limit signs have a characteristic font to them:. Large crosses like this by the side of the road can be found in Poland, Czechia, Slovakia and Romania and serve as a memorial to a person who lost their life there:. Similar memorials can be found in other countries around too, but usually not with crosses this large.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Poland",
+        "indicator": "Warning signs in Poland have a yellow background",
+        "description": "Warning signs in Poland have a yellow background, which is a feature of only a few countries in Europe, and a thin frame line:. Poland has these distinctive settlement entrance and exit signs with a town outline depicted on them:. The turn arrows are red with a white background:. These signs are quite common on Polish roads:.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "South Africa",
+        "indicator": "Urban sign conventions",
+        "description": "South Africa uses several different letters with their roads, however R and M are some of the most common. All traffic lights in South Africa appear to be on Yellow poles. Or at least all the major cities have them like this. They have varying degrees of paint ware.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "South Korea",
+        "indicator": "Urban sign conventions",
+        "description": "Green signs with white text and romanization (Latin transliteration of Hangul):. Korea uses yellow background for their warning signs:. The turn arrows are black on a yellow background:.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Spain",
+        "indicator": "Urban sign conventions",
+        "description": "Spanish road information signs have thick red borders. Spain uses blue, white, yellow, and brown backed signs.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Sweden",
+        "indicator": "It also seems to be a bit more square",
+        "description": "It also seems to be a bit more square, and will have a white reflector inside. Most streets in Sweden will end in “vägen”, or “gatan”. Due to Sweden’s tendency to have long names, they may be shortened to v. and g. respectively.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Sweden",
+        "indicator": "Urban sign conventions",
+        "description": "Sweden features, green, blue, and yellow road signs. Yellow signs are often used for important information such as speed limits etc. These signs will differ from Finland. Swededn will have the red extend to the edge of the sign while Finland will have a yellow border on the edge.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Taiwan",
+        "indicator": "Urban sign conventions",
+        "description": "These smaller signs can be found on road sides and tell you which road you are on. These mirrors are a common sight. Taiwanese traffic lights.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Thailand",
+        "indicator": "Urban sign conventions",
+        "description": "Thailand uses blue/green backed location signs. Thai signs use white poles, with black bases. Thailand uses yellow diamond warning signs.",
+        "source_url": "https://geotips.net/asia/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "Tunisia",
+        "indicator": "Urban sign conventions",
+        "description": "You will always find signs in both French and Arabic. Almost every sign points to Tunis. You can also find these road markers along most of the major roads.",
+        "source_url": "https://geotips.net/africa/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "United Kingdom",
+        "indicator": "Urban sign conventions",
+        "description": "Signs in the UK can be white, green and blue. Look for the letters A or M, as these are the major roads throughout the country.",
+        "source_url": "https://geotips.net/europe/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "United States",
+        "indicator": "Green signs will point to towns and destinations",
+        "description": "The Green signs will point to towns and destinations, while the blue sign will point to gas stations, hotels or places to eat.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      },
+      {
+        "family": "urban",
+        "category": "urban_signage",
+        "country": "United States",
+        "indicator": "Urban sign conventions",
+        "description": "There are hundreds of different signs in the USA. The most important one being the speed limit sign. This speed limit sign can save you from guessing Canada. The color seems to matter as to what will appear on the sign. There is also nothing important about the back of the signs.",
+        "source_url": "https://geotips.net/north-america/",
+        "source_section": "Road Signs"
+      }
+    ]
   }
 }

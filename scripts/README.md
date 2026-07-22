@@ -1,5 +1,18 @@
 # Baseline scripts
 
+## Local MAS accuracy
+
+The local evaluator reads the versioned reference JSON directly; MongoDB does not need to be
+running and the snapshot does not need to be seeded. With the rendered evaluation images present,
+run the held-out set and summarize it with:
+
+```powershell
+python scripts\run_mas.py --dataset data\datasets\eval_c1.csv --limit 0 --output .artifacts\mas-eval-c1.jsonl
+python scripts\summarize_results.py .artifacts\mas-eval-c1.jsonl
+```
+
+The MAS still requires `GEMINI_API_KEY` and the mandatory LangSmith settings from `.env`.
+
 From the repository root, activate the project virtual environment and run:
 
 ```powershell
@@ -17,6 +30,32 @@ The script uses Google's current `gemini-3.1-pro-preview` model. Each panorama i
 tracing is enabled for debugging. Uploads are synchronous because the trace
 contains four multimodal inputs and must finish before the process exits.
 `gemini-pro-baseline` run in the configured project.
+
+## Claude Opus versus MAS
+
+Set `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, and the required LangSmith variables in `.env`, then run
+the paired comparison over the same dataset rows:
+
+```powershell
+python scripts\compare_claude_opus_mas.py --limit 10
+```
+
+Use `--limit 0` for the complete dataset. The runner defaults to `OPUS_MODEL` from `.env` and writes
+row-level JSONL plus a JSON summary under `.artifacts/`. The summary includes attempted and successful
+runs, country accuracy (failures count as incorrect), paired accuracy, input/output token totals,
+total cost, mean cost, and cost per correct answer. Opus pricing defaults to $5 input / $25 output
+per million tokens and can be overridden with `--opus-input-price` and `--opus-output-price`.
+
+## Direct Gemini 3 Flash baseline
+
+Run one direct four-image Gemini call per held-out panorama, without MAS components or LangSmith:
+
+```powershell
+python scripts\run_gemini_flash.py --dataset data\datasets\eval_c1.csv --limit 0
+```
+
+The runner resolves the checksum-validated original views from the local object store and writes
+row-level predictions plus an accuracy/token/cost summary under `.artifacts/`.
 
 ## Reference clue snapshot
 

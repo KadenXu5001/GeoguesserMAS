@@ -25,6 +25,24 @@ Primary sources:
 
 The model uses conservative high-resolution Gemini accounting. Actual usage metadata replaces estimates in experimental reports.
 
+## Recorded benchmark observations
+
+Recorded on 2026-07-22. These observations are evidence, not replacements for the locked evaluation
+required by the constitution.
+
+| System | Accuracy | Total cost | Mean cost / run | Provenance |
+| --- | ---: | ---: | ---: | --- |
+| Direct Gemini 3 Flash Preview baseline | 80% (12/15) | $0.068931 | $0.0045954 | Measured on the reproducible 15-country `worldwide_v2` diverse local subset; 15/15 calls succeeded |
+| Production MAS | approximately 87% | Not supplied | $0.033 (3.3 cents) | User-reported testing result; dataset and run count not yet recorded |
+
+The Flash baseline used `gemini-3-flash-preview` with one four-image call per panorama and no MAS,
+reference lookup, retry, or LangSmith trace. Its measured usage was 66,390 input tokens, 1,645 visible
+output tokens, and 10,267 reasoning tokens, for 78,302 total tokens. The local artifacts are
+`.artifacts/gemini-3-flash-worldwide-diverse-15.jsonl` and
+`.artifacts/gemini-3-flash-worldwide-diverse-15-summary.json`.
+
+The user-reported MAS mean cost is $0.033 per run, equivalent to 3.3 cents per panorama.
+
 ## Assumptions
 
 These are budgets, not measured results. Each path must log actual prompt, output, thinking, cached, and modality token counts.

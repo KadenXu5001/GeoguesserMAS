@@ -36,6 +36,26 @@ def test_gemini_baseline_sends_all_four_views_once(tmp_path: Path) -> None:
     assert result.usage["input_tokens"] == 10
 
 
+def test_gemini_baseline_records_thinking_as_reasoning_tokens(tmp_path: Path) -> None:
+    class Models:
+        def generate_content(self, **kwargs):
+            return SimpleNamespace(
+                parsed={"country": "France", "confidence": 80, "alternatives": [], "evidence": ["road"]},
+                usage_metadata=SimpleNamespace(
+                    prompt_token_count=10,
+                    candidates_token_count=4,
+                    thoughts_token_count=7,
+                ),
+            )
+
+    result = run_gemini_baseline(
+        SimpleNamespace(models=Models()), views(tmp_path), model="flash", max_attempts=1
+    )
+
+    assert result.usage["reasoning_tokens"] == 7
+    assert result.usage["image_tokens"] == 0
+
+
 def test_gemini_pro_uses_the_same_four_view_contract(tmp_path: Path) -> None:
     class Models:
         def generate_content(self, **kwargs):
