@@ -10,11 +10,11 @@ rules, and capacity limits in code.
 
 ## Benchmark snapshot
 
-| System                        | Country accuracy | Mean cost per panorama | Evidence                |
-| ----------------------------- | ---------------: | ---------------------: | ----------------------- |
-| Direct Gemini 3 Flash Preview |      80% (12/15) |      $0.004595 (0.46¢) | Measured repository run |
-| GeoGuessr MAS                 |     ~87% (27/31) |          $0.033 (3.3¢) | Current project result  |
-| Claude Opus 4.8               | ≈94% (14/15; 93.3% exact) | $0.0365 (3.65¢) | External measured run |
+| System                        |          Country accuracy | Mean cost per panorama | Evidence               |
+| ----------------------------- | ------------------------: | ---------------------: | ---------------------- |
+| Direct Gemini 3 Flash Preview |               80% (12/15) |      $0.004595 (0.46¢) | Measured run           |
+| GeoGuessr MAS                 |              ~87% (27/31) |          $0.033 (3.3¢) | Current project result |
+| Claude Opus 4.8               | ≈94% (14/15; 93.3% exact) |        $0.0365 (3.65¢) | External measured run  |
 
 At the reported operating points, the MAS improves on the direct Gemini baseline by about
 7 percentage points while costing about 7.2 times more per panorama. The external Opus run adds

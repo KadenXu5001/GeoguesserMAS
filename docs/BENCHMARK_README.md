@@ -5,11 +5,11 @@ the direct Gemini 3 Flash baseline, the GeoGuessr multi-agent system (MAS), and 
 
 ## Headline results
 
-| System                        |         Country accuracy |  Mean cost per run | Evidence status        |
-| ----------------------------- | -----------------------: | -----------------: | ---------------------- |
-| Direct Gemini 3 Flash Preview |              80% (12/15) | $0.0045954 (0.46¢) | Measured run           |
-| GeoGuessr MAS                 |        Approximately 87% |      $0.033 (3.3¢) | Current project result |
-| Claude Opus 4.8               | 94% (14/15; 93.3% exact) |    $0.0365 (3.65¢) | External measured run  |
+| System                        | Country accuracy |  Mean cost per run | Evidence status        |
+| ----------------------------- | ---------------: | -----------------: | ---------------------- |
+| Direct Gemini 3 Flash Preview |      80% (12/15) | $0.0045954 (0.46¢) | Measured run           |
+| GeoGuessr MAS                 |      87% (27/31) |      $0.033 (3.3¢) | Current project result |
+| Claude Opus 4.8               |      94% (14/15) |    $0.0365 (3.65¢) | External measured run  |
 
 Based on these observations, the MAS has a reported accuracy advantage of approximately 7
 percentage points and costs approximately 7.18 times as much per panorama as Flash. The external
@@ -71,20 +71,20 @@ Because its row-level predictions, provider usage, configuration, and traces are
 locally, this document records it as an external measured result rather than a
 repository-reproduced result.
 
-| Metric                 | Flash baseline |                                    Opus 4.8 |
-| ---------------------- | -------------: | ------------------------------------------: |
-| Attempts               |             15 |                                          15 |
-| Correct                |             12 |                                          14 |
-| Accuracy               |            80% |             93.3% exact (approximately 94%) |
-| Confidence calibration |       Moderate |                                      Higher |
-| Hallucination rate     |            Low |                                    Very low |
-| Reasoning tokens       |         10,267 | Approximately 31,000, depending on settings |
-| Total cost             |      $0.068931 |                                     $0.5475 |
-| Mean cost per attempt  |     $0.0045954 |                                     $0.0365 |
+| Metric                      |        Value |
+| --------------------------- | -----------: |
+| Attempts                    |           15 |
+| Correct                     |           14 |
+| Input tokens                | Not recorded |
+| Visible output tokens       | Not recorded |
+| Reasoning tokens            |       31,233 |
+| Total tokens                |      124,594 |
+| Total cost                  |      $0.5475 |
+| Mean cost per attempt       |      $0.0365 |
+| Cost per correct prediction |  $0.03910714 |
 
-Confidence calibration and hallucination rate are qualitative assessments from the external run,
-not metrics derived by the repository summarizer. The external Opus total is about
-7.94 times the measured Flash total.
+The external Opus total is about 7.94 times the measured Flash total. Token fields that were not
+included in the external run report are marked as not recorded.
 
 ### Flash artifacts
 
