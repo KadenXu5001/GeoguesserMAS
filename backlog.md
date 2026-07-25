@@ -96,7 +96,7 @@ Finish every locally testable deployment invariant before provisioning one low-c
 - [ ] Run a Gemini Pro orchestrator ablation only if the Flash orchestrator misses the accuracy gate.
 - [ ] Add a CLI showing todolist, selected specialist, re-examination count, country, confidence, cost, and LangSmith trace URL.
 - [x] Add a standalone Gemini Pro baseline script with JSONL output and LangSmith tracing.
-- [ ] Document setup, ingestion, evaluation, limitations, and measured results in the README.
+- [x] Document setup, ingestion, evaluation, limitations, and measured results in the README.
 - [ ] Build a streamed web UI only after the cost and accuracy gates pass.
 - [ ] Consider manually annotated visual-signal subsets in a later evaluation version.
 
