@@ -16,7 +16,7 @@ for namespace in runtime-private source-private; do
   local_count="$(find "$local_root" -type f | wc -l | tr -d ' ')"
   cloud_count="$(
     gcloud storage ls --recursive "$GEOTRAINER_MEDIA_BUCKET/$namespace" \
-      | awk '/^gs:\/\// && !/\/$/ {count += 1} END {print count + 0}'
+      | awk '/^gs:\/\// && !/:$/ && !/\/$/ {count += 1} END {print count + 0}'
   )"
   echo "$namespace files: local=$local_count cloud=$cloud_count"
   if [[ "$local_count" != "$cloud_count" ]]; then

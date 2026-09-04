@@ -1,0 +1,105 @@
+name: Test and deploy production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geotrainer-production
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the pushed commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Test Python
+        run: |
+          python3 -m venv .ci-venv
+          .ci-venv/bin/pip install --disable-pip-version-check -r requirements.txt pytest==9.1.1
+          .ci-venv/bin/python -m pytest -q
+
+      - name: Test and build frontend
+        working-directory: web
+        run: |
+          npm ci
+          npm test
+          npm run build
+
+      - name: Validate production artifacts
+        run: |
+          docker compose --env-file .env.production.example config --quiet
+          docker build --tag "geotrainer-ci:${GITHUB_SHA}" .
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    steps:
+      - name: Configure deployment SSH identity
+        env:
+          VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          install -d "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_PRIVATE_KEY" > "$HOME/.ssh/geotrainer_deploy"
+          printf '%s\n' "$VPS_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          test -s "$HOME/.ssh/geotrainer_deploy"
+          test -s "$HOME/.ssh/known_hosts"
+          ssh-keygen -y -f "$HOME/.ssh/geotrainer_deploy" >/dev/null
+
+      - name: Deploy the tested commit
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          [[ "$DEPLOY_SHA" =~ ^[0-9a-f]{40}$ ]]
+          ssh \
+            -i "$HOME/.ssh/geotrainer_deploy" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=10 \
+            "$VPS_USER@$VPS_HOST" \
+            "bash -s -- '$DEPLOY_SHA'" <<'REMOTE'
+          set -euo pipefail
+          revision="$1"
+          deploy_dir=/srv/geotrainer/app
+
+          cd "$deploy_dir"
+          exec 9>"/tmp/geotrainer-deploy.lock"
+          flock -n 9 || { echo "another production deployment is active" >&2; exit 1; }
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "production checkout is dirty; refusing automated deployment" >&2
+            git status --short >&2
+            exit 1
+          fi
+
+          previous_revision="$(git rev-parse HEAD)"
+          git fetch --no-tags origin main
+          [[ "$(git rev-parse origin/main)" == "$revision" ]] || {
+            echo "origin/main does not match the tested workflow commit" >&2
+            exit 1
+          }
+
+          schema_paths=(src/geoguesser/storage.py deploy/mongodb/init-app-user.js)
+          if ! git diff --quiet "$previous_revision" "$revision" -- "${schema_paths[@]}"; then
+            echo "MongoDB schema-sensitive files changed; take a verified backup and deploy manually." >&2
+            exit 1
+          fi
+
+          git checkout main
+          git merge --ff-only "$revision"
+          bash deploy/scripts/deploy_release.sh "$revision" "$previous_revision"
+          REMOTE
