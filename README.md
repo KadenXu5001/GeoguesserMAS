@@ -1,7 +1,7 @@
 # GeoGuessr Multi-Agent System
 
 A cost-controlled, multimodal country geolocation system built with Gemini, LangChain Deep
-Agents, LangGraph, MongoDB, and LangSmith.
+Agents, LangGraph, MongoDB, and LangSmith. Try it out at https://geo-trainer.com/!
 
 The system converts a Mapillary panorama into four cardinal street views, extracts structured
 visual evidence, delegates the unresolved geographic question to an urban or rural specialist,
